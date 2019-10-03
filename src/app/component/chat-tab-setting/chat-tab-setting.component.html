@@ -15,6 +15,7 @@
       <hr/>
       <div>
         <ng-container *ngIf="!isDeleted">
+          <button (click)="save_log()">輸出log</button>
           <button (click)="save()">儲存分頁</button>
           <button class="danger" (click)="delete()" [attr.disabled]="chatTabs.length <= 1 ? '' : null">刪除</button>
         </ng-container>
