@@ -1,15 +1,15 @@
-<button (click)="openModal()">画像を選ぶ</button>
+<button (click)="openModal()">選擇圖像</button>
 <div>
   <img height="120" [src]="tableBackgroundImage.url | safe: 'resourceUrl'">
 </div>
 <input [(ngModel)]="name" placeholder="Name" name="name" />
 <div>
   <div>
-    <input [(ngModel)]="size" type="range" min="{{minSize}}" max="{{maxSize}}" name="size" /> Size : <input [(ngModel)]="size"
+    <input [(ngModel)]="size" type="range" min="{{minSize}}" max="{{maxSize}}" name="size" /> 尺寸 : <input [(ngModel)]="size"
       type="number" min="{{minSize}}" max="{{maxSize}}">
   </div>
-  <button (click)="createGameCharacter()">キャラクターを作る</button>
-  <button (click)="createGameTableMask()">マップマスクを作る</button>
+  <button (click)="createGameCharacter()">創建角色</button>
+  <button (click)="createGameTableMask()">創建地圖迷霧</button>
   <!--
   <div>
     <button (click)="createGameCharacterForXML(xml)">↓のXMLからキャラクターを作る</button>

@@ -68,7 +68,7 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.panelService.title = this.character.name + ' のチャットパレット';
+    this.panelService.title = this.character.name + ' 的對話組合板';
     this.chatTabidentifier = this.chatMessageService.chatTabs ? this.chatMessageService.chatTabs[0].identifier : '';
     this.gameType = this.character.chatPalette ? this.character.chatPalette.dicebot : '';
     EventSystem.register(this)
@@ -93,7 +93,7 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
   }
 
   updatePanelTitle() {
-    this.panelService.title = this.character.name + ' のチャットパレット';
+    this.panelService.title = this.character.name + ' 的對話組合板';
   }
 
   onSelectedCharacter(identifier: string) {
@@ -125,36 +125,36 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
 
   showDicebotHelp() {
     DiceBot.getHelpMessage(this.gameType).then(help => {
-      let gameName: string = 'ダイスボット';
+      let gameName: string = '擲骰系統';
       for (let diceBotInfo of DiceBot.diceBotInfos) {
         if (diceBotInfo.script === this.gameType) {
-          gameName = 'ダイスボット<' + diceBotInfo.game + '＞'
+          gameName = '擲骰系統<' + diceBotInfo.game + '＞'
         }
       }
-      gameName += 'の説明';
+      gameName += '的説明';
 
       let coordinate = this.pointerDeviceService.pointers[0];
       let option: PanelOption = { left: coordinate.x, top: coordinate.y, width: 600, height: 500 };
       let textView = this.panelService.open(TextViewComponent, option);
       textView.title = gameName;
       textView.text =
-        '【ダイスボット】チャットにダイス用の文字を入力するとダイスロールが可能\n'
-        + '入力例）２ｄ６＋１　攻撃！\n'
-        + '出力例）2d6+1　攻撃！\n'
+        '【擲骰系統】在聊天視窗輸入擲骰指令，即可進行擲骰。\n'
+        + '輸入範例）２ｄ６＋１　攻撃！\n'
+        + '輸出範例）2d6+1　攻撃！\n'
         + '　　　　  diceBot: (2d6) → 7\n'
-        + '上記のようにダイス文字の後ろに空白を入れて発言する事も可能。\n'
-        + '以下、使用例\n'
-        + '　3D6+1>=9 ：3d6+1で目標値9以上かの判定\n'
-        + '　1D100<=50 ：D100で50％目標の下方ロールの例\n'
-        + '　3U6[5] ：3d6のダイス目が5以上の場合に振り足しして合計する(上方無限)\n'
-        + '　3B6 ：3d6のダイス目をバラバラのまま出力する（合計しない）\n'
-        + '　10B6>=4 ：10d6を振り4以上のダイス目の個数を数える\n'
-        + '　(8/2)D(4+6)<=(5*3)：個数・ダイス・達成値には四則演算も使用可能\n'
-        + '　C(10-4*3/2+2)：C(計算式）で計算だけの実行も可能\n'
-        + '　choice[a,b,c]：列挙した要素から一つを選択表示。ランダム攻撃対象決定などに\n'
-        + '　S3d6 ： 各コマンドの先頭に「S」を付けると他人結果の見えないシークレットロール\n'
-        + '　3d6/2 ： ダイス出目を割り算（切り捨て）。切り上げは /2U、四捨五入は /2R。\n'
-        + '　D66 ： D66ダイス。順序はゲームに依存。D66N：そのまま、D66S：昇順。\n'
+        + '如上所述，在擲骰指令後的空白可以輸入其他文字，而不會影響擲骰。\n'
+        + '以下為各種指令的使用範例：\n'
+        + '　3D6+1>=9 ：3d6+1的結果是否在目標値9以上的判定\n'
+        + '　1D100<=50 ：D100是否骰出低於50％目標\n'
+        + '　3U6[5] ：3d6有任一骰面在5以上即可再擲一顆骰，並統計其總和（無上限）\n'
+        + '　3B6 ：3d6的骰面各自表示（並不會加總）\n'
+        + '　10B6>=4 ：10d6骰出4以上的骰面的骰子數量\n'
+        + '　(8/2)D(4+6)<=(5*3)：骰數・骰子・達成値皆可進行四則運算\n'
+        + '　C(10-4*3/2+2)：C(計算式）也可以只進行數值計算\n'
+        + '　choice[a,b,c]：從列出的選項中選擇一個。可以用於隨機決定攻擊對象等\n'
+        + '　S3d6 ： 在擲骰指令前加上「S」，便可以進行其他人看不見結果的暗骰\n'
+        + '　3d6/2 ： 對擲骰結果進行除法（小數點捨去）。若要小數點進位則指令為 /2U、四捨五入則為 /2R。\n'
+        + '　D66 ： D66骰。順序取決於遊戲順序。D66N：維持、D66S：升冪。\n'
         + '===================================\n'
         + help;
       console.log('onChangeGameType done');

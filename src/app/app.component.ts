@@ -86,11 +86,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     soundEffect.initialize();
 
     let chatTab: ChatTab = new ChatTab('MainTab');
-    chatTab.name = 'メインタブ';
+    chatTab.name = '主要';
     chatTab.initialize();
 
     chatTab = new ChatTab('SubTab');
-    chatTab.name = 'サブタブ';
+    chatTab.name = '閒聊';
     chatTab.initialize();
 
     let fileContext = ImageFile.createEmpty('none_icon').toContext();
@@ -131,7 +131,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     AudioStorage.instance.get(PresetSound.sweep).isHidden = true;
 
     PeerCursor.createMyCursor();
-    PeerCursor.myCursor.name = 'プレイヤー';
+    PeerCursor.myCursor.name = '玩家';
     PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
 
     EventSystem.register(this)

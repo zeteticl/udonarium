@@ -130,9 +130,9 @@ export class TextNoteComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
-      { name: 'メモを編集', action: () => { this.showDetail(this.textNote); } },
+      { name: '編輯筆記', action: () => { this.showDetail(this.textNote); } },
       {
-        name: 'コピーを作る', action: () => {
+        name: '複製', action: () => {
           let cloneObject = this.textNote.clone();
           console.log('コピー', cloneObject);
           cloneObject.location.x += this.gridSize;
@@ -142,7 +142,7 @@ export class TextNoteComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       },
       {
-        name: '削除する', action: () => {
+        name: '刪除', action: () => {
           this.textNote.destroy();
           SoundEffect.play(PresetSound.sweep);
         }

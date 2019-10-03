@@ -1,23 +1,23 @@
 <div *ngIf="!isConnected;else other_content">
-  <div>ルーム名 : <input class="input" (input)="calcPeerId($event.target.value, password)" [(ngModel)]="roomName" required minlength="1" maxlength="128" #roomNameValidation="ngModel"
-      placeholder="ルームの名前は必須" /></div>
-  <div>パスワード: <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password" maxlength="12" #passwordValidation="ngModel" placeholder="空ならパスワードなし"
+  <div>房間名稱： <input class="input" (input)="calcPeerId($event.target.value, password)" [(ngModel)]="roomName" required minlength="1" maxlength="128" #roomNameValidation="ngModel"
+      placeholder="房間名稱為必要項目" /></div>
+  <div>密碼： <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password" maxlength="12" #passwordValidation="ngModel" placeholder="空白則不需要密碼"
     /></div>
   <hr/>
   <div *ngIf="roomNameValidation.errors && (roomNameValidation.dirty || roomNameValidation.touched)">
     <div [hidden]="!roomNameValidation.errors.required">
-      ルームの名前は必須です。
+      房間名稱為必要項目。
     </div>
     <div [hidden]="!roomNameValidation.errors.minlength">
-      ルームの名前は必須です。
+      房間名稱為必要項目。
     </div>
     <div [hidden]="!roomNameValidation.errors.maxlength">
-      ルーム名前の長さは128以内にしてください。
+      房間名稱的長度必須在128個字元內。
     </div>
   </div>
   <div *ngIf="passwordValidation.errors && (passwordValidation.dirty || passwordValidation.touched)">
     <div [hidden]="!passwordValidation.errors.maxlength">
-      パスワードの長さは12以内にしてください。
+      密碼的長度必須在12個字元內。
     </div>
   </div>
   <div *ngIf="!validateLength">

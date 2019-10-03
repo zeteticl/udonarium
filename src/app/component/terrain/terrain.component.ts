@@ -110,12 +110,12 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.contextMenuService.open(menuPosition, [
       (this.isLocked
         ? {
-          name: '固定解除', action: () => {
+          name: '解除固定', action: () => {
             this.isLocked = false;
             SoundEffect.play(PresetSound.unlock);
           }
         } : {
-          name: '固定する', action: () => {
+          name: '固定', action: () => {
             this.isLocked = true;
             SoundEffect.play(PresetSound.lock);
           }
@@ -123,7 +123,7 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
       ContextMenuSeparator,
       (this.hasWall
         ? {
-          name: '壁を非表示', action: () => {
+          name: '隱藏側面', action: () => {
             this.mode = TerrainViewState.FLOOR;
             if (this.depth * this.width === 0) {
               this.terrain.width = this.width <= 0 ? 1 : this.width;
@@ -131,14 +131,14 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
         } : {
-          name: '壁を表示', action: () => {
+          name: '顯示側面', action: () => {
             this.mode = TerrainViewState.ALL;
           }
         }),
       ContextMenuSeparator,
-      { name: '地形設定を編集', action: () => { this.showDetail(this.terrain); } },
+      { name: '編輯地形設定', action: () => { this.showDetail(this.terrain); } },
       {
-        name: 'コピーを作る', action: () => {
+        name: '複製', action: () => {
           let cloneObject = this.terrain.clone();
           cloneObject.location.x += this.gridSize;
           cloneObject.location.y += this.gridSize;
@@ -148,13 +148,13 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       },
       {
-        name: '削除する', action: () => {
+        name: '刪除', action: () => {
           this.terrain.destroy();
           SoundEffect.play(PresetSound.sweep);
         }
       },
       ContextMenuSeparator,
-      { name: 'オブジェクト作成', action: null, subActions: this.tabletopService.getContextMenuActionsForCreateObject(objectPosition) }
+      { name: '創建物件', action: null, subActions: this.tabletopService.getContextMenuActionsForCreateObject(objectPosition) }
     ], this.name);
   }
 

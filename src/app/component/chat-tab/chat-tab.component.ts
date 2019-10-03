@@ -33,12 +33,9 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   preScrollBottom: number = -1;
 
   sampleMessages: ChatMessageContext[] = [
-    { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: 'チュートリアル', text: 'サーバーを使用しないTRPGオンセツールです。参加者同士で接続し、コマや画像ファイルなどを同期します。' },
-    { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: 'チュートリアル', text: '全てのデータが各参加者のブラウザ内にあるため、ルームの状態を次回に持ち越したい場合は、必ず「保存」を実行してセーブデータ（zip）を生成してください。保存したzipの読み込みはブラウザ画面へのファイルドロップで行えます。' },
-    { from: 'System', to: '???', timestamp: 0, imageIdentifier: '', tag: '', name: 'チュートリアル > プレイヤー', text: 'ダイレクトメッセージ（秘密会話）はセーブデータに記録されません。' },
-    { from: 'System', to: '???', timestamp: 0, imageIdentifier: '', tag: '', name: 'チュートリアル > プレイヤー', text: 'また、過去のダイレクトメッセージはあなたのIDが更新されると同じルーム内であっても見えなくなります。注意してください。' },
-    { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: 'チュートリアル', text: '動作推奨環境はデスクトップChromeです。今のところ、スマホからだと上手く操作できません。' },
-    { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: 'チュートリアル', text: 'チュートリアルは以上です。このチュートリアルは最初のチャットを入力すると非表示になります。' },
+    { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: '教學說明', text: '此為不使用伺服器的TRPG線上平台。参與者將彼此連線，同步棋子和圖片等檔案。\n由於所有資料都儲存在參與者各自的瀏覽器中，因此下次若要在下次進入時保留房間狀態，請一定要執行「儲存」以生成存檔(.zip)。將存檔zip拖曳至瀏覽器畫面即可將房間資料上傳。' },
+    { from: 'System', to: '???', timestamp: 0, imageIdentifier: '', tag: '', name: '教學說明 > 玩家', text: '直達訊息（密語）並不會儲存到存檔。\n此外，在您的ID更新之後，你將無法再看見之前傳給您的密語，還請多加注意。' },
+    { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: '教學說明', text: '推薦環境為桌面版Chrome。目前不支援以行動裝置進行操作。' },
   ];
 
   private needUpdate = true;

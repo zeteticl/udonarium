@@ -37,7 +37,7 @@ export class GameCharacter extends TabletopObject {
       this.imageDataElement.getFirstElementByName('imageIdentifier').value = imageIdentifier;
     }
 
-    let resourceElement: DataElement = DataElement.create('リソース', '', {}, 'リソース' + this.identifier);
+    let resourceElement: DataElement = DataElement.create('資源', '', {}, '資源' + this.identifier);
     let hpElement: DataElement = DataElement.create('HP', 200, { 'type': 'numberResource', 'currentValue': '200' }, 'HP_' + this.identifier);
     let mpElement: DataElement = DataElement.create('MP', 100, { 'type': 'numberResource', 'currentValue': '100' }, 'MP_' + this.identifier);
 
@@ -51,21 +51,21 @@ export class GameCharacter extends TabletopObject {
     //TEST
     let testElement: DataElement = DataElement.create('情報', '', {}, '情報' + this.identifier);
     this.detailDataElement.appendChild(testElement);
-    testElement.appendChild(DataElement.create('説明', 'ここに説明を書く\nあいうえお', { 'type': 'note' }, '説明' + this.identifier));
-    testElement.appendChild(DataElement.create('メモ', '任意の文字列\n１\n２\n３\n４\n５', { 'type': 'note' }, 'メモ' + this.identifier));
+    testElement.appendChild(DataElement.create('説明', '在這裡寫下說明文字', { 'type': 'note' }, '説明' + this.identifier));
+    testElement.appendChild(DataElement.create('註記', '任意文字\n１\n２\n３', { 'type': 'note' }, '註記' + this.identifier));
 
     //TEST
-    testElement = DataElement.create('能力', '', {}, '能力' + this.identifier);
+    testElement = DataElement.create('屬性', '', {}, '屬性' + this.identifier);
     this.detailDataElement.appendChild(testElement);
-    testElement.appendChild(DataElement.create('器用度', 24, {}, '器用度' + this.identifier));
-    testElement.appendChild(DataElement.create('敏捷度', 24, {}, '敏捷度' + this.identifier));
-    testElement.appendChild(DataElement.create('筋力', 24, {}, '筋力' + this.identifier));
-    testElement.appendChild(DataElement.create('生命力', 24, {}, '生命力' + this.identifier));
-    testElement.appendChild(DataElement.create('知力', 24, {}, '知力' + this.identifier));
-    testElement.appendChild(DataElement.create('精神力', 24, {}, '精神力' + this.identifier));
+    testElement.appendChild(DataElement.create('力量', 10, {}, '力量' + this.identifier));
+    testElement.appendChild(DataElement.create('敏捷', 10, {}, '敏捷' + this.identifier));
+    testElement.appendChild(DataElement.create('體質', 10, {}, '體質' + this.identifier));
+    testElement.appendChild(DataElement.create('智力', 10, {}, '智力' + this.identifier));
+    testElement.appendChild(DataElement.create('睿知', 10, {}, '睿知' + this.identifier));
+    testElement.appendChild(DataElement.create('魅力', 10, {}, '魅力' + this.identifier));
 
     //TEST
-    testElement = DataElement.create('戦闘特技', '', {}, '戦闘特技' + this.identifier);
+    testElement = DataElement.create('技能', '', {}, '技能' + this.identifier);
     this.detailDataElement.appendChild(testElement);
     testElement.appendChild(DataElement.create('Lv1', '全力攻撃', {}, 'Lv1' + this.identifier));
     testElement.appendChild(DataElement.create('Lv3', '武器習熟/ソード', {}, 'Lv3' + this.identifier));
@@ -78,12 +78,12 @@ export class GameCharacter extends TabletopObject {
     let gameCharacterXMLDocument: Document = domParser.parseFromString(this.rootDataElement.toXml(), 'application/xml');
 
     let palette: ChatPalette = new ChatPalette('ChatPalette_' + this.identifier);
-    palette.setPalette(`チャットパレット入力例：
-2d6+1 ダイスロール
-１ｄ２０＋{敏捷}＋｛格闘｝　{name}の格闘！
-//敏捷=10+{敏捷A}
-//敏捷A=10
-//格闘＝１`);
+    palette.setPalette(`對話組合板的使用範例：
+2d6+1 擲骰
+１ｄ２０＋{敏捷}＋｛格鬥｝　{name}的格鬥檢定！
+//敏捷=3+{敏捷A}
+//敏捷A=2
+//格鬥＝1`);
     palette.initialize();
     this.appendChild(palette);
   }

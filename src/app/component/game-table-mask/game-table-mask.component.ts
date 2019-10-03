@@ -106,22 +106,22 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
     this.contextMenuService.open(menuPosition, [
       (this.isLock
         ? {
-          name: '固定解除', action: () => {
+          name: '解除固定', action: () => {
             this.isLock = false;
             SoundEffect.play(PresetSound.unlock);
           }
         }
         : {
-          name: '固定する', action: () => {
+          name: '固定', action: () => {
             this.isLock = true;
             SoundEffect.play(PresetSound.lock);
           }
         }
       ),
       ContextMenuSeparator,
-      { name: 'マップマスクを編集', action: () => { this.showDetail(this.gameTableMask); } },
+      { name: '編輯地圖迷霧', action: () => { this.showDetail(this.gameTableMask); } },
       {
-        name: 'コピーを作る', action: () => {
+        name: '複製', action: () => {
           let cloneObject = this.gameTableMask.clone();
           console.log('コピー', cloneObject);
           cloneObject.location.x += this.gridSize;
@@ -132,13 +132,13 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
         }
       },
       {
-        name: '削除する', action: () => {
+        name: '刪除', action: () => {
           this.gameTableMask.destroy();
           SoundEffect.play(PresetSound.sweep);
         }
       },
       ContextMenuSeparator,
-      { name: 'オブジェクト作成', action: null, subActions: this.tabletopService.getContextMenuActionsForCreateObject(objectPosition) }
+      { name: '創建物件', action: null, subActions: this.tabletopService.getContextMenuActionsForCreateObject(objectPosition) }
     ], this.name);
   }
 
@@ -156,7 +156,7 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private showDetail(gameObject: GameTableMask) {
     let coordinate = this.pointerDeviceService.pointers[0];
-    let title = 'マップマスク設定';
+    let title = '設定地圖迷霧';
     if (gameObject.name.length) title += ' - ' + gameObject.name;
     let option: PanelOption = { title: title, left: coordinate.x - 200, top: coordinate.y - 150, width: 400, height: 300 };
     let component = this.panelService.open<GameCharacterSheetComponent>(GameCharacterSheetComponent, option);

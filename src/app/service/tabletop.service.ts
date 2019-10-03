@@ -212,7 +212,7 @@ export class TabletopService {
   }
 
   createGameCharacter(position: PointerCoordinate): GameCharacter {
-    let character = GameCharacter.create('新しいキャラクター', 1, '');
+    let character = GameCharacter.create('新建的角色', 1, '');
     character.location.x = position.x - 25;
     character.location.y = position.y - 25;
     character.posZ = position.z;
@@ -223,7 +223,7 @@ export class TabletopService {
     let viewTable = this.tableSelecter.viewTable;
     if (!viewTable) return;
 
-    let tableMask = GameTableMask.create('マップマスク', 5, 5, 100);
+    let tableMask = GameTableMask.create('地圖迷霧', 5, 5, 100);
     tableMask.location.x = position.x - 25;
     tableMask.location.y = position.y - 25;
     tableMask.posZ = position.z;
@@ -250,7 +250,7 @@ export class TabletopService {
   }
 
   createTextNote(position: PointerCoordinate): TextNote {
-    let textNote = TextNote.create('共有メモ', 'テキストを入力してください', 5, 4, 3);
+    let textNote = TextNote.create('共用筆記', '請在此輸入文字', 5, 4, 3);
     textNote.location.x = position.x;
     textNote.location.y = position.y;
     textNote.posZ = position.z;
@@ -275,7 +275,7 @@ export class TabletopService {
   }
 
   createTrump(position: PointerCoordinate): CardStack {
-    let cardStack = CardStack.create('トランプ山札');
+    let cardStack = CardStack.create('撲克牌牌堆');
     cardStack.location.x = position.x - 25;
     cardStack.location.y = position.y - 25;
     cardStack.posZ = position.z;
@@ -294,7 +294,7 @@ export class TabletopService {
         if (!ImageStorage.instance.get(url)) {
           ImageStorage.instance.add(url);
         }
-        let card = Card.create('カード', url, back);
+        let card = Card.create('卡牌', url, back);
         cardStack.putOnBottom(card);
       }
     }
@@ -305,7 +305,7 @@ export class TabletopService {
       if (!ImageStorage.instance.get(url)) {
         ImageStorage.instance.add(url);
       }
-      let card = Card.create('カード', url, back);
+      let card = Card.create('卡牌', url, back);
       cardStack.putOnBottom(card);
     }
     return cardStack;
@@ -324,7 +324,7 @@ export class TabletopService {
     //let distanceFileContext = ImageFile.createEmpty('testTableDistanceviewImage_image').toContext();
     //distanceFileContext.url = './assets/images/BG00a1_80.jpg';
     //testDistanceFile = ImageStorage.instance.add(distanceFileContext);
-    gameTable.name = '最初のテーブル';
+    gameTable.name = '預設遊戲桌';
     gameTable.imageIdentifier = testBgFile.identifier;
     //gameTable.backgroundImageIdentifier = testDistanceFile.identifier;
     gameTable.width = 20;
@@ -346,22 +346,22 @@ export class TabletopService {
     testCharacter.location.x = 5 * 50;
     testCharacter.location.y = 9 * 50;
     testCharacter.initialize();
-    testCharacter.createTestGameDataElement('モンスターA', 1, testFile.identifier);
+    testCharacter.createTestGameDataElement('地精A', 1, testFile.identifier);
 
-    testCharacter = new GameCharacter('testCharacter_2');
+    /*testCharacter = new GameCharacter('testCharacter_2');
     testCharacter.location.x = 8 * 50;
     testCharacter.location.y = 8 * 50;
     testCharacter.initialize();
-    testCharacter.createTestGameDataElement('モンスターB', 1, testFile.identifier);
+    testCharacter.createTestGameDataElement('地精B', 1, testFile.identifier);*/
 
     testCharacter = new GameCharacter('testCharacter_3');
     fileContext = ImageFile.createEmpty('testCharacter_3_image').toContext();
     fileContext.url = './assets/images/mon_128.gif';
     testFile = ImageStorage.instance.add(fileContext);
-    testCharacter.location.x = 4 * 50;
-    testCharacter.location.y = 2 * 50;
+    testCharacter.location.x = 8 * 50;
+    testCharacter.location.y = 5 * 50;
     testCharacter.initialize();
-    testCharacter.createTestGameDataElement('モンスターC', 3, testFile.identifier);
+    testCharacter.createTestGameDataElement('徬徨樹靈', 3, testFile.identifier);
 
     testCharacter = new GameCharacter('testCharacter_4');
     fileContext = ImageFile.createEmpty('testCharacter_4_image').toContext();
@@ -370,16 +370,16 @@ export class TabletopService {
     testCharacter.location.x = 6 * 50;
     testCharacter.location.y = 11 * 50;
     testCharacter.initialize();
-    testCharacter.createTestGameDataElement('キャラクターA', 1, testFile.identifier);
+    testCharacter.createTestGameDataElement('劍士', 1, testFile.identifier);
 
-    testCharacter = new GameCharacter('testCharacter_5');
+    /*testCharacter = new GameCharacter('testCharacter_5');
     fileContext = ImageFile.createEmpty('testCharacter_5_image').toContext();
     fileContext.url = './assets/images/mon_211.gif';
     testFile = ImageStorage.instance.add(fileContext);
     testCharacter.location.x = 12 * 50;
     testCharacter.location.y = 12 * 50;
     testCharacter.initialize();
-    testCharacter.createTestGameDataElement('キャラクターB', 1, testFile.identifier);
+    testCharacter.createTestGameDataElement('僧侶', 1, testFile.identifier);
 
     testCharacter = new GameCharacter('testCharacter_6');
     fileContext = ImageFile.createEmpty('testCharacter_6_image').toContext();
@@ -388,7 +388,7 @@ export class TabletopService {
     testCharacter.initialize();
     testCharacter.location.x = 5 * 50;
     testCharacter.location.y = 13 * 50;
-    testCharacter.createTestGameDataElement('キャラクターC', 1, testFile.identifier);
+    testCharacter.createTestGameDataElement('法師', 1, testFile.identifier);*/
   }
 
   getContextMenuActionsForCreateObject(position: PointerCoordinate): ContextMenuAction[] {
@@ -404,7 +404,7 @@ export class TabletopService {
 
   private getCreateCharacterMenu(position: PointerCoordinate): ContextMenuAction {
     return {
-      name: 'キャラクターを作成', action: () => {
+      name: '創建角色', action: () => {
         let character = this.createGameCharacter(position);
         EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: character.identifier, className: character.aliasName });
         SoundEffect.play(PresetSound.piecePut);
@@ -414,7 +414,7 @@ export class TabletopService {
 
   private getCreateTableMaskMenu(position: PointerCoordinate): ContextMenuAction {
     return {
-      name: 'マップマスクを作成', action: () => {
+      name: '創建地圖迷霧', action: () => {
         this.createGameTableMask(position);
         SoundEffect.play(PresetSound.cardPut);
       }
@@ -423,7 +423,7 @@ export class TabletopService {
 
   private getCreateTerrainMenu(position: PointerCoordinate): ContextMenuAction {
     return {
-      name: '地形を作成', action: () => {
+      name: '創建地形', action: () => {
         this.createTerrain(position);
         SoundEffect.play(PresetSound.blockPut);
       }
@@ -432,7 +432,7 @@ export class TabletopService {
 
   private getCreateTextNoteMenu(position: PointerCoordinate): ContextMenuAction {
     return {
-      name: '共有メモを作成', action: () => {
+      name: '創建共用筆記', action: () => {
         this.createTextNote(position);
         SoundEffect.play(PresetSound.cardPut);
       }
@@ -441,7 +441,7 @@ export class TabletopService {
 
   private getCreateTrumpMenu(position: PointerCoordinate): ContextMenuAction {
     return {
-      name: 'トランプの山札を作成', action: () => {
+      name: '創建撲克牌牌堆', action: () => {
         this.createTrump(position);
         SoundEffect.play(PresetSound.cardPut);
       }
@@ -468,7 +468,7 @@ export class TabletopService {
         }
       });
     });
-    return { name: 'ダイスを作成', action: null, subActions: subMenus };
+    return { name: '創建骰子', action: null, subActions: subMenus };
   }
 }
 

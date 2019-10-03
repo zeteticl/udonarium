@@ -4,8 +4,8 @@
       <ng-container *ngTemplateOutlet="editButtons"></ng-container>
       <select (change)="setElementType($event.target.value)" [ngModel]="gameDataElement.type">
         <option value="">通常</option>
-        <option value="numberResource">リソース</option>
-        <option value="note">ノート</option>
+        <option value="numberResource">數值資源</option>
+        <option value="note">註記</option>
       </select>
     </div>
     <div class="table-cell table-cell_solid">

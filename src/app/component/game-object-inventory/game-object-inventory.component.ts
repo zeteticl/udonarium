@@ -51,7 +51,7 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
   ) { }
 
   ngOnInit() {
-    this.panelService.title = 'インベントリ';
+    this.panelService.title = '管理倉庫';
     EventSystem.register(this)
       .on('SELECT_TABLETOP_OBJECT', -1000, event => {
         if (ObjectStore.instance.get(event.data.identifier) instanceof TabletopObject) {
@@ -84,13 +84,13 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
   getTabTitle(inventoryType: string) {
     switch (inventoryType) {
       case 'table':
-        return 'テーブル';
+        return '遊戲桌';
       case Network.peerId:
         return '個人';
       case 'graveyard':
-        return '墓場';
+        return '墓地';
       default:
-        return '共有';
+        return '公共';
     }
   }
 
@@ -128,14 +128,14 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
 
     let actions: ContextMenuAction[] = [];
 
-    actions.push({ name: '詳細を表示', action: () => { this.showDetail(gameObject); } });
-    actions.push({ name: 'チャットパレットを表示', action: () => { this.showChatPalette(gameObject) } });
+    actions.push({ name: '顯示詳情', action: () => { this.showDetail(gameObject); } });
+    actions.push({ name: '顯示對話組合版', action: () => { this.showChatPalette(gameObject) } });
     actions.push(ContextMenuSeparator);
     let locations = [
-      { name: 'table', alias: 'テーブルに移動' },
-      { name: 'common', alias: '共有イベントリに移動' },
-      { name: Network.peerId, alias: '個人イベントリに移動' },
-      { name: 'graveyard', alias: '墓場に移動' }
+      { name: 'table', alias: '移動至遊戲桌' },
+      { name: 'common', alias: '移動至公共倉庫' },
+      { name: Network.peerId, alias: '移動至個人倉庫' },
+      { name: 'graveyard', alias: '移動至墓地' }
     ];
     for (let location of locations) {
       if (gameObject.location.name === location.name) continue;

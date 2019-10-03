@@ -17,7 +17,7 @@ import * as Beautify from 'vkbeautify';
 })
 export class SaveDataService {
 
-  saveRoom(fileName: string = 'ルームデータ') {
+  saveRoom(fileName: string = 'RoomData') {
     let files: File[] = [];
     let roomXml = this.convertToXml(new Room());
     let chatXml = this.convertToXml(new ChatTabList());
