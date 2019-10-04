@@ -122,6 +122,11 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
       console.log('onChangeGameType done\n' + help);
     });
   }
+  
+  private _color: string = "#000000";
+  onChangeColor(color: string) {
+    this._color = color;
+  }
 
   showDicebotHelp() {
     DiceBot.getHelpMessage(this.gameType).then(help => {
@@ -169,7 +174,7 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
 
     if (this.chatTab) {
       let text = this.palette.evaluate(this.text, this.character.rootDataElement);
-      this.chatMessageService.sendMessage(this.chatTab, text, this.gameType, this.character.identifier, this.sendTo);
+      this.chatMessageService.sendMessage(this.chatTab, text, this.gameType, this.character.identifier, this.sendTo, this._color);
     }
     this.text = '';
     this.previousWritingLength = this.text.length;
