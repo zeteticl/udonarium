@@ -12,6 +12,7 @@
         <div>{{chatTab.name}}<badge *ngIf="chatTab.hasUnread" class="badge" [count]="chatTab.unreadLength"></badge></div>
       </label>
       <button class="tab-setting small-font" (click)="showTabSetting()"><i class="material-icons small-font">settings</i>分頁設定</button>
+      <button class="tab-setting small-font" (click)="clearCurrentTab()">清除當前分頁</button>
     </div>
   </form>
 <div class="table" [ngClass]="{'direct-message': isDirect}">

@@ -333,4 +333,10 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
   isPeerWatchMode(peer: PeerCursor): boolean {
     return (peer.peerId.match(/-true$/) != null);
   }
+  clearCurrentTab() {
+    if(!this.isWatchMode() && this.chatTab && this.chatTab.chatMessages.length>0 && confirm("你確定要把當前分頁的紀錄全部刪除嗎?")){
+      this.chatTab.clearMessage();
+      EventSystem.trigger('MESSAGE_CLEAR', { tabIdentifier: this.chatTab.identifier });
+    }
+  }
 }

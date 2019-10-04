@@ -86,7 +86,7 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
     let fileName: string = 'chatlog_' + y+m+d + "_" + h+min+sec + "_" + this.selectedTab.name + ".html";
 
     let msg_arr = this.selectedTab.children;
-    if(msg_arr.length<=0) return;
+    if(msg_arr.length<=0) return; 
     for(let i=0; i<msg_arr.length; i++){
       let msg = msg_arr[i];
       let color = msg["color"]? msg["color"]: "#000000";
