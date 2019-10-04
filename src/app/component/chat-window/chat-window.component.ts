@@ -328,4 +328,11 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
   trackByChatTab(index: number, chatTab: ChatTab) {
     return chatTab.identifier;
   }
+
+  clearCurrentTab() {
+    if(this.chatTab && this.chatTab.chatMessages.length>0 && confirm("你確定要把當前分頁的紀錄全部刪除嗎?")){
+      this.chatTab.clearMessage();
+      EventSystem.trigger('MESSAGE_CLEAR', { tabIdentifier: this.chatTab.identifier });
+    }
+  }
 }

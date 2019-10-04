@@ -31,6 +31,7 @@ const DEFAULT_MESSAGE_LENGTH = 100;
 export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterViewChecked {
   maxMessages: number = 0;
   preScrollBottom: number = -1;
+  isFirst: boolean = false;
 
   sampleMessages: ChatMessageContext[] = [
     { from: 'System', timestamp: 0, imageIdentifier: '', tag: '', name: '教學說明', text: '此為不使用伺服器的TRPG線上平台。参與者將彼此連線，同步棋子和圖片等檔案。\n由於所有資料都儲存在參與者各自的瀏覽器中，因此下次若要在下次進入時保留房間狀態，請一定要執行「儲存」以生成存檔(.zip)。將存檔zip拖曳至瀏覽器畫面即可將房間資料上傳。' },
@@ -73,6 +74,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   ngOnInit() {
     let messages: ChatMessage[] = [];
+    this.isFirst = true;
     for (let context of this.sampleMessages) {
       let message = new ChatMessage();
       for (let key in context) {
@@ -96,6 +98,13 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
           if (!this.needUpdate) this.changeDetector.markForCheck();
           this.needUpdate = true;
           this.maxMessages += 1;
+          this.isFirst = false;
+        }
+      })
+      .on('MESSAGE_CLEAR', event => {
+        if(event.data.tabIdentifier == this.chatTab.identifier){
+          if (!this.needUpdate) this.changeDetector.markForCheck();
+          this.needUpdate = true;
         }
       })
       .on('UPDATE_GAME_OBJECT', event => {

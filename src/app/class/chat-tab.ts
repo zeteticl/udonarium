@@ -46,6 +46,11 @@ export class ChatTab extends ObjectNode implements InnerXml {
     this.appendChild(chat);
     return chat;
   }
+  clearMessage() {
+    for(let child of this.children){
+      this.removeChild(child);
+    }
+  }
 
   markForRead() {
     this._unreadLength = 0;

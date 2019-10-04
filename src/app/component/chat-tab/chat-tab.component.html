@@ -4,6 +4,6 @@
     <chat-message *ngIf="chatMessage.isDisplayable" [chatMessage]="chatMessage" (onInit)="onMessageInit()"></chat-message>
   </ng-container>
 </div>
-<div class="log" *ngIf="chatMessages.length < 1">
+<div class="log" *ngIf="chatMessages.length < 1 && isFirst">
   <chat-message *ngFor="let chatMessage of sampleMessages" [chatMessage]="chatMessage" (onInit)="onMessageInit()"></chat-message>
 </div>
