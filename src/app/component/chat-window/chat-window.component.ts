@@ -297,7 +297,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 200);
     }
     this.previousWritingLength = this.text.length;
-    this.calcFitHeight();
+    //this.calcFitHeight();
   }
 
   calcFitHeight() {

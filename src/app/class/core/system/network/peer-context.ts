@@ -29,7 +29,6 @@ export class PeerContext implements IPeerContext {
     try {
       this.fullstring = fullstring;
       let array = /^(\w{6})((\w{3})(\w*)-(\w*)(-(\w*))?)?/ig.exec(fullstring);
-      console.log("TEST ARRAY", array);
       this.id = array[1];
       if (array[2] == null) return;
       this.room = array[3];
