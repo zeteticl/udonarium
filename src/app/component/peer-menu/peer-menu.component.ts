@@ -63,8 +63,10 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   connectPeer() {
     this.help = '';
+    if(this.targetPeerId=="") return;
     let context = PeerContext.create(this.targetPeerId);
     if (!context.isRoom) {
+      this.clearGameObject();
       ObjectStore.instance.clearDeleteHistory();
       Network.connect(this.targetPeerId);
     } else {
@@ -79,6 +81,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       let dummy = {};
       EventSystem.register(dummy)
         .on('OPEN_NETWORK', event => {
+          this.clearGameObject();
           ObjectStore.instance.clearDeleteHistory();
           Network.connect(this.targetPeerId);
           EventSystem.unregister(dummy);
@@ -158,4 +161,12 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     return peerCursor ? peerCursor.name : '';
   }
   isWatchMode(): boolean { return Network.isSelfWatchMode(); }
+  test(){
+    console.log("TEST");
+  }
+  clearGameObject() {
+    for (let object of ObjectStore.instance.getAllGameObject()) {
+      if(object["location"]!=null && object["identifier"].match(/^testCharacter_/)==null) object.destroy();
+    }
+  }
 }

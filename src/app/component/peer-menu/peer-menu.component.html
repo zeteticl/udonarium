@@ -4,10 +4,10 @@
     (click)="changeIcon()">
     <!--<img *ngIf="myPeer.image" [src]="myPeer.image.url | safe: 'resourceUrl'" />-->
   </div>
-  <span>你的暱稱：  <input [(ngModel)]="myPeer.name"  placeholder="暱稱" /></span>
+  <span>你的暱稱: <input [(ngModel)]="myPeer.name"  placeholder="暱稱" /></span>
 </div>
 <div>
-  <span>你的ID：<span *ngIf="networkService.isOpen" style="font-weight: bold;">{{networkService.peerContext.id}}</span>
+  <span>你的ID: <span *ngIf="networkService.isOpen" style="font-weight: bold;">{{networkService.peerContext.id}}</span>
   <span *ngIf="!networkService.isOpen" style="font-weight: bold;">???</span>
   </span>
 </div>
@@ -15,10 +15,10 @@
 <ng-container *ngIf="18 < networkService.peerId.length">
   <hr/>
   <div>
-    <span>房間名：<span *ngIf="networkService.isOpen" style="font-weight: bold;">{{networkService.peerContext.roomName}}/{{networkService.peerContext.room}}</span></span>
+    <span>房間名: <span *ngIf="networkService.isOpen" style="font-weight: bold;">{{networkService.peerContext.roomName}}/{{networkService.peerContext.room}}</span></span>
   </div>
   <div>
-    <span>密碼：<span *ngIf="networkService.isOpen && !isWatchMode()" style="font-weight: bold;">{{networkService.peerContext.password}}</span><span *ngIf="isWatchMode()">(觀戰中)</span></span>
+    <span>密碼: <span *ngIf="networkService.isOpen && !isWatchMode()" style="font-weight: bold;">{{networkService.peerContext.password}}</span><span *ngIf="isWatchMode()">(觀戰中)</span></span>
   </div>
 </ng-container>
 <hr/>

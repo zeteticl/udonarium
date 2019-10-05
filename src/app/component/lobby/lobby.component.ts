@@ -100,6 +100,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
       .on('OPEN_NETWORK', event => {
         console.log('LobbyComponent OPEN_PEER', event.data.peer);
         EventSystem.unregister(triedPeer);
+        this.clearGameObject();
         ObjectStore.instance.clearDeleteHistory();
 
         for (let peer of peerContexts) {
@@ -138,5 +139,11 @@ export class LobbyComponent implements OnInit, OnDestroy {
     await this.modalService.open(RoomSettingComponent, { width: 700, height: 400, left: 0, top: 400 });
     this.reload();
     this.help = '按下「更新列表」按鈕，便會更新列出所有可連線的房間列表。';
+  }
+
+  clearGameObject() {
+    for (let object of ObjectStore.instance.getAllGameObject()) {
+      if(object["location"]!=null && object["identifier"].match(/^testCharacter_/)==null) object.destroy();
+    }
   }
 }

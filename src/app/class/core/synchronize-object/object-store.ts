@@ -176,4 +176,8 @@ export class ObjectStore {
       this.garbageMap.delete(identifier);
     }
   }
+
+  getAllGameObject(){
+    return this.identifierMap.values();
+  }
 }
