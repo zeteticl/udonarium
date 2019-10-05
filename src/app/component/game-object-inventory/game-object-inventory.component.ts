@@ -214,4 +214,6 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
   trackByGameObject(index: number, gameObject: GameObject) {
     return gameObject ? gameObject.identifier : index;
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

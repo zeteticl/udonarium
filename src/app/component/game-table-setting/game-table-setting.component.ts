@@ -154,4 +154,6 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
       this.selectedTable.backgroundImageIdentifier = value;
     });
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

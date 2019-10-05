@@ -85,6 +85,7 @@ export class ChatMessageService {
       text: text,
       color: color,
     };
+    console.log(chatMessage)
 
     return chatTab.addMessage(chatMessage);
   }
@@ -104,6 +105,7 @@ export class ChatMessageService {
     if (object instanceof GameCharacter) {
       return object.name;
     } else if (object instanceof PeerCursor) {
+      if (object.peerId.match(/-true$/) != null) return "(觀戰)"+object.name;
       return object.name;
     }
     return identifier;

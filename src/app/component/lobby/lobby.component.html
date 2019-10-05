@@ -29,7 +29,7 @@
           <td style="text-align: center; padding: 0 1em;">{{room.peers.length}}人</td>
           <td>
             <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit" (click)="connect(room.peers)">加入</button>
-            <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit" (click)="connect(room.peers, true)">觀戰</button>
+            <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length && room.isAllowWatch" type="submit" (click)="connect(room.peers, true)">觀戰</button>
           </td>
         </tr>
       </ng-container>

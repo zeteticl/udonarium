@@ -1,3 +1,7 @@
+<div class="flex-container" *ngIf=isWatchMode()>
+  觀戰模式下不能使用此功能！
+</div>
+<div *ngIf=!isWatchMode()>
 <label>
   <div class="drop-zone">
     <div>
@@ -15,4 +19,5 @@
     <img *ngIf="0 < file.url.length" [src]="file.url | safe: 'resourceUrl'" [alt]="file.name" height="120" (click)="onSelectedFile(file)">
     <img *ngIf="file.url.length <= 0" src="assets/images/loading.gif" alt="{{file.name}}">
   </span>
+</div>
 </div>

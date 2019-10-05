@@ -14,7 +14,7 @@
       <button class="tab-setting small-font" (click)="showTabSetting()"><i class="material-icons small-font">settings</i>分頁設定</button>
     </div>
   </form>
-<div class="table" [ngClass]="{'direct-message': isDirect}" *ngIf=!isWatchMode()>
+<div class="table" [ngClass]="{'direct-message': isDirect}">
   <div class="table-cell imagebox">
     <img class="image" *ngIf="gameCharacter && gameCharacter.imageFile != null && 0 < gameCharacter.imageFile?.url?.length" [src]="gameCharacter.imageFile?.url | safe: 'resourceUrl'"
     />

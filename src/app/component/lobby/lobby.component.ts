@@ -16,7 +16,7 @@ import { PanelService } from 'service/panel.service';
   styleUrls: ['./lobby.component.css'],
 })
 export class LobbyComponent implements OnInit, OnDestroy {
-  rooms: { alias: string, roomName: string, peers: PeerContext[] }[] = [];
+  rooms: { alias: string, roomName: string, peers: PeerContext[], isAllowWatch: boolean }[] = [];
 
   isReloading: boolean = false;
 
@@ -72,7 +72,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
       }
     }
     for (let alias in peersOfroom) {
-      this.rooms.push({ alias: alias, roomName: peersOfroom[alias][0].roomName, peers: peersOfroom[alias] });
+      this.rooms.push({ alias: alias, roomName: peersOfroom[alias][0].roomName, peers: peersOfroom[alias], isAllowWatch: peersOfroom[alias][0].isAllowWatch });
     }
     this.rooms.sort((a, b) => {
       if (a.alias < b.alias) return -1;
@@ -92,7 +92,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     }
 
     let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    Network.open(peerId, context.room, context.roomName, isWatch? "": context.password, isWatch);
+    Network.open(peerId, context.room, context.roomName, context.password, context.isAllowWatch, isWatch);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     let triedPeer: string[] = [];

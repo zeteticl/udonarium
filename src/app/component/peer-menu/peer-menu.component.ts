@@ -157,4 +157,5 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     const peerCursor = PeerCursor.find(peerId);
     return peerCursor ? peerCursor.name : '';
   }
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

@@ -3,6 +3,7 @@
       placeholder="房間名稱為必要項目" /></div>
   <div>密碼： <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password" maxlength="12" #passwordValidation="ngModel" placeholder="空白則不需要密碼"
     /></div>
+  <div><input type="checkbox" [(ngModel)]="allowWatch" />開放觀戰</div>
   <hr/>
   <div *ngIf="roomNameValidation.errors && (roomNameValidation.dirty || roomNameValidation.touched)">
     <div [hidden]="!roomNameValidation.errors.required">
@@ -24,10 +25,10 @@
     ルームの名前とパスワードの合計が長すぎるようです。どちらかを少し短くしてみてください。
   </div>
   <div>
-    <button [disabled]="!roomNameValidation.valid || !passwordValidation.valid || !validateLength" (click)="createRoom()">新しいルームを作成</button>
+    <button [disabled]="!roomNameValidation.valid || !passwordValidation.valid || !validateLength" (click)="createRoom()">創建新的房間</button>
   </div>
 </div>
-<div><span style="font-size: 12px;">※作成したルームは参加者が0人になった時点で解散します。ルームの状態を次回に持ち越したい場合は必ず「保存」してください。</span></div>
+<div><span style="font-size: 12px;">※建成的房間將會在房內人數歸零時自動消除。若希望將房間的狀態帶到下次遊戲中，請務必使用「儲存房間」功能。</span></div>
 <ng-template #other_content>
-  <span style="font-size: 12px;">他の参加者と接続したままではルーム作成を行えません。<br>別のルームに接続したい場合は、他の参加者との接続を切ってください。<br>（※ページリロードで切断できます。）</span>
+  <span style="font-size: 12px;">當你正與其他玩家連線時，你將無法創建房間。<br>若希望加入其他的房間，請先斷開與其他玩家的連線。<br>（※重新整理頁面即會中斷連線。）</span>
 </ng-template>

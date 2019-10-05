@@ -1,3 +1,7 @@
+<div class="flex-container" *ngIf=isWatchMode()>
+  觀戰模式下不能使用此功能！
+</div>
+<div *ngIf=!isWatchMode()>
 <button (click)="openModal()">選擇圖像</button>
 <div>
   <img height="120" [src]="tableBackgroundImage.url | safe: 'resourceUrl'">
@@ -16,4 +20,5 @@
     <textarea style="width:100%; height:5em; resize: none;" [(ngModel)]="xml" placeholder="XML"></textarea>
   </div>
   -->
+</div>
 </div>

@@ -19,6 +19,7 @@ export class RoomSettingComponent implements OnInit, OnDestroy {
   roomName: string = '普通的房間';
   password: string = '';
   isPrivate: boolean = false;
+  allowWatch: boolean = true;
 
   get peerId(): string { return Network.peerId; }
   get isConnected(): boolean { return Network.peerIds.length <= 1 ? false : true; }
@@ -47,7 +48,7 @@ export class RoomSettingComponent implements OnInit, OnDestroy {
 
   createRoom() {
     let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    Network.open(peerId, PeerContext.generateId('***'), this.roomName, this.password);
+    Network.open(peerId, PeerContext.generateId('***'), this.roomName, this.password, this.allowWatch);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     this.modalService.resolve();

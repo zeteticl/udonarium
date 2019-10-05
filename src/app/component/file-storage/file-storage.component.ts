@@ -46,4 +46,6 @@ export class FileStorageComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log('onSelectedFile', file);
     EventSystem.call('SELECT_FILE', { fileIdentifier: file.identifier }, Network.peerId);
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

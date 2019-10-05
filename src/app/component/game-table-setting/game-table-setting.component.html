@@ -1,4 +1,7 @@
-<div class="flex-container">
+<div class="flex-container" *ngIf=isWatchMode()>
+  觀戰模式下不能使用此功能！
+</div>
+<div class="flex-container" *ngIf=!isWatchMode()>
   <div class="flex-item no-grow">
     <div>
       <button (click)="createGameTable()">創建新的遊戲桌</button>
