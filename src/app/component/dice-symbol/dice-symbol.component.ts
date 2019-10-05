@@ -157,6 +157,7 @@ export class DiceSymbolComponent implements OnInit, OnDestroy {
   }
 
   onDoubleClick(e) {
+    if (Network.isSelfWatchMode()) return;
     if (!this.doubleClickTimer) {
       this.doubleClickTimer = setTimeout(() => {
         clearTimeout(this.doubleClickTimer);

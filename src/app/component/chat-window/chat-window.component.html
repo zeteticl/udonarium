@@ -14,7 +14,7 @@
       <button class="tab-setting small-font" (click)="showTabSetting()"><i class="material-icons small-font">settings</i>分頁設定</button>
     </div>
   </form>
-<div class="table" [ngClass]="{'direct-message': isDirect}">
+<div class="table" [ngClass]="{'direct-message': isDirect}" *ngIf=!isWatchMode()>
   <div class="table-cell imagebox">
     <img class="image" *ngIf="gameCharacter && gameCharacter.imageFile != null && 0 < gameCharacter.imageFile?.url?.length" [src]="gameCharacter.imageFile?.url | safe: 'resourceUrl'"
     />
@@ -32,7 +32,7 @@
       </select> ＞
       <select style="width: 10em;" [(ngModel)]="sendTo">
         <option value="">全員</option>
-        <option *ngFor="let peer of otherPeers" value="{{peer.identifier}}">{{peer.name}}<ng-container *ngIf="peer === myPeer">（您）</ng-container></option>
+        <option *ngFor="let peer of otherPeers" value="{{peer.identifier}}">{{peer.name}}<ng-container *ngIf="peer === myPeer">（您）</ng-container><ng-container *ngIf="isPeerWatchMode(peer)">(觀戰)</ng-container></option>
       </select>
       <select style="width: 12em;" (change)="onChangeGameType($event.target.value)" [(ngModel)]="gameType" [ngModelOptions]="{standalone: true}">
         <option value="">未指定擲骰系統</option>

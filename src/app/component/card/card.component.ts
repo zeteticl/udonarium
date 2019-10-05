@@ -132,6 +132,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onDoubleClick(e) {
+    if (Network.isSelfWatchMode()) return;
     if (!this.doubleClickTimer) {
       this.doubleClickTimer = setTimeout(() => {
         clearTimeout(this.doubleClickTimer);
@@ -181,6 +182,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     e.preventDefault();
     this.removeMouseEventListeners();
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
       (!this.isVisible || this.isHand

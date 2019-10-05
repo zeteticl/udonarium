@@ -1,5 +1,5 @@
-<button (click)="toggleEditMode()">切換編輯模式</button>
-<ng-container [ngSwitch]="tabletopObject.aliasName">
+<button (click)="toggleEditMode()" *ngIf=!isWatchMode()>切換編輯模式</button>
+<ng-container [ngSwitch]="tabletopObject.aliasName" *ngIf=!isWatchMode()>
   <ng-container *ngSwitchCase="'numberResource'">
   </ng-container>
   <ng-container *ngSwitchCase="'card'">
@@ -20,7 +20,7 @@
   </ng-container>
 </ng-container>
 <button (click)="saveToXML()">儲存</button>
-<ng-container *ngIf="tabletopObject.aliasName === 'character'">
+<ng-container *ngIf="tabletopObject.aliasName === 'character' && !isWatchMode()">
   移動至
   <select *ngIf="tabletopObject" (change)="setLocation($event.target.value)" [ngModel]="tabletopObject.location.name">
     <option value="table">遊戲桌</option>

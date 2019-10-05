@@ -1,6 +1,6 @@
 <div class="flex-container">
   <div class="flex-item no-grow">
-    <div>
+    <div *ngIf=!isWatchMode()>
       <button (click)="create()">創建聊天分頁</button>
     </div>
     <select style="width: 10em;" size="10" (change)="onChangeSelectTab($event.target.value)" [ngModel]="selectedTab?.identifier">
@@ -9,15 +9,15 @@
   </div>
   <div class="flex-item">
     <ng-container *ngIf="!isEmpty && selectedTab">
-      <div>分頁名稱 :
+      <div *ngIf=!isWatchMode()>分頁名稱 :
         <input [(ngModel)]="tabName" placeholder="Name" [attr.disabled]="!isEditable ? '' : null" />
       </div>
       <hr/>
       <div>
         <ng-container *ngIf="!isDeleted">
           <button (click)="save_log()">輸出log</button>
-          <button (click)="save()">儲存分頁</button>
-          <button class="danger" (click)="delete()" [attr.disabled]="chatTabs.length <= 1 ? '' : null">刪除</button>
+          <button *ngIf=!isWatchMode() (click)="save()">儲存分頁</button>
+          <button *ngIf=!isWatchMode() class="danger" (click)="delete()" [attr.disabled]="chatTabs.length <= 1 ? '' : null">刪除</button>
         </ng-container>
         <ng-container *ngIf="isDeleted">
           <button (click)="restore()">復原</button>

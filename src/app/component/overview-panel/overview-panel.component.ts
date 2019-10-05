@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { ObjectNode } from '@udonarium/core/synchronize-object/object-node';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { DataElement } from '@udonarium/data-element';
 import { TabletopObject } from '@udonarium/tabletop-object';
 import { GameObjectInventoryService } from 'service/game-object-inventory.service';
@@ -160,5 +160,9 @@ export class OverviewPanelComponent implements OnInit, OnDestroy, AfterViewInit,
 
   private getInventoryTags(gameObject: TabletopObject): DataElement[] {
     return this.inventoryService.tableInventory.dataElementMap.get(gameObject.identifier);
+  }
+
+  isWatchMode(): boolean {
+    return Network.isSelfWatchMode();
   }
 }

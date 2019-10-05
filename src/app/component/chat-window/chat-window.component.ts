@@ -328,4 +328,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
   trackByChatTab(index: number, chatTab: ChatTab) {
     return chatTab.identifier;
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
+  isPeerWatchMode(peer: PeerCursor): boolean {
+    return (peer.peerId.match(/-true$/) != null);
+  }
 }

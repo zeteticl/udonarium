@@ -140,6 +140,6 @@ export class Network {
   }
 
   isSelfWatchMode(): boolean {
-    return this.peerContext.isWatch;
+    return this.peerContext && this.peerContext.isWatch;
   }
 }

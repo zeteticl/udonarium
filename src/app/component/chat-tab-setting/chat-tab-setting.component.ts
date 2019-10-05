@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChatTab } from '@udonarium/chat-tab';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 
 import { ChatMessageService } from 'service/chat-message.service';
 import { ModalService } from 'service/modal.service';
@@ -122,4 +122,6 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
       this.selectedTabXml = '';
     }
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

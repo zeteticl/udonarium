@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { DataElement } from '@udonarium/data-element';
 
 @Component({
@@ -110,4 +110,6 @@ export class GameDataElementComponent implements OnInit, OnDestroy, AfterViewIni
       this.updateTimer = null;
     }, 66);
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

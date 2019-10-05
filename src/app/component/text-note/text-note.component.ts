@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, E
 import { ImageFile } from '@udonarium/core/file-storage/image-file';
 import { ObjectNode } from '@udonarium/core/synchronize-object/object-node';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { PresetSound, SoundEffect } from '@udonarium/sound-effect';
 import { TextNote } from '@udonarium/text-note';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
@@ -197,5 +197,9 @@ export class TextNoteComponent implements OnInit, OnDestroy, AfterViewInit {
     let option: PanelOption = { title: title, left: coordinate.x - 350, top: coordinate.y - 200, width: 700, height: 400 };
     let component = this.panelService.open<GameCharacterSheetComponent>(GameCharacterSheetComponent, option);
     component.tabletopObject = gameObject;
+  }
+
+  isWatchMode(): boolean {
+    return Network.isSelfWatchMode();
   }
 }
