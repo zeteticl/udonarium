@@ -43,6 +43,8 @@ import { SaveDataService } from 'service/save-data.service';
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
 
+  networkService = Network;
+
   @ViewChild('modalLayer', { read: ViewContainerRef, static: true }) modalLayerViewContainerRef: ViewContainerRef;
   private immediateUpdateTimer: NodeJS.Timer = null;
   private lazyUpdateTimer: NodeJS.Timer = null;

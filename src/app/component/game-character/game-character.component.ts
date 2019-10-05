@@ -126,39 +126,42 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
     let position = this.pointerDeviceService.pointers[0];
-    this.contextMenuService.open(position, [
-      { name: '顯示詳情', action: () => { this.showDetail(this.gameCharacter); } },
-      { name: '顯示對話組合版', action: () => { this.showChatPalette(this.gameCharacter) } },
-      ContextMenuSeparator,
-      {
-        name: '移動至公共倉庫', action: () => {
-          this.gameCharacter.setLocation('common');
-          SoundEffect.play(PresetSound.piecePut);
-        }
-      },
-      {
-        name: '移動至個人倉庫', action: () => {
-          this.gameCharacter.setLocation(Network.peerId);
-          SoundEffect.play(PresetSound.piecePut);
-        }
-      },
-      {
-        name: '移動至墓地', action: () => {
-          this.gameCharacter.setLocation('graveyard');
-          SoundEffect.play(PresetSound.sweep);
-        }
-      },
-      ContextMenuSeparator,
-      {
-        name: '複製', action: () => {
-          let cloneObject = this.gameCharacter.clone();
-          cloneObject.location.x += this.gridSize;
-          cloneObject.location.y += this.gridSize;
-          cloneObject.update();
-          SoundEffect.play(PresetSound.piecePut);
-        }
-      },
-    ], this.name);
+
+    let options = [];
+    options.push({ name: '顯示詳情', action: () => { this.showDetail(this.gameCharacter); } });
+    if( !Network.isSelfWatchMode() ){
+      options.push({ name: '顯示對話組合版', action: () => { this.showChatPalette(this.gameCharacter); } });
+      options.push(ContextMenuSeparator);
+      options.push({
+          name: '移動至公共倉庫', action: () => {
+            this.gameCharacter.setLocation('common');
+            SoundEffect.play(PresetSound.piecePut);
+          }
+        });
+      options.push({
+          name: '移動至個人倉庫', action: () => {
+            this.gameCharacter.setLocation(Network.peerId);
+            SoundEffect.play(PresetSound.piecePut);
+          }
+        });
+      options.push({
+          name: '移動至墓地', action: () => {
+            this.gameCharacter.setLocation('graveyard');
+            SoundEffect.play(PresetSound.sweep);
+          }
+        });
+      options.push(ContextMenuSeparator);
+      options.push({
+          name: '複製', action: () => {
+            let cloneObject = this.gameCharacter.clone();
+            cloneObject.location.x += this.gridSize;
+            cloneObject.location.y += this.gridSize;
+            cloneObject.update();
+            SoundEffect.play(PresetSound.piecePut);
+          }
+        });
+    }
+    this.contextMenuService.open(position, options, this.name);
   }
 
   onMove() {

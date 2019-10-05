@@ -50,8 +50,10 @@ export class SkyWayConnection implements Connection {
       this.peerContext = PeerContext.create(PeerContext.generateId());
     } else if (args.length === 1) {
       this.peerContext = PeerContext.create(args[0]);
-    } else {
+    } else if (args.length === 4) {
       this.peerContext = PeerContext.create(args[0], args[1], args[2], args[3]);
+    } else {
+      this.peerContext = PeerContext.create(args[0], args[1], args[2], args[3], args[4]);
     }
     this.openPeer();
   }

@@ -83,16 +83,16 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.isReloading = false;
   }
 
-  async connect(peerContexts: PeerContext[]) {
+  async connect(peerContexts: PeerContext[], isWatch?: boolean) {
     let context = peerContexts[0];
 
-    if (context.password.length) {
+    if (!isWatch && context.password.length) {
       let input = await this.modalService.open(PasswordCheckComponent, { password: context.password });
       if (input !== context.password) return;
     }
 
     let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    Network.open(peerId, context.room, context.roomName, context.password);
+    Network.open(peerId, context.room, context.roomName, isWatch? "": context.password, isWatch);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     let triedPeer: string[] = [];
@@ -101,6 +101,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
         console.log('LobbyComponent OPEN_PEER', event.data.peer);
         EventSystem.unregister(triedPeer);
         ObjectStore.instance.clearDeleteHistory();
+
         for (let peer of peerContexts) {
           Network.connect(peer.fullstring);
         }

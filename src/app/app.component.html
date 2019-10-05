@@ -1,7 +1,7 @@
 <div id="app-table-layer" style="position: absolute; width: 100%; height: 100%; overflow: hidden;">
   <game-table></game-table>
 </div>
-<ui-panel [top]="0" [left]="0" [width]="100" [height]="470" [title]="'功能表'">
+<ui-panel [top]="0" [left]="0" [width]="100" [height]="networkService.isSelfWatchMode()? 200: 470" [title]="'功能表'">
   <nav>
     <ul>
       <li (click)="open('PeerMenuComponent')">
@@ -16,31 +16,31 @@
           <div>聊天視窗</div>
         </a>
       </li>
-      <li (click)="open('GameTableSettingComponent')">
+      <li (click)="open('GameTableSettingComponent')" *ngIf="!networkService.isSelfWatchMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">layers</i></div>
           <div>遊戲桌設定</div>
         </a>
       </li>
-      <li (click)="open('FileStorageComponent')">
+      <li (click)="open('FileStorageComponent')" *ngIf="!networkService.isSelfWatchMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">photo_library</i></div>
           <div>圖像</div>
         </a>
       </li>
-      <li (click)="open('JukeboxComponent')">
+      <li (click)="open('JukeboxComponent')" *ngIf="!networkService.isSelfWatchMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">queue_music</i></div>
           <div>音樂</div>
         </a>
       </li>
-      <li (click)="open('GameCharacterGeneratorComponent')">
+      <li (click)="open('GameCharacterGeneratorComponent')" *ngIf="!networkService.isSelfWatchMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">nature_people</i></div>
           <div>角色創建</div>
         </a>
       </li>
-      <li (click)="open('GameObjectInventoryComponent')">
+      <li (click)="open('GameObjectInventoryComponent')" *ngIf="!networkService.isSelfWatchMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">folder_shared</i></div>
           <div>管理倉庫</div>
