@@ -128,6 +128,7 @@ export class TextNoteComponent implements OnInit, OnDestroy, AfterViewInit {
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
       { name: '編輯筆記', action: () => { this.showDetail(this.textNote); } },

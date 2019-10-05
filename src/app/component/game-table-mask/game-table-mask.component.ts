@@ -101,6 +101,7 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
     let menuPosition = this.pointerDeviceService.pointers[0];
     let objectPosition = this.tabletopService.calcTabletopLocalCoordinate();
     this.contextMenuService.open(menuPosition, [

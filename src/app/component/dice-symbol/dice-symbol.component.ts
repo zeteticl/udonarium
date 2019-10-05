@@ -179,6 +179,7 @@ export class DiceSymbolComponent implements OnInit, OnDestroy {
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
     let position = this.pointerDeviceService.pointers[0];
 
     let actions: ContextMenuAction[] = [];
