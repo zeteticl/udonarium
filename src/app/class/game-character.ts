@@ -39,14 +39,12 @@ export class GameCharacter extends TabletopObject {
 
     let resourceElement: DataElement = DataElement.create('資源', '', {}, '資源' + this.identifier);
     let hpElement: DataElement = DataElement.create('HP', 200, { 'type': 'numberResource', 'currentValue': '200' }, 'HP_' + this.identifier);
-    let mpElement: DataElement = DataElement.create('MP', 100, { 'type': 'numberResource', 'currentValue': '100' }, 'MP_' + this.identifier);
 
     this.commonDataElement.appendChild(nameElement);
     this.commonDataElement.appendChild(sizeElement);
 
     this.detailDataElement.appendChild(resourceElement);
     resourceElement.appendChild(hpElement);
-    resourceElement.appendChild(mpElement);
 
     //TEST
     let testElement: DataElement = DataElement.create('情報', '', {}, '情報' + this.identifier);
@@ -64,16 +62,6 @@ export class GameCharacter extends TabletopObject {
     testElement.appendChild(DataElement.create('睿知', 10, {}, '睿知' + this.identifier));
     testElement.appendChild(DataElement.create('魅力', 10, {}, '魅力' + this.identifier));
 
-    //TEST
-    testElement = DataElement.create('技能', '', {}, '技能' + this.identifier);
-    this.detailDataElement.appendChild(testElement);
-    testElement.appendChild(DataElement.create('Lv1', '全力攻撃', {}, 'Lv1' + this.identifier));
-    testElement.appendChild(DataElement.create('Lv3', '武器習熟/ソード', {}, 'Lv3' + this.identifier));
-    testElement.appendChild(DataElement.create('Lv5', '武器習熟/ソードⅡ', {}, 'Lv5' + this.identifier));
-    testElement.appendChild(DataElement.create('Lv7', '頑強', {}, 'Lv7' + this.identifier));
-    testElement.appendChild(DataElement.create('Lv9', '薙ぎ払い', {}, 'Lv9' + this.identifier));
-    testElement.appendChild(DataElement.create('自動', '治癒適正', {}, '自動' + this.identifier));
-
     let domParser: DOMParser = new DOMParser();
     let gameCharacterXMLDocument: Document = domParser.parseFromString(this.rootDataElement.toXml(), 'application/xml');
 
@@ -81,8 +69,6 @@ export class GameCharacter extends TabletopObject {
     palette.setPalette(`對話組合板的使用範例：
 2d6+1 擲骰
 １ｄ２０＋{敏捷}＋｛格鬥｝　{name}的格鬥檢定！
-//敏捷=3+{敏捷A}
-//敏捷A=2
 //格鬥＝1`);
     palette.initialize();
     this.appendChild(palette);

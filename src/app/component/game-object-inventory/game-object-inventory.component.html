@@ -23,23 +23,23 @@
 <ng-template #inventoryViewSetting>
   <ng-container *ngIf="isEdit">
     <div>
-      <div style="font-size: 12px;">並び順</div>
+      <div style="font-size: 12px;">排列順序</div>
       <input [(ngModel)]="sortTag" placeholder="タグ名" />
       <select [(ngModel)]="sortOrder">
         <option value="ASC">昇順</option>
         <option value="DESC">降順</option>
       </select>
     </div>
-    <div style="font-size: 12px; padding-top: 6px;">表示項目</div>
+    <div style="font-size: 12px; padding-top: 6px;">顯示項目</div>
     <input style="width: 100%; box-sizing: border-box;" [(ngModel)]="dataTag" placeholder="スペース区切りでタグ名 スラッシュで改行 ex.「HP MP / メモ」" />
     <div style="padding-top: 6px;">
-      <button class="tab-setting small-font" (click)="toggleEdit()"><i class="material-icons small-font">settings</i>完了</button>
+      <button class="tab-setting small-font" (click)="toggleEdit()"><i class="material-icons small-font">settings</i>確認</button>
     </div>
   </ng-container>
   <ng-container *ngIf="!isEdit">
     <table style="font-size: 0.8em;">
       <tr>
-        <th style=" vertical-align:middle;">並び順:</th>
+        <th style=" vertical-align:middle;">排列順序:</th>
         <td style=" vertical-align:middle;">
           <ng-container *ngIf="0 < sortTag.length">{{sortTag}} ({{sortOrderName}})</ng-container>
           <ng-container *ngIf="sortTag.length < 1">-</ng-container>
