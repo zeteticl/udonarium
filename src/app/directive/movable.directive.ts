@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { TabletopObject } from '@udonarium/tabletop-object';
 import { TableSelecter } from '@udonarium/table-selecter';
@@ -115,7 +115,7 @@ export class MovableDirective extends Grabbable implements OnInit, OnDestroy, Af
     this.callSelectedEvent();
     if (this.collidableElements.length < 1) this.findCollidableElements(); // 稀にcollidableElementsの取得に失敗している
 
-    if (this.isDisable || e.button === 1 || e.button === 2) return this.cancel();
+    if (Network.isSelfWatchMode() || this.isDisable || e.button === 1 || e.button === 2) return this.cancel();
     e.preventDefault();
     this.onstart.emit(e);
 

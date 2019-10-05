@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { TabletopObject } from '@udonarium/tabletop-object';
 import { PointerCoordinate, PointerDeviceService } from 'service/pointer-device.service';
 import { TabletopService } from 'service/tabletop.service';
@@ -110,7 +110,7 @@ export class RotableDirective extends Grabbable implements OnInit, OnDestroy, Af
 
   protected onMouseDown(e: PointerEvent) {
     this.grabbingElement = <HTMLElement>e.target;
-    if (this.isDisable || !this.isAllowedToRotate || e.button === 1 || e.button === 2) return this.cancel();
+    if (Network.isSelfWatchMode() || this.isDisable || !this.isAllowedToRotate || e.button === 1 || e.button === 2) return this.cancel();
     e.stopPropagation();
     this.onstart.emit(e);
     this._isGrabbing = true;
