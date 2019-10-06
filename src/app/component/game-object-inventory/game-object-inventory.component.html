@@ -28,14 +28,14 @@
   <ng-container *ngIf="isEdit">
     <div>
       <div style="font-size: 12px;">排列順序</div>
-      <input [(ngModel)]="sortTag" placeholder="タグ名" />
+      <input [(ngModel)]="sortTag" placeholder="標籤名稱" />
       <select [(ngModel)]="sortOrder">
         <option value="ASC">昇順</option>
         <option value="DESC">降順</option>
       </select>
     </div>
     <div style="font-size: 12px; padding-top: 6px;">顯示項目</div>
-    <input style="width: 100%; box-sizing: border-box;" [(ngModel)]="dataTag" placeholder="スペース区切りでタグ名 スラッシュで改行 ex.「HP MP / メモ」" />
+    <input style="width: 100%; box-sizing: border-box;" [(ngModel)]="dataTag" placeholder="用空格將標籤名稱隔開 斜線換行 ex.「HP MP / 註記」" />
     <div style="padding-top: 6px;">
       <button class="tab-setting small-font" (click)="toggleEdit()"><i class="material-icons small-font">settings</i>確認</button>
     </div>

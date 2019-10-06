@@ -53,7 +53,8 @@ export class ChatPalette extends ObjectNode {
     } else {
       evaluate = line.palette;
     }
-    evaluate = StringUtil.toHalfWidth(evaluate);
+    evaluate = evaluate.replace(/[｛｝]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+    //evaluate = StringUtil.toHalfWidth(evaluate);
 
     console.log(evaluate);
     let limit = 128;

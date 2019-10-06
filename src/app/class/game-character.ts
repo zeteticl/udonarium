@@ -37,14 +37,16 @@ export class GameCharacter extends TabletopObject {
       this.imageDataElement.getFirstElementByName('imageIdentifier').value = imageIdentifier;
     }
 
-    let resourceElement: DataElement = DataElement.create('資源', '', {}, '資源' + this.identifier);
-    let hpElement: DataElement = DataElement.create('HP', 200, { 'type': 'numberResource', 'currentValue': '200' }, 'HP_' + this.identifier);
+    let resourceElement: DataElement = DataElement.create('基本數值', '', {}, '基本數值' + this.identifier);
+    let hpElement: DataElement = DataElement.create('HP', 100, { 'type': 'numberResource', 'currentValue': '100' }, 'HP_' + this.identifier);
 
     this.commonDataElement.appendChild(nameElement);
     this.commonDataElement.appendChild(sizeElement);
 
     this.detailDataElement.appendChild(resourceElement);
     resourceElement.appendChild(hpElement);
+    resourceElement.appendChild(DataElement.create('AC', 10, {}, 'AC' + this.identifier));
+    resourceElement.appendChild(DataElement.create('先攻序', 0, {}, '先攻序' + this.identifier));
 
     //TEST
     let testElement: DataElement = DataElement.create('情報', '', {}, '情報' + this.identifier);
@@ -53,14 +55,14 @@ export class GameCharacter extends TabletopObject {
     testElement.appendChild(DataElement.create('註記', '任意文字\n１\n２\n３', { 'type': 'note' }, '註記' + this.identifier));
 
     //TEST
-    testElement = DataElement.create('屬性', '', {}, '屬性' + this.identifier);
+    testElement = DataElement.create('屬性調整值', '', {}, '屬性調整值' + this.identifier);
     this.detailDataElement.appendChild(testElement);
-    testElement.appendChild(DataElement.create('力量', 10, {}, '力量' + this.identifier));
-    testElement.appendChild(DataElement.create('敏捷', 10, {}, '敏捷' + this.identifier));
-    testElement.appendChild(DataElement.create('體質', 10, {}, '體質' + this.identifier));
-    testElement.appendChild(DataElement.create('智力', 10, {}, '智力' + this.identifier));
-    testElement.appendChild(DataElement.create('睿知', 10, {}, '睿知' + this.identifier));
-    testElement.appendChild(DataElement.create('魅力', 10, {}, '魅力' + this.identifier));
+    testElement.appendChild(DataElement.create('力量', 0, {}, '力量' + this.identifier));
+    testElement.appendChild(DataElement.create('敏捷', 0, {}, '敏捷' + this.identifier));
+    testElement.appendChild(DataElement.create('體質', 0, {}, '體質' + this.identifier));
+    testElement.appendChild(DataElement.create('智力', 0, {}, '智力' + this.identifier));
+    testElement.appendChild(DataElement.create('睿知', 0, {}, '睿知' + this.identifier));
+    testElement.appendChild(DataElement.create('魅力', 0, {}, '魅力' + this.identifier));
 
     let domParser: DOMParser = new DOMParser();
     let gameCharacterXMLDocument: Document = domParser.parseFromString(this.rootDataElement.toXml(), 'application/xml');
