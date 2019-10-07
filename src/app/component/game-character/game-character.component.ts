@@ -154,6 +154,7 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
       options.push({
           name: '複製', action: () => {
             let cloneObject = this.gameCharacter.clone();
+            cloneObject.name = this.appendCloneNumber(cloneObject.name);
             cloneObject.location.x += this.gridSize;
             cloneObject.location.y += this.gridSize;
             cloneObject.update();
@@ -190,5 +191,17 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     let option: PanelOption = { left: coordinate.x - 250, top: coordinate.y - 175, width: 630, height: 350 };
     let component = this.panelService.open<ChatPaletteComponent>(ChatPaletteComponent, option);
     component.character = gameObject;
+  }
+
+  private appendCloneNumber(objectname: string): string {    
+    let reg = new RegExp('(.*)_([0-9]*)');
+    let res = objectname.match(reg);
+
+    if(res != null && res.length == 3) {
+      let cloneNumber:number = parseInt(res[2]) + 1;
+      return res[1] + "_" + cloneNumber;
+    } else {
+      return objectname + "_2";
+    }
   }
 }
