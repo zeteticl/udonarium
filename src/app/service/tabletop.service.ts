@@ -365,7 +365,7 @@ export class TabletopService {
     testCharacter.location.x = 5 * 50;
     testCharacter.location.y = 9 * 50;
     testCharacter.initialize();
-    testCharacter.createTestGameDataElement('地精A', 1, testFile.identifier);
+    testCharacter.createTestGameDataElement('地精', 1, testFile.identifier);
 
     /*testCharacter = new GameCharacter('testCharacter_2');
     testCharacter.location.x = 8 * 50;
