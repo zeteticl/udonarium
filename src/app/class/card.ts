@@ -68,4 +68,10 @@ export class Card extends TabletopObject {
 
     return object;
   }
+
+  appendNoteElement(){
+    let testElement: DataElement = DataElement.create('', '', {}, '情報' + this.identifier);
+    this.detailDataElement.appendChild(testElement);
+    testElement.appendChild(DataElement.create('説明', '在這裡寫下說明文字', { 'type': 'note' }, '説明' + this.identifier));
+  }
 }
