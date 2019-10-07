@@ -50,7 +50,7 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
   @Input() is3D: boolean = false;
 
   get name(): string { return this.gameCharacter.name; }
-  get size(): number { return this.adjustMinBounds(this.gameCharacter.size); }
+  get size(): number { return this.adjustMinMaxBounds(this.gameCharacter.size); }
   get imageFile(): ImageFile { return this.gameCharacter.imageFile; }
   get rotate(): number { return this.gameCharacter.rotate; }
   set rotate(rotate: number) { this.gameCharacter.rotate = rotate; }
@@ -172,8 +172,8 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     SoundEffect.play(PresetSound.piecePut);
   }
 
-  private adjustMinBounds(value: number, min: number = 0): number {
-    return value < min ? min : value;
+  private adjustMinMaxBounds(value: number, min: number = 0, max: number = 20): number {
+    return value < min ? min : value > max ? max : value;
   }
 
   private showDetail(gameObject: GameCharacter) {

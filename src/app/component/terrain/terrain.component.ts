@@ -35,9 +35,9 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
   get wallImage(): ImageFile { return this.terrain.wallImage; }
   get floorImage(): ImageFile { return this.terrain.floorImage; }
 
-  get height(): number { return this.adjustMinBounds(this.terrain.height); }
-  get width(): number { return this.adjustMinBounds(this.terrain.width); }
-  get depth(): number { return this.adjustMinBounds(this.terrain.depth); }
+  get height(): number { return this.adjustMinMaxBounds(this.terrain.height); }
+  get width(): number { return this.adjustMinMaxBounds(this.terrain.width); }
+  get depth(): number { return this.adjustMinMaxBounds(this.terrain.depth); }
 
   gridSize: number = 50;
 
@@ -167,8 +167,8 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
     SoundEffect.play(PresetSound.blockPut);
   }
 
-  private adjustMinBounds(value: number, min: number = 0): number {
-    return value < min ? min : value;
+  private adjustMinMaxBounds(value: number, min: number = 0, max: number = 50): number {
+    return value < min ? min : value > max ? max : value;
   }
 
   private showDetail(gameObject: Terrain) {

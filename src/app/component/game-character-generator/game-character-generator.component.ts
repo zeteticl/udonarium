@@ -56,6 +56,7 @@ export class GameCharacterGeneratorComponent implements OnInit, OnDestroy, After
   }
 
   createGameCharacter() {
+    this.size = (this.size<1)? 1: (this.size>20)? 20: this.size;
     GameCharacter.create(this.name, this.size, this.tableBackgroundImage.identifier);
   }
   createGameTableMask() {
