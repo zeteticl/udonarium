@@ -358,7 +358,7 @@ export class TabletopService {
     let testFile: ImageFile = null;
     let fileContext: ImageContext = null;
 
-    testCharacter = new GameCharacter('testCharacter_1');
+    testCharacter = new GameCharacter();
     fileContext = ImageFile.createEmpty('testCharacter_1_image').toContext();
     fileContext.url = './assets/images/mon_052.gif';
     testFile = ImageStorage.instance.add(fileContext);
@@ -367,13 +367,7 @@ export class TabletopService {
     testCharacter.initialize();
     testCharacter.createTestGameDataElement('地精', 1, testFile.identifier);
 
-    /*testCharacter = new GameCharacter('testCharacter_2');
-    testCharacter.location.x = 8 * 50;
-    testCharacter.location.y = 8 * 50;
-    testCharacter.initialize();
-    testCharacter.createTestGameDataElement('地精B', 1, testFile.identifier);*/
-
-    testCharacter = new GameCharacter('testCharacter_3');
+    testCharacter = new GameCharacter();
     fileContext = ImageFile.createEmpty('testCharacter_3_image').toContext();
     fileContext.url = './assets/images/mon_128.gif';
     testFile = ImageStorage.instance.add(fileContext);
@@ -382,7 +376,7 @@ export class TabletopService {
     testCharacter.initialize();
     testCharacter.createTestGameDataElement('徬徨樹靈', 3, testFile.identifier);
 
-    testCharacter = new GameCharacter('testCharacter_4');
+    testCharacter = new GameCharacter();
     fileContext = ImageFile.createEmpty('testCharacter_4_image').toContext();
     fileContext.url = './assets/images/mon_150.gif';
     testFile = ImageStorage.instance.add(fileContext);
@@ -391,23 +385,6 @@ export class TabletopService {
     testCharacter.initialize();
     testCharacter.createTestGameDataElement('劍士', 1, testFile.identifier);
 
-    /*testCharacter = new GameCharacter('testCharacter_5');
-    fileContext = ImageFile.createEmpty('testCharacter_5_image').toContext();
-    fileContext.url = './assets/images/mon_211.gif';
-    testFile = ImageStorage.instance.add(fileContext);
-    testCharacter.location.x = 12 * 50;
-    testCharacter.location.y = 12 * 50;
-    testCharacter.initialize();
-    testCharacter.createTestGameDataElement('僧侶', 1, testFile.identifier);
-
-    testCharacter = new GameCharacter('testCharacter_6');
-    fileContext = ImageFile.createEmpty('testCharacter_6_image').toContext();
-    fileContext.url = './assets/images/mon_135.gif';
-    testFile = ImageStorage.instance.add(fileContext);
-    testCharacter.initialize();
-    testCharacter.location.x = 5 * 50;
-    testCharacter.location.y = 13 * 50;
-    testCharacter.createTestGameDataElement('法師', 1, testFile.identifier);*/
   }
 
   getContextMenuActionsForCreateObject(position: PointerCoordinate): ContextMenuAction[] {

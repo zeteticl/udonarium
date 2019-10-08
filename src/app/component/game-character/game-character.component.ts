@@ -194,12 +194,13 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private appendCloneNumber(objectname: string): string {    
-    let reg = new RegExp('(.*)([0-9]+)$');
+    let reg = new RegExp('([0-9]+)$');
     let res = objectname.match(reg);
     
-    if(res != null && res.length == 3) {
-      let cloneNumber:number = parseInt(res[2]) + 1;
-      return res[1] + cloneNumber;
+    if(res != null) {
+      let cloneNumber:number = parseInt(res[1]) + 1;
+      let real_name = objectname.slice(0, objectname.length-res[1].length);
+      return real_name + cloneNumber;
     } else {
       return objectname + "2";
     }

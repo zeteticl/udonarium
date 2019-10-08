@@ -1,14 +1,16 @@
 <ng-container *ngIf="gameDataElement">
   <ng-container *ngIf="gameDataElement.children.length < 1">
-    <div *ngIf="isEdit" class="table-cell table-cell_solid">
+    <div *ngIf="isEdit" class="table-cell table-cell_solid" style="vertical-align: middle;">
       <ng-container *ngTemplateOutlet="editButtons"></ng-container>
+    </div>
+    <div *ngIf="isEdit" class="table-cell table-cell_solid" style="vertical-align: middle;">
       <select (change)="setElementType($event.target.value)" [ngModel]="gameDataElement.type">
         <option value="">通常</option>
         <option value="numberResource">數值資源</option>
         <option value="note">註記</option>
       </select>
     </div>
-    <div class="table-cell table-cell_solid">
+    <div class="table-cell table-cell_solid" style="vertical-align: middle;">
       <ng-container *ngIf="isTagLocked">
         <div style="font-family: Cambria, Georgia; font-size: 0.9rem;">{{name}}</div>
       </ng-container>
@@ -18,7 +20,7 @@
           [(ngModel)]="name" placeholder="Value" [disabled]="isWatchMode()" />
       </ng-container>
     </div>
-    <div class="table-cell">
+    <div class="table-cell" style="vertical-align: middle;">
       <ng-container [ngSwitch]="gameDataElement.type">
         <ng-container *ngSwitchCase="'numberResource'">
           <input [style]="'font-size: 1.0em; min-width: 90px; width: 90%; --min: 0; --max: ' + value + '; --val:' + currentValue +';' | safe: 'style'"
