@@ -359,7 +359,7 @@ export class TabletopService {
     let fileContext: ImageContext = null;
 
     testCharacter = new GameCharacter();
-    fileContext = ImageFile.createEmpty('testCharacter_1_image').toContext();
+    fileContext = ImageFile.createEmpty('./assets/images/mon_052.gif').toContext();
     fileContext.url = './assets/images/mon_052.gif';
     testFile = ImageStorage.instance.add(fileContext);
     testCharacter.location.x = 5 * 50;
@@ -368,7 +368,7 @@ export class TabletopService {
     testCharacter.createTestGameDataElement('地精', 1, testFile.identifier);
 
     testCharacter = new GameCharacter();
-    fileContext = ImageFile.createEmpty('testCharacter_3_image').toContext();
+    fileContext = ImageFile.createEmpty('./assets/images/mon_128.gif').toContext();
     fileContext.url = './assets/images/mon_128.gif';
     testFile = ImageStorage.instance.add(fileContext);
     testCharacter.location.x = 8 * 50;
@@ -377,7 +377,7 @@ export class TabletopService {
     testCharacter.createTestGameDataElement('徬徨樹靈', 3, testFile.identifier);
 
     testCharacter = new GameCharacter();
-    fileContext = ImageFile.createEmpty('testCharacter_4_image').toContext();
+    fileContext = ImageFile.createEmpty('./assets/images/mon_150.gif').toContext();
     fileContext.url = './assets/images/mon_150.gif';
     testFile = ImageStorage.instance.add(fileContext);
     testCharacter.location.x = 6 * 50;
