@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 
+import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { PeerContext } from '@udonarium/core/system/network/peer-context';
 import { EventSystem, Network } from '@udonarium/core/system';
@@ -51,7 +52,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open<string>(FileSelecterComponent).then(value => {
       if (!this.myPeer || !value) return;
       this.myPeer.imageIdentifier = value;
-      localStorage.setItem("PlayerIcon", value);
+      localStorage.setItem("PlayerIcon", ImageStorage.instance.get(value).url);
     });
   }
 
