@@ -87,11 +87,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     let soundEffect: SoundEffect = new SoundEffect('SoundEffect');
     soundEffect.initialize();
 
-    let chatTab: ChatTab = new ChatTab('MainTab');
+    let chatTab: ChatTab = new ChatTab();
     chatTab.name = '主要';
     chatTab.initialize();
 
-    chatTab = new ChatTab('SubTab');
+    chatTab = new ChatTab();
     chatTab.name = '閒聊';
     chatTab.initialize();
 
