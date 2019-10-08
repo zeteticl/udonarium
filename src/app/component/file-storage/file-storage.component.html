@@ -14,9 +14,12 @@
       <br>１份檔案最多2MB</div>
   </div>
 </label>
+<div>
+  或使用外部連結：<input type="text" [(ngModel)]="uploadImgUrl" placeholder="圖片網址"> <button (click)="uploadByUrl()">上傳</button>
+</div>
 <div id="file-list">
   <span *ngFor="let file of fileStorageService.images" class="image">
-    <img *ngIf="0 < file.url.length" [src]="file.url | safe: 'resourceUrl'" [alt]="file.name" height="120" (click)="onSelectedFile(file)">
+    <img *ngIf="0 < file.url.length" [src]="file.url | safe: 'resourceUrl'" [alt]="file.name" height="120" (click)="onSelectedFile(file)" (error)="deleteErrorFile(file)">
     <img *ngIf="file.url.length <= 0" src="assets/images/loading.gif" alt="{{file.name}}">
   </span>
 </div>

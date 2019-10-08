@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { FileArchiver } from '@udonarium/core/file-storage/file-archiver';
-import { ImageFile } from '@udonarium/core/file-storage/image-file';
+import { ImageContext, ImageFile } from '@udonarium/core/file-storage/image-file';
 import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { EventSystem, Network } from '@udonarium/core/system';
 
@@ -14,6 +14,8 @@ import { PanelService } from 'service/panel.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileStorageComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  uploadImgUrl: string = "";
 
   fileStorageService = ImageStorage.instance;
   constructor(
@@ -45,6 +47,21 @@ export class FileStorageComponent implements OnInit, OnDestroy, AfterViewInit {
   onSelectedFile(file: ImageFile) {
     console.log('onSelectedFile', file);
     EventSystem.call('SELECT_FILE', { fileIdentifier: file.identifier }, Network.peerId);
+  }
+
+  uploadByUrl() {
+    let testFile: ImageFile = null;
+    let fileContext: ImageContext = null;
+    fileContext = ImageFile.createEmpty(this.uploadImgUrl).toContext();
+    fileContext.url = this.uploadImgUrl;
+    fileContext.name = this.uploadImgUrl;
+    testFile = ImageStorage.instance.add(fileContext);
+    this.uploadImgUrl = "";
+  }
+  deleteErrorFile(file: ImageFile){
+    alert("圖片上傳失敗!");
+    console.log("Delete file: "+file.identifier);
+    ImageStorage.instance.delete(file.identifier);
   }
 
   isWatchMode(): boolean { return Network.isSelfWatchMode(); }
