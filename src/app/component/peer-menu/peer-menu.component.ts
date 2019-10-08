@@ -171,7 +171,8 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   clearGameObject() {
     for (let object of ObjectStore.instance.getAllGameObject()) {
-      if(object["location"]!=null || object.aliasName=="chat-tab") object.destroy();
+      if(object["location"]!=null || object.aliasName=="chat-tab" || object.aliasName=="game-table")
+        object.destroy();
     }
   }
 }

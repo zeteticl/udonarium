@@ -334,7 +334,7 @@ export class TabletopService {
     let tableSelecter = new TableSelecter('tableSelecter');
     tableSelecter.initialize();
 
-    let gameTable = new GameTable('gameTable');
+    let gameTable = new GameTable();
     let testBgFile: ImageFile = null;
     let bgFileContext = ImageFile.createEmpty('testTableBackgroundImage_image').toContext();
     bgFileContext.url = './assets/images/BG10a_80.jpg';
