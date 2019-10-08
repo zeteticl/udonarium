@@ -110,7 +110,7 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    if (!this.isEmpty && this.selectedTab) {
+    if (!this.isEmpty && this.selectedTab && ( this.selectedTab.chatMessages.length==0 || confirm("這個分頁存有紀錄，你確定要把這個分頁刪除嗎?")) ) {
       this.selectedTabXml = this.selectedTab.toXml();
       this.selectedTab.destroy();
     }
