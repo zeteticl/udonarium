@@ -176,12 +176,6 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       switch(object.aliasName){
         case "summary-setting":
           localStorage.setItem("SummarySetting", object["dataTag"]); break;
-        case "PeerCursor":
-          localStorage.setItem("PeerCursor", JSON.stringify({
-            name: object["name"],
-            imageIdentifier: object["imageIdentifier"]
-          }));
-          break;
         case "chat-tab":
           if(!objects_arr["chat-tab"]) objects_arr["chat-tab"] = [];
           let children = [];
