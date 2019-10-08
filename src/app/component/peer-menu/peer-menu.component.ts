@@ -51,6 +51,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open<string>(FileSelecterComponent).then(value => {
       if (!this.myPeer || !value) return;
       this.myPeer.imageIdentifier = value;
+      localStorage.setItem("PlayerIcon", value);
     });
   }
 
@@ -154,6 +155,10 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showLobby() {
     this.modalService.open(LobbyComponent, { width: 700, height: 400, left: 0, top: 400 });
+  }
+
+  saveNickname(nickname: string) {
+    localStorage.setItem("PlayerNickname", nickname);
   }
 
   findPeerName(peerId: string) {

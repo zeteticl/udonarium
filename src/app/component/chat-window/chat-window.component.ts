@@ -213,9 +213,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private _color: string = "#000000";
-  onChangeColor(color: string) {
-    this._color = color;
+  color: string = (localStorage.getItem("PlayerColor"))? localStorage.getItem("PlayerColor"): "#000000";
+  onChangeColor() {
+    localStorage.setItem("PlayerColor", this.color);
   }
 
   showDicebotHelp() {
@@ -265,7 +265,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (!this.sender.length) this.sender = this.myPeer.identifier;
     if (this.chatTab) {
-      this.chatMessageService.sendMessage(this.chatTab, this.text, this.gameType, this.sender, this.sendTo, this._color);
+      this.chatMessageService.sendMessage(this.chatTab, this.text, this.gameType, this.sender, this.sendTo, this.color);
     }
     this.text = '';
     this.previousWritingLength = this.text.length;

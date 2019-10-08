@@ -4,7 +4,7 @@
     (click)="changeIcon()">
     <!--<img *ngIf="myPeer.image" [src]="myPeer.image.url | safe: 'resourceUrl'" />-->
   </div>
-  <span>你的暱稱: <input [(ngModel)]="myPeer.name"  placeholder="暱稱" /></span>
+  <span>你的暱稱: <input [(ngModel)]="myPeer.name"  placeholder="暱稱" (change)="saveNickname($event.target.value)"/></span>
 </div>
 <div>
   <span>你的ID: <span *ngIf="networkService.isOpen" style="font-weight: bold;">{{networkService.peerContext.id}}</span>

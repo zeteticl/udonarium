@@ -133,8 +133,16 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     AudioStorage.instance.get(PresetSound.sweep).isHidden = true;
 
     PeerCursor.createMyCursor();
-    PeerCursor.myCursor.name = '玩家';
-    PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
+    PeerCursor.myCursor.name = (localStorage.getItem("PlayerNickname"))? localStorage.getItem("PlayerNickname"): '玩家';
+    if(localStorage.getItem("PlayerIcon")){
+      let url = localStorage.getItem("PlayerIcon");
+      console.log(url);
+      if (!ImageStorage.instance.get(url))
+        ImageStorage.instance.add(url);
+      PeerCursor.myCursor.imageIdentifier = url;
+    }
+    else
+      PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
 
     EventSystem.register(this)
       .on('UPDATE_GAME_OBJECT', event => { this.lazyNgZoneUpdate(event.isSendFromSelf); })
