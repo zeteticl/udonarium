@@ -87,13 +87,38 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     let soundEffect: SoundEffect = new SoundEffect('SoundEffect');
     soundEffect.initialize();
 
-    let chatTab: ChatTab = new ChatTab();
-    chatTab.name = '主要';
-    chatTab.initialize();
+    let chatTab: ChatTab;
+    if(localStorage.getItem("ChatTab")){
+      let chattab_arr = JSON.parse(localStorage.getItem("ChatTab"));
+      for(let tab of chattab_arr){
+        chatTab = new ChatTab();
+        chatTab.name = tab.name;
+        chatTab.initialize();
 
-    chatTab = new ChatTab();
-    chatTab.name = '閒聊';
-    chatTab.initialize();
+        for(let msg of tab.children){
+          let msg_context = {
+            from: msg["from"],
+            timestamp: msg["timestamp"],
+            imageIdentifier: msg["imageIdentifier"],
+            tag: '',
+            name: msg["name"],
+            text: msg["text"],
+            color: msg["color"]
+          };
+          chatTab.easyAppendMessage(msg_context);
+        }
+      }
+    }
+    else{
+      chatTab = new ChatTab();
+      chatTab.name = '主要';
+      chatTab.initialize();
+
+      chatTab = new ChatTab();
+      chatTab.name = '閒聊';
+      chatTab.initialize();
+    }
+    
 
     let fileContext = ImageFile.createEmpty('none_icon').toContext();
     fileContext.url = './assets/images/ic_account_circle_black_24dp_2x.png';

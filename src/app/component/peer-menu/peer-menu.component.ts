@@ -12,6 +12,8 @@ import { AppConfigService } from 'service/app-config.service';
 import { ModalService } from 'service/modal.service';
 import { PanelService } from 'service/panel.service';
 
+import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
+
 @Component({
   selector: 'peer-menu',
   templateUrl: './peer-menu.component.html',
@@ -168,7 +170,56 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   isWatchMode(): boolean { return Network.isSelfWatchMode(); }
   test(){
-    console.log("TEST");
+    console.log("TEST ============");
+    let objects_arr={}, arr=[];
+    for(let object of ObjectStore.instance.getAllGameObject()){
+      switch(object.aliasName){
+        case "summary-setting":
+          localStorage.setItem("SummarySetting", object["dataTag"]); break;
+        case "PeerCursor":
+          localStorage.setItem("PeerCursor", JSON.stringify({
+            name: object["name"],
+            imageIdentifier: object["imageIdentifier"]
+          }));
+          break;
+        case "chat-tab":
+          if(!objects_arr["chat-tab"]) objects_arr["chat-tab"] = [];
+          let children = [];
+          for(let msg of object["children"]){
+            children.push({
+              from: msg["from"],
+              name: msg["name"],
+              imageIdentifier: msg["imageIdentifier"],
+              timestamp: msg["timestamp"],
+              color: msg["color"],
+              text: msg["text"]
+            });
+          }
+          objects_arr["chat-tab"].push({
+            name: object["name"],
+            children: children
+          });
+          break;
+        case "game-table":
+          console.log(object);
+
+        default:
+          arr.push(object);
+      }
+    }
+    
+    // Set Local Storage
+    if(objects_arr["chat-tab"])
+      localStorage.setItem("ChatTab", JSON.stringify(objects_arr["chat-tab"]));
+
+    console.log(arr);
+
+    //console.log(ImageStorage.instance.images);
+    //localStorage.setItem("Objects", JSON.stringify(arr));
+    //console.log(localStorage.getItem("SummarySetting"));
+  }
+  test2() {
+    localStorage.clear();
   }
   clearGameObject() {
     for (let object of ObjectStore.instance.getAllGameObject()) {
