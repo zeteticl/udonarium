@@ -120,7 +120,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
     
 
-    let fileContext = ImageFile.createEmpty('none_icon').toContext();
+    let fileContext = ImageFile.createEmpty('./assets/images/ic_account_circle_black_24dp_2x.png').toContext();
     fileContext.url = './assets/images/ic_account_circle_black_24dp_2x.png';
     let noneIconImage = ImageStorage.instance.add(fileContext);
 
@@ -162,7 +162,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if(localStorage.getItem("PlayerIcon")){
       let url = localStorage.getItem("PlayerIcon");
       PeerCursor.myCursor.imageIdentifier = ImageStorage.instance.loadImageFromUrl(url);
-      console.log("PCICON", ImageStorage.instance.loadImageFromUrl(url));
     }
     else
       PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
@@ -288,7 +287,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   saveLocalCache(){
-    let objects_arr={}, arr=[];
+    console.log("SAVE");
+    let objects_arr={}, arr=[], key_arr;
     for(let object of ObjectStore.instance.getAllGameObject()){
       switch(object.aliasName){
         case "summary-setting":
@@ -297,14 +297,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
           if(!objects_arr["chat-tab"]) objects_arr["chat-tab"] = [];
           let children = [];
           for(let msg of object["children"]){
-            children.push({
-              from: msg["from"],
-              name: msg["name"],
-              imageIdentifier: msg["imageIdentifier"],
-              timestamp: msg["timestamp"],
-              color: msg["color"],
-              text: msg["text"]
-            });
+            key_arr = ["form", "name", "imageIdentifier", "timestamp", "color", "text"];
+            children.push(this.getObjectWithSpecificAttribute( msg, key_arr ));
           }
           objects_arr["chat-tab"].push({
             name: object["name"],
@@ -312,33 +306,62 @@ export class AppComponent implements AfterViewInit, OnDestroy {
           });
           break;
         case "game-table":
-          console.log(object);
           if(!objects_arr["game-table"]) objects_arr["game-table"] = [];
-          objects_arr["game-table"].push({
-            name: object["name"],
-            width: object["width"],
-            height: object["height"],
-            gridSize: object["gridSize"],
-            imageIdentifier: object["imageIdentifier"],
-            backgroundImageIdentifier: object["backgroundImageIdentifier"],
-            backgroundFilterType: object["backgroundFilterType"],
-            selected: object["selected"],
-            gridType: object["gridType"],
-            gridColor: object["gridColor"]
-          });
+          key_arr = ["name", "width", "height", "gridSize", "imageIdentifier", "backgroundImageIdentifier",
+                           "backgroundFilterType", "selected", "gridType", "gridColor"];
+          objects_arr["game-table"].push(this.getObjectWithSpecificAttribute( object, key_arr ));
           break;
-          
+        case "TableSelecter":
+          key_arr = ["gridShow", "gridSnap"];
+          localStorage.setItem("TableSelecter", JSON.stringify(this.getObjectWithSpecificAttribute( object, key_arr )));
+          break;
+        case "character":
+          if(!objects_arr["character"]) objects_arr["character"] = [];
+          key_arr = ["location", "posZ", "roll", "rotate"];
+          let char_obj = this.getObjectWithSpecificAttribute( object, key_arr );
+          // Add DataElement & ChatPalette
+          char_obj["commonDataElement"] = this.getDataElementObject(object["commonDataElement"]);
+          char_obj["detailDataElement"] = this.getDataElementObject(object["detailDataElement"]);
+          char_obj["imageDataElement"] = this.getDataElementObject(object["imageDataElement"]);
+          char_obj["chatPalette"] = this.getObjectWithSpecificAttribute( object["chatPalette"], ["color", "diceBot", "value"] );
+          objects_arr["character"].push(char_obj);
+          break;
         default:
           arr.push(object);
       }
     }
     
+
+
     // Set Local Storage
     if(objects_arr["chat-tab"])
       localStorage.setItem("ChatTab", JSON.stringify(objects_arr["chat-tab"]));
     if(objects_arr["game-table"])
       localStorage.setItem("GameTable", JSON.stringify(objects_arr["game-table"]));
+    if(objects_arr["character"])
+      localStorage.setItem("GameCharacter", JSON.stringify(objects_arr["character"]));
 
     console.log(arr);
   }
+
+  getObjectWithSpecificAttribute (object: Object, key_arr: Array<string>): Object{
+    var obj = {};
+    for(let key of key_arr) obj[key] = object[key];
+    return obj;
+  }
+  getDataElementObject(object: Object): Object{
+    let obj = {
+      name: object.name,
+      type: object.type,
+      value: object.value
+    };
+    if(object["children"].length>0){
+      obj.children = [];
+      for(let child of object["children"]){
+        obj.children.push(this.getDataElementObject(child));
+      }
+    }
+    return obj;
+  }
+
 }

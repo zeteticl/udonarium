@@ -332,17 +332,27 @@ export class TabletopService {
 
   makeDefaultTable() {
     let tableSelecter = new TableSelecter('tableSelecter');
+    if(localStorage.getItem("TableSelecter")){
+      try{
+        let ts_setting = JSON.parse(localStorage.getItem("TableSelecter"));
+        tableSelecter.gridShow = ts_setting.gridShow;
+        tableSelecter.gridSnap = ts_setting.gridSnap;
+      } catch(e){
+        console.error(e);
+      }
+    }
     tableSelecter.initialize();
 
     let gameTable;
     let testBgFile: ImageFile = null;
-    let bgFileContext = ImageFile.createEmpty('testTableBackgroundImage_image').toContext();
+    let bgFileContext = ImageFile.createEmpty('./assets/images/BG10a_80.jpg').toContext();
     bgFileContext.url = './assets/images/BG10a_80.jpg';
     testBgFile = ImageStorage.instance.add(bgFileContext);
     //let testDistanceFile: ImageFile = null;
-    //let distanceFileContext = ImageFile.createEmpty('testTableDistanceviewImage_image').toContext();
+    //let distanceFileContext = ImageFile.createEmpty('./assets/images/BG00a1_80.jpg').toContext();
     //distanceFileContext.url = './assets/images/BG00a1_80.jpg';
     //testDistanceFile = ImageStorage.instance.add(distanceFileContext);
+
     let gameTableStorage, useDefaultMap=true;
     try{
       if(localStorage.getItem("GameTable")){
@@ -353,10 +363,8 @@ export class TabletopService {
       console.error(e);
     }
 
-
     if(!useDefaultMap){
       for(let table of gameTableStorage){
-        console.log(table);
         gameTable = new GameTable();
         gameTable.name = table.name;
         gameTable.imageIdentifier = ImageStorage.instance.loadImageFromUrl(table.imageIdentifier);
@@ -391,32 +399,70 @@ export class TabletopService {
     let testFile: ImageFile = null;
     let fileContext: ImageContext = null;
 
-    testCharacter = new GameCharacter();
-    fileContext = ImageFile.createEmpty('./assets/images/mon_052.gif').toContext();
-    fileContext.url = './assets/images/mon_052.gif';
-    testFile = ImageStorage.instance.add(fileContext);
-    testCharacter.location.x = 5 * 50;
-    testCharacter.location.y = 9 * 50;
-    testCharacter.initialize();
-    testCharacter.createTestGameDataElement('地精', 1, testFile.identifier);
+    let gameCharactersStorage;
+    let useDefaultObjects=true;
+    try{
+      if(localStorage.getItem("GameCharacter")){
+        gameCharactersStorage = JSON.parse(localStorage.getItem("GameCharacter"));
+        useDefaultObjects = false;
+      }
+    } catch(e){
+      useDefaultObjects = true;
+      console.error(e);
+    }
 
-    testCharacter = new GameCharacter();
-    fileContext = ImageFile.createEmpty('./assets/images/mon_128.gif').toContext();
-    fileContext.url = './assets/images/mon_128.gif';
-    testFile = ImageStorage.instance.add(fileContext);
-    testCharacter.location.x = 8 * 50;
-    testCharacter.location.y = 5 * 50;
-    testCharacter.initialize();
-    testCharacter.createTestGameDataElement('徬徨樹靈', 3, testFile.identifier);
+    if(useDefaultObjects){
+      testCharacter = new GameCharacter();
+      fileContext = ImageFile.createEmpty('./assets/images/mon_052.gif').toContext();
+      fileContext.url = './assets/images/mon_052.gif';
+      testFile = ImageStorage.instance.add(fileContext);
+      testCharacter.location.x = 5 * 50;
+      testCharacter.location.y = 9 * 50;
+      testCharacter.initialize();
+      testCharacter.createTestGameDataElement('地精', 1, testFile.identifier);
 
-    testCharacter = new GameCharacter();
-    fileContext = ImageFile.createEmpty('./assets/images/mon_150.gif').toContext();
-    fileContext.url = './assets/images/mon_150.gif';
-    testFile = ImageStorage.instance.add(fileContext);
-    testCharacter.location.x = 6 * 50;
-    testCharacter.location.y = 11 * 50;
-    testCharacter.initialize();
-    testCharacter.createTestGameDataElement('劍士', 1, testFile.identifier);
+      testCharacter = new GameCharacter();
+      fileContext = ImageFile.createEmpty('./assets/images/mon_128.gif').toContext();
+      fileContext.url = './assets/images/mon_128.gif';
+      testFile = ImageStorage.instance.add(fileContext);
+      testCharacter.location.x = 8 * 50;
+      testCharacter.location.y = 5 * 50;
+      testCharacter.initialize();
+      testCharacter.createTestGameDataElement('徬徨樹靈', 3, testFile.identifier);
+
+      testCharacter = new GameCharacter();
+      fileContext = ImageFile.createEmpty('./assets/images/mon_150.gif').toContext();
+      fileContext.url = './assets/images/mon_150.gif';
+      testFile = ImageStorage.instance.add(fileContext);
+      testCharacter.location.x = 6 * 50;
+      testCharacter.location.y = 11 * 50;
+      testCharacter.initialize();
+      testCharacter.createTestGameDataElement('劍士', 1, testFile.identifier);
+    }
+    else{
+      fileContext = ImageFile.createEmpty('./assets/images/mon_150.gif').toContext();
+      fileContext.url = './assets/images/mon_150.gif';
+      testFile = ImageStorage.instance.add(fileContext);
+      // GameCharacter
+      for(let character of gameCharactersStorage){
+        console.log(character);
+
+        testCharacter = new GameCharacter();
+        testCharacter.location = character.location;
+        testCharacter.posZ = character.posZ;
+        testCharacter.roll = character.roll;
+        testCharacter.rotate = character.rotate;
+
+        testCharacter.initialize();
+        // TODO: Image, Common, Detail, ChatPalette
+        testCharacter.createTestGameDataElement('劍士', 2, testFile.identifier);
+
+        console.log(testCharacter);
+      }
+
+    }
+
+
 
   }
 

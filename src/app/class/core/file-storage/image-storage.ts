@@ -99,10 +99,11 @@ export class ImageStorage {
 
   loadImageFromUrl(url: string): string {
     if(this.get(url)) return url;
+    if(url=="") return "";
 
     if(url.match(/^([a-z0-9])+$/)){
       let missing_img_url = "./assets/images/missing.jpg";
-      if(this.get(missing_img_url))
+      if(!this.get(missing_img_url))
         this.add(missing_img_url);
       return missing_img_url;
     }
