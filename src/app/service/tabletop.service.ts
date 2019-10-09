@@ -334,7 +334,7 @@ export class TabletopService {
     let tableSelecter = new TableSelecter('tableSelecter');
     tableSelecter.initialize();
 
-    let gameTable = new GameTable();
+    let gameTable;
     let testBgFile: ImageFile = null;
     let bgFileContext = ImageFile.createEmpty('testTableBackgroundImage_image').toContext();
     bgFileContext.url = './assets/images/BG10a_80.jpg';
@@ -343,14 +343,47 @@ export class TabletopService {
     //let distanceFileContext = ImageFile.createEmpty('testTableDistanceviewImage_image').toContext();
     //distanceFileContext.url = './assets/images/BG00a1_80.jpg';
     //testDistanceFile = ImageStorage.instance.add(distanceFileContext);
-    gameTable.name = '預設遊戲桌';
-    gameTable.imageIdentifier = testBgFile.identifier;
-    //gameTable.backgroundImageIdentifier = testDistanceFile.identifier;
-    gameTable.width = 20;
-    gameTable.height = 15;
-    gameTable.initialize();
+    let gameTableStorage, useDefaultMap=true;
+    try{
+      if(localStorage.getItem("GameTable")){
+        gameTableStorage = JSON.parse(localStorage.getItem("GameTable"));
+        useDefaultMap = false;
+      }
+    } catch(e){
+      console.error(e);
+    }
 
-    tableSelecter.viewTableIdentifier = gameTable.identifier;
+
+    if(!useDefaultMap){
+      for(let table of gameTableStorage){
+        console.log(table);
+        gameTable = new GameTable();
+        gameTable.name = table.name;
+        gameTable.imageIdentifier = ImageStorage.instance.loadImageFromUrl(table.imageIdentifier);
+        gameTable.backgroundImageIdentifier = ImageStorage.instance.loadImageFromUrl(table.backgroundImageIdentifier);
+        gameTable.backgroundFilterType = table.backgroundFilterType;
+        gameTable.width = table.width;
+        gameTable.height = table.height;
+        gameTable.selected = table.selected;
+        gameTable.gridType = table.gridType;
+        gameTable.gridColor = table.gridColor;
+        gameTable.initialize();
+        if(gameTable.selected=="true")
+          tableSelecter.viewTableIdentifier = gameTable.identifier;
+      }
+
+    }
+    else{
+      gameTable = new GameTable();
+      gameTable.name = '預設遊戲桌';
+      gameTable.imageIdentifier = testBgFile.identifier;
+      //gameTable.backgroundImageIdentifier = testDistanceFile.identifier;
+      gameTable.width = 20;
+      gameTable.height = 15;
+      gameTable.initialize();
+      tableSelecter.viewTableIdentifier = gameTable.identifier;
+    }
+
   }
 
   makeDefaultTabletopObjects() {

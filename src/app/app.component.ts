@@ -161,9 +161,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     PeerCursor.myCursor.name = (localStorage.getItem("PlayerNickname"))? localStorage.getItem("PlayerNickname"): '玩家';
     if(localStorage.getItem("PlayerIcon")){
       let url = localStorage.getItem("PlayerIcon");
-      if (!ImageStorage.instance.get(url))
-        ImageStorage.instance.add(url);
-      PeerCursor.myCursor.imageIdentifier = url;
+      PeerCursor.myCursor.imageIdentifier = ImageStorage.instance.loadImageFromUrl(url);
+      console.log("PCICON", ImageStorage.instance.loadImageFromUrl(url));
     }
     else
       PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
@@ -286,5 +285,60 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         this.ngZone.run(() => { });
       }, 100);
     }
+  }
+
+  saveLocalCache(){
+    let objects_arr={}, arr=[];
+    for(let object of ObjectStore.instance.getAllGameObject()){
+      switch(object.aliasName){
+        case "summary-setting":
+          localStorage.setItem("SummarySetting", object["dataTag"]); break;
+        case "chat-tab":
+          if(!objects_arr["chat-tab"]) objects_arr["chat-tab"] = [];
+          let children = [];
+          for(let msg of object["children"]){
+            children.push({
+              from: msg["from"],
+              name: msg["name"],
+              imageIdentifier: msg["imageIdentifier"],
+              timestamp: msg["timestamp"],
+              color: msg["color"],
+              text: msg["text"]
+            });
+          }
+          objects_arr["chat-tab"].push({
+            name: object["name"],
+            children: children
+          });
+          break;
+        case "game-table":
+          console.log(object);
+          if(!objects_arr["game-table"]) objects_arr["game-table"] = [];
+          objects_arr["game-table"].push({
+            name: object["name"],
+            width: object["width"],
+            height: object["height"],
+            gridSize: object["gridSize"],
+            imageIdentifier: object["imageIdentifier"],
+            backgroundImageIdentifier: object["backgroundImageIdentifier"],
+            backgroundFilterType: object["backgroundFilterType"],
+            selected: object["selected"],
+            gridType: object["gridType"],
+            gridColor: object["gridColor"]
+          });
+          break;
+          
+        default:
+          arr.push(object);
+      }
+    }
+    
+    // Set Local Storage
+    if(objects_arr["chat-tab"])
+      localStorage.setItem("ChatTab", JSON.stringify(objects_arr["chat-tab"]));
+    if(objects_arr["game-table"])
+      localStorage.setItem("GameTable", JSON.stringify(objects_arr["game-table"]));
+
+    console.log(arr);
   }
 }

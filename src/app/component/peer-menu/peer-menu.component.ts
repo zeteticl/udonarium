@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 
-import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { PeerContext } from '@udonarium/core/system/network/peer-context';
 import { EventSystem, Network } from '@udonarium/core/system';
@@ -54,7 +53,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open<string>(FileSelecterComponent).then(value => {
       if (!this.myPeer || !value) return;
       this.myPeer.imageIdentifier = value;
-      localStorage.setItem("PlayerIcon", ImageStorage.instance.get(value).url);
+      localStorage.setItem("PlayerIcon", value);
     });
   }
 
@@ -171,43 +170,6 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   isWatchMode(): boolean { return Network.isSelfWatchMode(); }
   test(){
     console.log("TEST ============");
-    let objects_arr={}, arr=[];
-    for(let object of ObjectStore.instance.getAllGameObject()){
-      switch(object.aliasName){
-        case "summary-setting":
-          localStorage.setItem("SummarySetting", object["dataTag"]); break;
-        case "chat-tab":
-          if(!objects_arr["chat-tab"]) objects_arr["chat-tab"] = [];
-          let children = [];
-          for(let msg of object["children"]){
-            children.push({
-              from: msg["from"],
-              name: msg["name"],
-              imageIdentifier: msg["imageIdentifier"],
-              timestamp: msg["timestamp"],
-              color: msg["color"],
-              text: msg["text"]
-            });
-          }
-          objects_arr["chat-tab"].push({
-            name: object["name"],
-            children: children
-          });
-          break;
-        case "game-table":
-          console.log(object);
-
-        default:
-          arr.push(object);
-      }
-    }
-    
-    // Set Local Storage
-    if(objects_arr["chat-tab"])
-      localStorage.setItem("ChatTab", JSON.stringify(objects_arr["chat-tab"]));
-
-    console.log(arr);
-
     //console.log(ImageStorage.instance.images);
     //localStorage.setItem("Objects", JSON.stringify(arr));
     //console.log(localStorage.getItem("SummarySetting"));
@@ -217,8 +179,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   clearGameObject() {
     for (let object of ObjectStore.instance.getAllGameObject()) {
-      if(object["location"]!=null || object.aliasName=="chat-tab" || object.aliasName=="game-table")
-        object.destroy();
+      if(object["location"]!=null || object.aliasName=="chat-tab" || object.aliasName=="game-table") object.destroy();
     }
   }
 }
