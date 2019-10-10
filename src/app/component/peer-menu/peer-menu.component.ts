@@ -11,8 +11,6 @@ import { AppConfigService } from 'service/app-config.service';
 import { ModalService } from 'service/modal.service';
 import { PanelService } from 'service/panel.service';
 
-import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
-
 @Component({
   selector: 'peer-menu',
   templateUrl: './peer-menu.component.html',
@@ -170,7 +168,6 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   isWatchMode(): boolean { return Network.isSelfWatchMode(); }
   test(){
     console.log("TEST ============");
-    //console.log(ImageStorage.instance.images);
     //localStorage.setItem("Objects", JSON.stringify(arr));
     //console.log(localStorage.getItem("SummarySetting"));
   }
