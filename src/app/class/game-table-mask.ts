@@ -33,4 +33,15 @@ export class GameTableMask extends TabletopObject {
 
     return object;
   }
+
+  static easyCreate(raw_obj): GameTableMask {
+    let game_obj: GameTableMask = new GameTableMask();
+    let key_arr = ["location", "posZ", "isLock"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+
+    return game_obj;
+  }
+
 }

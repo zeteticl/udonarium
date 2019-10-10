@@ -1,9 +1,25 @@
 <div id="app-table-layer" style="position: absolute; width: 100%; height: 100%; overflow: hidden;">
   <game-table></game-table>
 </div>
-<ui-panel [top]="0" [left]="0" [width]="100" [height]="networkService.isSelfWatchMode()? 200: 470" [title]="'功能表'">
+<ui-panel [top]="0" [left]="0" [width]="100" [height]="networkService.isSelfWatchMode()? 200: 500" [title]="'功能表'">
   <nav>
     <ul>
+      <li>
+        <a routerLink="/" routerLinkActive="active">
+          <div class="toggle-group">
+            <input type="checkbox" name="on-off-switch" id="on-off-switch" tabindex="1" style="display:none;" (change)="changeAutoSave($event.target)" [(ngModel)]="autoSave">
+            <label for="on-off-switch">
+            </label>
+            <div class="onoffswitch pull-right" aria-hidden="true">
+              <div class="onoffswitch-label">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+              </div>
+            </div>
+          </div>
+          <div>自動儲存</div>
+        </a>
+      </li>
       <li (click)="open('PeerMenuComponent')">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">people</i></div>
@@ -65,9 +81,6 @@
           <div><i class="material-icons">sd_storage</i></div>
           <div>儲存房間</div>
         </a>
-      </li>
-      <li (click)="saveLocalCache()">
-        <button>LocalStorage</button>
       </li>
     </ul>
   </nav>

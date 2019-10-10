@@ -108,4 +108,48 @@ export class TabletopObject extends ObjectNode {
     this.location.name = location;
     this.update();
   }
+
+  protected easyAssign(raw_obj, key_arr){
+    for(let key of key_arr)
+      this[key] = raw_obj[key];
+  }
+  protected easyCreateGameData(commonData, imageData, detailData){
+    this.createDataElements();
+
+    if(commonData.children)
+    for(let data of commonData.children){
+      this.parseDataElement(this.commonDataElement, data);
+    }
+
+    if(imageData.children)
+    for(let image of imageData.children){
+      let key = image.name, value = image.value, type = { type: "image" };
+      let identifier = ImageStorage.instance.loadImageFromUrl(value);
+      if (this.imageDataElement.getFirstElementByName(key)) {
+        this.imageDataElement.getFirstElementByName(key).value = identifier;
+      }
+      else{
+        this.imageDataElement.appendChild(DataElement.create(key, identifier, type, key + '_' + this.identifier));
+      }
+    }
+
+    if(detailData.children)
+    for(let data of detailData.children){
+      this.parseDataElement(this.detailDataElement, data);
+    }
+  }
+  protected parseDataElement(parentDataElement, rawDataElement) {
+    let key = rawDataElement.name, value = rawDataElement.value, type = {};
+    if(rawDataElement.type!="") type["type"] = rawDataElement.type;
+    if(rawDataElement.currentValue!="") type["currentValue"] = rawDataElement.currentValue;
+    let data_element: DataElement = DataElement.create(key, value, type, key + '_' + this.identifier);
+
+    if(rawDataElement.children){
+      for(let child_data of rawDataElement.children){
+        this.parseDataElement(data_element, child_data);
+      }
+    }
+    parentDataElement.appendChild(data_element);
+  }
+
 }

@@ -363,7 +363,17 @@ export class TabletopService {
       console.error(e);
     }
 
-    if(!useDefaultMap){
+    if(useDefaultMap){
+      gameTable = new GameTable();
+      gameTable.name = '預設遊戲桌';
+      gameTable.imageIdentifier = testBgFile.identifier;
+      //gameTable.backgroundImageIdentifier = testDistanceFile.identifier;
+      gameTable.width = 20;
+      gameTable.height = 15;
+      gameTable.initialize();
+      tableSelecter.viewTableIdentifier = gameTable.identifier;
+    }
+    else{
       for(let table of gameTableStorage){
         gameTable = new GameTable();
         gameTable.name = table.name;
@@ -379,32 +389,24 @@ export class TabletopService {
         if(gameTable.selected=="true")
           tableSelecter.viewTableIdentifier = gameTable.identifier;
       }
-
-    }
-    else{
-      gameTable = new GameTable();
-      gameTable.name = '預設遊戲桌';
-      gameTable.imageIdentifier = testBgFile.identifier;
-      //gameTable.backgroundImageIdentifier = testDistanceFile.identifier;
-      gameTable.width = 20;
-      gameTable.height = 15;
-      gameTable.initialize();
-      tableSelecter.viewTableIdentifier = gameTable.identifier;
     }
 
   }
 
   makeDefaultTabletopObjects() {
-    let testCharacter: GameCharacter = null;
-    let testFile: ImageFile = null;
-    let fileContext: ImageContext = null;
+    let viewTable = this.tableSelecter.viewTable;
 
-    let gameCharactersStorage;
+    let gameObjectsStorage = {};
+    let gameObject_key = ["GameCharacter", "TableMask", "Terrain", "TextNote", "DiceSymbol", "Card", "CardStack"];
     let useDefaultObjects=true;
     try{
-      if(localStorage.getItem("GameCharacter")){
-        gameCharactersStorage = JSON.parse(localStorage.getItem("GameCharacter"));
-        useDefaultObjects = false;
+      for(let key of gameObject_key){
+        if(localStorage.getItem(key)){
+          gameObjectsStorage[key] = JSON.parse(localStorage.getItem(key));
+          useDefaultObjects = false;
+        }
+        else
+          gameObjectsStorage[key] = [];
       }
     } catch(e){
       useDefaultObjects = true;
@@ -412,6 +414,10 @@ export class TabletopService {
     }
 
     if(useDefaultObjects){
+      let testCharacter: GameCharacter = null;
+      let testFile: ImageFile = null;
+      let fileContext: ImageContext = null;
+
       testCharacter = new GameCharacter();
       fileContext = ImageFile.createEmpty('./assets/images/mon_052.gif').toContext();
       fileContext.url = './assets/images/mon_052.gif';
@@ -440,29 +446,39 @@ export class TabletopService {
       testCharacter.createTestGameDataElement('劍士', 1, testFile.identifier);
     }
     else{
-      fileContext = ImageFile.createEmpty('./assets/images/mon_150.gif').toContext();
-      fileContext.url = './assets/images/mon_150.gif';
-      testFile = ImageStorage.instance.add(fileContext);
       // GameCharacter
-      for(let character of gameCharactersStorage){
-        console.log(character);
-
-        testCharacter = new GameCharacter();
-        testCharacter.location = character.location;
-        testCharacter.posZ = character.posZ;
-        testCharacter.roll = character.roll;
-        testCharacter.rotate = character.rotate;
-
-        testCharacter.initialize();
-        // TODO: Image, Common, Detail, ChatPalette
-        testCharacter.createTestGameDataElement('劍士', 2, testFile.identifier);
-
-        console.log(testCharacter);
+      for(let raw_obj of gameObjectsStorage["GameCharacter"]){
+        let game_obj: GameCharacter = GameCharacter.easyCreate(raw_obj);
       }
-
+      // TableMask
+      for(let raw_obj of gameObjectsStorage["TableMask"]){
+        let game_obj: GameTableMask = GameTableMask.easyCreate(raw_obj);
+        viewTable.appendChild(game_obj);
+      }
+      // Terrain
+      for(let raw_obj of gameObjectsStorage["Terrain"]){
+        let game_obj: Terrain = Terrain.easyCreate(raw_obj);
+        viewTable.appendChild(game_obj);
+      }
+      // TextNote
+      for(let raw_obj of gameObjectsStorage["TextNote"]){
+        let game_obj: TextNote = TextNote.easyCreate(raw_obj);
+        viewTable.appendChild(game_obj);
+      }
+      // DiceSymbol
+      for(let raw_obj of gameObjectsStorage["DiceSymbol"]){
+        let game_obj: DiceSymbol = DiceSymbol.easyCreate(raw_obj);
+        viewTable.appendChild(game_obj);
+      }
+      // Card
+      for(let raw_obj of gameObjectsStorage["Card"]){
+        let game_obj: Card = Card.easyCreate(raw_obj);
+      }
+      // CardStack
+      for(let raw_obj of gameObjectsStorage["CardStack"]){
+        let game_obj: CardStack = CardStack.easyCreate(raw_obj);
+      }
     }
-
-
 
   }
 

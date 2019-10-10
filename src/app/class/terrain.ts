@@ -51,4 +51,14 @@ export class Terrain extends TabletopObject {
 
     return object;
   }
+
+  static easyCreate(raw_obj): Terrain {
+    let game_obj: Terrain = new Terrain();
+    let key_arr = ["location", "posZ", "rotate", "mode", "isLocked"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+
+    return game_obj;
+  }
 }

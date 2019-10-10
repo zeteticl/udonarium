@@ -149,7 +149,7 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
 
     if (gameObject.location.name === 'graveyard') {
       actions.push({
-        name: '削除する', action: () => {
+        name: '刪除', action: () => {
           this.deleteGameObject(gameObject);
           SoundEffect.play(PresetSound.sweep);
         }
@@ -157,7 +157,7 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
     }
     actions.push(ContextMenuSeparator);
     actions.push({
-      name: 'コピーを作る', action: () => {
+      name: '複製', action: () => {
         this.cloneGameObject(gameObject);
         SoundEffect.play(PresetSound.piecePut);
       }

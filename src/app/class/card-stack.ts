@@ -165,4 +165,26 @@ export class CardStack extends TabletopObject {
 
     return object;
   }
+
+  static easyCreate(raw_obj): CardStack {
+    let game_obj: CardStack = new CardStack();
+    let key_arr = ["location", "posZ", "rotate", "isShowTotal", "owner"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+
+    // CardRoot
+    let cardRoot = new ObjectNode('cardRoot_' + game_obj.identifier);
+    cardRoot.setAttribute('name', 'cardRoot');
+    cardRoot.initialize();
+    game_obj.appendChild(cardRoot);
+
+    // Cards
+    for(let card_data of raw_obj.children){
+      let card_obj: Card = Card.easyCreate(card_data);
+      game_obj.putOnBottom(card_obj);
+    }
+
+    return game_obj
+  }
 }

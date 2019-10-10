@@ -69,6 +69,16 @@ export class Card extends TabletopObject {
     return object;
   }
 
+  static easyCreate(raw_obj): Card {
+    let game_obj: Card = new Card();
+    let key_arr = ["location", "posZ", "rotate", "state", "owner"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+
+    return game_obj
+  }
+
   appendNoteElement(){
     let testElement: DataElement = DataElement.create('', '', {}, '情報' + this.identifier);
     this.detailDataElement.appendChild(testElement);

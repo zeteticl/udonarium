@@ -49,6 +49,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private immediateUpdateTimer: NodeJS.Timer = null;
   private lazyUpdateTimer: NodeJS.Timer = null;
   private openPanelCount: number = 0;
+  private autoSave: boolean = false;
 
   constructor(
     private modalService: ModalService,
@@ -60,6 +61,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     private ngZone: NgZone
   ) {
 
+    let self = this;
     this.ngZone.runOutsideAngular(() => {
       EventSystem;
       Network;
@@ -77,6 +79,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.pointerDeviceService.initialize();
 
     DataSummarySetting.instance.initialize();
+
+    this.autoSave = (localStorage.getItem("AutoSave")=="true");
 
     let diceBot: DiceBot = new DiceBot('DiceBot');
     diceBot.initialize();
@@ -200,13 +204,17 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       .on('DISCONNECT_PEER', event => {
         //
       });
+
+    window.onbeforeunload = function(){
+      if(localStorage.getItem("AutoSave")=="true") self.saveLocalCache();
+    }
   }
 
   ngAfterViewInit() {
     PanelService.defaultParentViewContainerRef = ModalService.defaultParentViewContainerRef = ContextMenuService.defaultParentViewContainerRef = this.modalLayerViewContainerRef;
     setTimeout(() => {
       this.panelService.open(PeerMenuComponent, { width: 500, height: 450, left: 100 });
-      this.panelService.open(ChatWindowComponent, { width: 700, height: 400, left: 0, top: 450 });
+      this.panelService.open(ChatWindowComponent, { width: 700, height: 400, left: 100, top: 450 });
     }, 0);
   }
 
@@ -258,7 +266,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   save() {
     let roomName = Network.peerContext && 0 < Network.peerContext.roomName.length
       ? Network.peerContext.roomName
-      : 'ルームデータ';
+      : 'RoomData';
     this.saveDataService.saveRoom(roomName);
   }
 
@@ -286,79 +294,143 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  saveLocalCache(){
+  private changeAutoSave(target){
+    if(target.checked){
+      localStorage.setItem("AutoSave", "true");
+      //this.saveLocalCache();
+    }
+    else{
+      localStorage.setItem("AutoSave", "false");
+      console.log("Clear all Cahce");
+      let gameObject_key = ["SummarySetting", "ChatTab", "GameTable", "GameCharacter", "TableMask", "Terrain", "TextNote", "DiceSymbol", "Card", "CardStack"];
+      for(let key of gameObject_key){
+        localStorage.removeItem(key);
+      }
+    }
+  }
+
+  private saveLocalCache(){
     console.log("SAVE");
-    let objects_arr={}, arr=[], key_arr;
+    let objects_arr={}, arr=[];
     for(let object of ObjectStore.instance.getAllGameObject()){
       switch(object.aliasName){
         case "summary-setting":
-          localStorage.setItem("SummarySetting", object["dataTag"]); break;
-        case "chat-tab":
-          if(!objects_arr["chat-tab"]) objects_arr["chat-tab"] = [];
-          let children = [];
-          for(let msg of object["children"]){
-            key_arr = ["form", "name", "imageIdentifier", "timestamp", "color", "text"];
-            children.push(this.getObjectWithSpecificAttribute( msg, key_arr ));
-          }
-          objects_arr["chat-tab"].push({
-            name: object["name"],
-            children: children
-          });
+          localStorage.setItem("SummarySetting", object["dataTag"]);
           break;
         case "game-table":
-          if(!objects_arr["game-table"]) objects_arr["game-table"] = [];
-          key_arr = ["name", "width", "height", "gridSize", "imageIdentifier", "backgroundImageIdentifier",
-                           "backgroundFilterType", "selected", "gridType", "gridColor"];
-          objects_arr["game-table"].push(this.getObjectWithSpecificAttribute( object, key_arr ));
-          break;
-        case "TableSelecter":
-          key_arr = ["gridShow", "gridSnap"];
-          localStorage.setItem("TableSelecter", JSON.stringify(this.getObjectWithSpecificAttribute( object, key_arr )));
-          break;
         case "character":
-          if(!objects_arr["character"]) objects_arr["character"] = [];
-          key_arr = ["location", "posZ", "roll", "rotate"];
-          let char_obj = this.getObjectWithSpecificAttribute( object, key_arr );
-          // Add DataElement & ChatPalette
-          char_obj["commonDataElement"] = this.getDataElementObject(object["commonDataElement"]);
-          char_obj["detailDataElement"] = this.getDataElementObject(object["detailDataElement"]);
-          char_obj["imageDataElement"] = this.getDataElementObject(object["imageDataElement"]);
-          char_obj["chatPalette"] = this.getObjectWithSpecificAttribute( object["chatPalette"], ["color", "diceBot", "value"] );
-          objects_arr["character"].push(char_obj);
+        case "table-mask":
+        case "terrain":
+        case "text-note":
+        case "dice-symbol":
+        case "chat-tab":
+        case "card-stack":
+          if(!objects_arr[object.aliasName]) objects_arr[object.aliasName] = [];
+          objects_arr[object.aliasName].push(this.getCacheObject( object ));
+          break;
+        case "card":
+          if(object["parentIdentifier"]!="") break;
+          if(!objects_arr["card"]) objects_arr["card"] = [];
+          objects_arr["card"].push(this.getCacheObject( object ));
           break;
         default:
-          arr.push(object);
+          break;
       }
+      //arr.push(object);
     }
     
-
-
     // Set Local Storage
-    if(objects_arr["chat-tab"])
-      localStorage.setItem("ChatTab", JSON.stringify(objects_arr["chat-tab"]));
-    if(objects_arr["game-table"])
-      localStorage.setItem("GameTable", JSON.stringify(objects_arr["game-table"]));
-    if(objects_arr["character"])
-      localStorage.setItem("GameCharacter", JSON.stringify(objects_arr["character"]));
-
-    console.log(arr);
+    this.updateLocalStorage(objects_arr, "chat-tab", "ChatTab");
+    this.updateLocalStorage(objects_arr, "game-table", "GameTable");
+    this.updateLocalStorage(objects_arr, "character", "GameCharacter");
+    this.updateLocalStorage(objects_arr, "table-mask", "TableMask");
+    this.updateLocalStorage(objects_arr, "terrain", "Terrain");
+    this.updateLocalStorage(objects_arr, "text-note", "TextNote");
+    this.updateLocalStorage(objects_arr, "dice-symbol", "DiceSymbol");
+    this.updateLocalStorage(objects_arr, "card", "Card");
+    this.updateLocalStorage(objects_arr, "card-stack", "CardStack");
   }
 
-  getObjectWithSpecificAttribute (object: Object, key_arr: Array<string>): Object{
+  private updateLocalStorage(save_obj: Object, saveObj_key: string, localStorage_key: string ){
+    if(save_obj[saveObj_key])
+      localStorage.setItem(localStorage_key, JSON.stringify(save_obj[saveObj_key]));
+    else
+      localStorage.removeItem(localStorage_key);
+  }
+
+  private getCacheObject(object): Object {
+    let key_arr, temp_obj;
+    switch(object.aliasName){
+      case "chat":
+        key_arr = ["form", "name", "imageIdentifier", "timestamp", "color", "text"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "chat-tab":
+        temp_obj = this.getObjectWithSpecificAttribute( object, ["name"] );
+        temp_obj["children"] = [];
+        for(let msg of object["children"])
+          temp_obj["children"].push( this.getCacheObject(msg) );
+        return temp_obj;
+      case "chat-palette":
+        key_arr = ["color", "dicebot", "value"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "TableSelecter":
+        key_arr = ["gridShow", "gridSnap"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "game-table":
+        key_arr = ["name", "width", "height", "gridSize", "imageIdentifier", "backgroundImageIdentifier", 
+                    "backgroundFilterType", "selected", "gridType", "gridColor"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "character":
+        key_arr = ["location", "posZ", "roll", "rotate"];
+        temp_obj = this.getObjectWithSpecificAttribute( object, key_arr, true );
+        temp_obj["chatPalette"] = this.getCacheObject(object["chatPalette"]);
+        return temp_obj;
+      case "table-mask":
+        key_arr = ["location", "posZ", "isLock"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "terrain":
+        key_arr = ["location", "mode", "posZ", "rotate", "isLocked"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "text-note":
+        key_arr = ["location", "posZ", "rotate"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "dice-symbol":
+        key_arr = ["location", "posZ", "rotate", "face", "owner"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "card":
+        key_arr = ["location", "posZ", "rotate", "state", "owner"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "card-stack":
+        key_arr = ["location", "posZ", "rotate", "isShowTotal", "owner"];
+        temp_obj = this.getObjectWithSpecificAttribute( object, key_arr, true );
+        temp_obj["children"] = [];
+        for(let msg of object["cardRoot"]["children"])
+          temp_obj["children"].push( this.getCacheObject(msg) );
+        return temp_obj;
+    }
+  }
+
+  private getObjectWithSpecificAttribute (object: Object, key_arr: Array<string>, isTableObjectBasic?: boolean): Object{
     var obj = {};
     for(let key of key_arr) obj[key] = object[key];
+    if(isTableObjectBasic){
+      obj["commonDataElement"] = this.getDataElementObject(object["commonDataElement"]);
+      obj["detailDataElement"] = this.getDataElementObject(object["detailDataElement"]);
+      obj["imageDataElement"]  = this.getDataElementObject(object["imageDataElement"]);
+    }
     return obj;
   }
-  getDataElementObject(object: Object): Object{
+  private getDataElementObject(object: Object): Object{
     let obj = {
-      name: object.name,
-      type: object.type,
-      value: object.value
+      name: object["name"],
+      type: object["type"],
+      value: object["value"],
+      currentValue: object["currentValue"]
     };
     if(object["children"].length>0){
-      obj.children = [];
+      obj["children"] = [];
       for(let child of object["children"]){
-        obj.children.push(this.getDataElementObject(child));
+        obj["children"].push(this.getDataElementObject(child));
       }
     }
     return obj;

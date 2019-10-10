@@ -40,7 +40,7 @@ export class DiceSymbol extends TabletopObject {
     let object = PeerCursor.find(this.owner);
     return object ? object.name : '';
   }
-  get hasOwner(): boolean { return PeerCursor.find(this.owner) != null; }
+  get hasOwner(): boolean { return this.owner!=""; /*return PeerCursor.find(this.owner) != null;*/ }
   get isMine(): boolean { return Network.peerId === this.owner; }
   get isVisible(): boolean { return !this.hasOwner || this.isMine; }
 
@@ -112,5 +112,16 @@ export class DiceSymbol extends TabletopObject {
     object.makeDiceFace(type, object.identifier);
     object.initialize();
     return object;
+  }
+
+  static easyCreate(raw_obj): DiceSymbol {
+    let game_obj: DiceSymbol = new DiceSymbol();
+    let key_arr = ["location", "posZ", "rotate", "face", "owner"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+    game_obj.imageDataElement.getFirstElementByName("imageIdentifier").destroy();
+
+    return game_obj;
   }
 }

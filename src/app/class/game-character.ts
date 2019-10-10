@@ -29,6 +29,24 @@ export class GameCharacter extends TabletopObject {
     return gameCharacter;
   }
 
+  static easyCreate(raw_obj): GameCharacter {
+    let game_obj: GameCharacter = new GameCharacter();
+    let key_arr = ["location", "posZ", "roll", "rotate"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+
+    // ChatPalette
+    let palette: ChatPalette = new ChatPalette('ChatPalette_' + game_obj.identifier);
+    palette.setPalette(raw_obj.chatPalette.value);
+    palette.color = raw_obj.chatPalette.color;
+    palette.dicebot = raw_obj.chatPalette.dicebot;
+    palette.initialize();
+    game_obj.appendChild(palette);
+
+    return game_obj
+  }
+
   createTestGameDataElement(name: string, size: number, imageIdentifier: string) {
     this.createDataElements();
 
