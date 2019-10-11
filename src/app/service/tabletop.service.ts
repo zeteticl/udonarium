@@ -53,6 +53,8 @@ export class TabletopService {
   private textNoteCache = new TabletopCache<TextNote>(() => ObjectStore.instance.getObjects(TextNote));
   private diceSymbolCache = new TabletopCache<DiceSymbol>(() => ObjectStore.instance.getObjects(DiceSymbol));
 
+  private cahceTableIdentifierMap = {};
+
   get characters(): GameCharacter[] { return this.characterCache.objects; }
   get cards(): Card[] { return this.cardCache.objects; }
   get cardStacks(): CardStack[] { return this.cardStackCache.objects; }
@@ -388,6 +390,8 @@ export class TabletopService {
         gameTable.initialize();
         if(gameTable.selected=="true")
           tableSelecter.viewTableIdentifier = gameTable.identifier;
+
+        this.cahceTableIdentifierMap[table.identifier] = gameTable.identifier;
       }
     }
 
@@ -453,12 +457,14 @@ export class TabletopService {
       // TableMask
       for(let raw_obj of gameObjectsStorage["TableMask"]){
         let game_obj: GameTableMask = GameTableMask.easyCreate(raw_obj);
-        viewTable.appendChild(game_obj);
+        let table = ObjectStore.instance.get<GameTable>(this.cahceTableIdentifierMap[raw_obj.parentId]);
+        table.appendChild(game_obj);
       }
       // Terrain
       for(let raw_obj of gameObjectsStorage["Terrain"]){
         let game_obj: Terrain = Terrain.easyCreate(raw_obj);
-        viewTable.appendChild(game_obj);
+        let table = ObjectStore.instance.get<GameTable>(this.cahceTableIdentifierMap[raw_obj.parentId]);
+        table.appendChild(game_obj);
       }
       // TextNote
       for(let raw_obj of gameObjectsStorage["TextNote"]){

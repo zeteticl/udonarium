@@ -302,7 +302,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     else{
       localStorage.setItem("AutoSave", "false");
       console.log("Clear all Cahce");
-      let gameObject_key = ["SummarySetting", "ChatTab", "GameTable", "GameCharacter", "TableMask", "Terrain", "TextNote", "DiceSymbol", "Card", "CardStack"];
+      let gameObject_key = ["SummarySetting", "TableSelecter", "ChatTab", "GameTable", "GameCharacter", "TableMask", "Terrain", "TextNote", "DiceSymbol", "Card", "CardStack"];
       for(let key of gameObject_key){
         localStorage.removeItem(key);
       }
@@ -317,6 +317,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         case "summary-setting":
           localStorage.setItem("SummarySetting", object["dataTag"]);
           break;
+        case "TableSelecter":
         case "game-table":
         case "character":
         case "table-mask":
@@ -338,7 +339,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       }
       //arr.push(object);
     }
-    
+    //console.log(arr);
+
     // Set Local Storage
     this.updateLocalStorage(objects_arr, "chat-tab", "ChatTab");
     this.updateLocalStorage(objects_arr, "game-table", "GameTable");
@@ -378,7 +380,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         return this.getObjectWithSpecificAttribute( object, key_arr );
       case "game-table":
         key_arr = ["name", "width", "height", "gridSize", "imageIdentifier", "backgroundImageIdentifier", 
-                    "backgroundFilterType", "selected", "gridType", "gridColor"];
+                    "backgroundFilterType", "selected", "gridType", "gridColor", "identifier"];
         return this.getObjectWithSpecificAttribute( object, key_arr );
       case "character":
         key_arr = ["location", "posZ", "roll", "rotate"];
@@ -386,10 +388,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         temp_obj["chatPalette"] = this.getCacheObject(object["chatPalette"]);
         return temp_obj;
       case "table-mask":
-        key_arr = ["location", "posZ", "isLock"];
+        key_arr = ["location", "posZ", "isLock", "parentId"];
         return this.getObjectWithSpecificAttribute( object, key_arr, true );
       case "terrain":
-        key_arr = ["location", "mode", "posZ", "rotate", "isLocked"];
+        key_arr = ["location", "mode", "posZ", "rotate", "isLocked", "parentId"];
         return this.getObjectWithSpecificAttribute( object, key_arr, true );
       case "text-note":
         key_arr = ["location", "posZ", "rotate"];

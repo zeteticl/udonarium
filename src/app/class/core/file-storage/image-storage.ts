@@ -99,7 +99,7 @@ export class ImageStorage {
 
   loadImageFromUrl(url: string): string {
     if(this.get(url)) return url;
-    if(url=="") return "";
+    if(url=="null" || url=="") return "";
 
     if(url.match(/^([a-z0-9])+$/)){
       let missing_img_url = "./assets/images/missing.jpg";
