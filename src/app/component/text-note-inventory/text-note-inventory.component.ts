@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
-
+//?????
 import { TextNote } from '@udonarium/core/synchronize-object/text-note';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { EventSystem, Network } from '@udonarium/core/system';
@@ -14,7 +14,8 @@ import { TabletopObject } from '@udonarium/tabletop-object';
 import { ChatPaletteComponent } from 'component/chat-palette/chat-palette.component';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
 import { ContextMenuAction, ContextMenuService, ContextMenuSeparator } from 'service/context-menu.service';
-import { TextNoteInventoryService } from 'service/game-object-inventory.service';
+//????
+//import { TextNoteInventoryService } from 'service/game-object-inventory.service';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { DiceBot } from '@udonarium/dice-bot';
@@ -64,6 +65,7 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
   constructor(
     private changeDetector: ChangeDetectorRef,
     private panelService: PanelService,
+    //????
     private inventoryService: TextNoteInventoryService,
     private contextMenuService: ContextMenuService,
     private pointerDeviceService: PointerDeviceService
