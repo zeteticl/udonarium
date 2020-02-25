@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
 
-import { GameObject } from '@udonarium/core/synchronize-object/game-object';
+import { TextNote } from '@udonarium/core/synchronize-object/text-note';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { EventSystem, Network } from '@udonarium/core/system';
 import { PeerCursor } from '@udonarium/peer-cursor';
@@ -14,7 +14,7 @@ import { TabletopObject } from '@udonarium/tabletop-object';
 import { ChatPaletteComponent } from 'component/chat-palette/chat-palette.component';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
 import { ContextMenuAction, ContextMenuService, ContextMenuSeparator } from 'service/context-menu.service';
-import { GameObjectInventoryService } from 'service/game-object-inventory.service';
+import { TextNoteInventoryService } from 'service/game-object-inventory.service';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { DiceBot } from '@udonarium/dice-bot';
@@ -25,7 +25,7 @@ import { DiceBot } from '@udonarium/dice-bot';
   styleUrls: ['./game-object-inventory.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDestroy {
   inventoryTypes: string[] = ['table', 'common', 'graveyard'];
   //GM
   @Input() gameCharacter: GameCharacter = null;
@@ -51,9 +51,9 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
   get isMine(): boolean { return this.gameCharacter.isMine; }
   get hasGM(): boolean { return this.gameCharacter.hasGM; }
   get GMName(): string { return this.gameCharacter.GMName; }
-  isDisabled(gameObject) {
+  isDisabled(TextNote) {
 
-    return gameObject.GM && !(PeerCursor.myCursor.name === gameObject.GM);
+    return TextNote.GM && !(PeerCursor.myCursor.name === TextNote.GM);
   }
 
 
@@ -64,7 +64,7 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
   constructor(
     private changeDetector: ChangeDetectorRef,
     private panelService: PanelService,
-    private inventoryService: GameObjectInventoryService,
+    private inventoryService: TextNoteInventoryService,
     private contextMenuService: ContextMenuService,
     private pointerDeviceService: PointerDeviceService
   ) { }
@@ -131,31 +131,31 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
     }
   }
 
-  getGameObjects(inventoryType: string): TabletopObject[] {
+  getTextNotes(inventoryType: string): TabletopObject[] {
     return this.getInventory(inventoryType).tabletopObjects;
   }
 
-  getInventoryTags(gameObject: GameCharacter): DataElement[] {
-    return this.getInventory(gameObject.location.name).dataElementMap.get(gameObject.identifier);
+  getInventoryTags(TextNote: GameCharacter): DataElement[] {
+    return this.getInventory(TextNote.location.name).dataElementMap.get(TextNote.identifier);
   }
 
-  onContextMenu(e: Event, gameObject: GameCharacter) {
+  onContextMenu(e: Event, TextNote: GameCharacter) {
     if (document.activeElement instanceof HTMLInputElement && document.activeElement.getAttribute('type') !== 'range') return;
     e.stopPropagation();
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
-    this.selectGameObject(gameObject);
+    this.selectTextNote(TextNote);
 
     let position = this.pointerDeviceService.pointers[0];
 
     let actions: ContextMenuAction[] = [];
 
 
-    actions.push({ name: '顯示詳情', action: () => { this.showDetail(gameObject); } });
-    if (gameObject.location.name !== 'graveyard') {
-      actions.push({ name: '顯示對話組合版', action: () => { this.showChatPalette(gameObject) } });
+    actions.push({ name: '顯示詳情', action: () => { this.showDetail(TextNote); } });
+    if (TextNote.location.name !== 'graveyard') {
+      actions.push({ name: '顯示對話組合版', action: () => { this.showChatPalette(TextNote) } });
     }
 
     actions.push(ContextMenuSeparator);
@@ -166,19 +166,19 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
       { name: 'graveyard', alias: '移動到墓場' }
     ];
     for (let location of locations) {
-      if (gameObject.location.name === location.name) continue;
+      if (TextNote.location.name === location.name) continue;
       actions.push({
         name: location.alias, action: () => {
-          gameObject.setLocation(location.name);
+          TextNote.setLocation(location.name);
           SoundEffect.play(PresetSound.piecePut);
         }
       });
     }
 
-    if (gameObject.location.name === 'graveyard') {
+    if (TextNote.location.name === 'graveyard') {
       actions.push({
         name: '刪除', action: () => {
-          this.deleteGameObject(gameObject);
+          this.deleteTextNote(TextNote);
           SoundEffect.play(PresetSound.sweep);
         }
       });
@@ -186,12 +186,12 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
     actions.push(ContextMenuSeparator);
     actions.push({
       name: '複製', action: () => {
-        this.cloneGameObject(gameObject);
+        this.cloneTextNote(TextNote);
         SoundEffect.play(PresetSound.piecePut);
       }
     });
 
-    this.contextMenuService.open(position, actions, gameObject.name);
+    this.contextMenuService.open(position, actions, TextNote.name);
   }
 
   toggleEdit() {
@@ -200,47 +200,47 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
 
   cleanInventory() {
     let tabTitle = this.getTabTitle(this.selectTab);
-    let gameObjects = this.getGameObjects(this.selectTab);
-    if (!confirm(`${tabTitle}存在的${gameObjects.length}個檔案要永久刪除？`)) return;
-    for (const gameObject of gameObjects) {
-      this.deleteGameObject(gameObject);
+    let TextNotes = this.getTextNotes(this.selectTab);
+    if (!confirm(`${tabTitle}存在的${TextNotes.length}個檔案要永久刪除？`)) return;
+    for (const TextNote of TextNotes) {
+      this.deleteTextNote(TextNote);
     }
     SoundEffect.play(PresetSound.sweep);
   }
 
-  private cloneGameObject(gameObject: TabletopObject) {
-    gameObject.clone();
+  private cloneTextNote(TextNote: TabletopObject) {
+    TextNote.clone();
   }
 
-  public showDetail(gameObject: GameCharacter) {
-    EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
+  public showDetail(TextNote: GameCharacter) {
+    EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: TextNote.identifier, className: TextNote.aliasName });
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '角色卡';
-    if (gameObject.name.length) title += ' - ' + gameObject.name;
+    if (TextNote.name.length) title += ' - ' + TextNote.name;
     let option: PanelOption = { title: title, left: coordinate.x - 800, top: coordinate.y - 300, width: 800, height: 600 };
     let component = this.panelService.open<GameCharacterSheetComponent>(GameCharacterSheetComponent, option);
-    component.tabletopObject = gameObject;
+    component.tabletopObject = TextNote;
   }
 
-  private showChatPalette(gameObject: GameCharacter) {
+  private showChatPalette(TextNote: GameCharacter) {
     let coordinate = this.pointerDeviceService.pointers[0];
     let option: PanelOption = { left: coordinate.x - 250, top: coordinate.y - 175, width: 630, height: 350 };
     let component = this.panelService.open<ChatPaletteComponent>(ChatPaletteComponent, option);
-    component.character = gameObject;
+    component.character = TextNote;
   }
 
-  selectGameObject(gameObject: GameObject) {
-    let aliasName: string = gameObject.aliasName;
-    EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
+  selectTextNote(TextNote: TextNote) {
+    let aliasName: string = TextNote.aliasName;
+    EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: TextNote.identifier, className: TextNote.aliasName });
   }
 
-  private deleteGameObject(gameObject: GameObject) {
-    gameObject.destroy();
+  private deleteTextNote(TextNote: TextNote) {
+    TextNote.destroy();
     this.changeDetector.markForCheck();
   }
 
-  trackByGameObject(index: number, gameObject: GameObject) {
-    return gameObject ? gameObject.identifier : index;
+  trackByTextNote(index: number, TextNote: TextNote) {
+    return TextNote ? TextNote.identifier : index;
   }
 
   onChangeGameType(gameType: string) {

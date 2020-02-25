@@ -1,8 +1,8 @@
 <div class="component">
   <ng-container *ngTemplateOutlet="inventoryTab"></ng-container>
   <ng-container *ngTemplateOutlet="inventoryViewSetting"></ng-container>
-  <div *ngIf="getGameObjects(selectTab).length < 1">{{getTabTitle(selectTab)}}空空如也</div>
-  <div *ngFor="let gameObject of getGameObjects(selectTab); trackBy: trackByGameObject"
+  <div *ngIf="getTextNote(selectTab).length < 1">{{getTabTitle(selectTab)}}空空如也</div>
+  <div *ngFor="let gameObject of getTextNote(selectTab); trackBy: trackByGameObject"
     (click)="selectGameObject(gameObject)" (dblclick)="showDetail(this.gameObject)">
 
     <ng-container *ngTemplateOutlet="gameObjectTags; context:{ gameObject: gameObject}">
@@ -13,7 +13,7 @@
   </div>
   <div *ngIf="selectTab === 'graveyard'" style="padding-top: 6px;">
     <button class="danger" (click)="cleanInventory()"
-      [attr.disabled]="getGameObjects(selectTab).length < 1 ? '' : null">清空墓場</button>
+      [attr.disabled]="getTextNote(selectTab).length < 1 ? '' : null">清空墓場</button>
   </div>
 </div>
 <ng-template #inventoryTab>
