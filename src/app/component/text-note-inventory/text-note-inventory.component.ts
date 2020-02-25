@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
 //?????
-import { TextNote } from '@udonarium/core/synchronize-object/text-note';
+//import { TextNote } from '@udonarium/core/synchronize-object/text-note';
+import { TextNote } from '@udonarium/text-note';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { EventSystem, Network } from '@udonarium/core/system';
 import { PeerCursor } from '@udonarium/peer-cursor';
@@ -15,15 +16,15 @@ import { ChatPaletteComponent } from 'component/chat-palette/chat-palette.compon
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
 import { ContextMenuAction, ContextMenuService, ContextMenuSeparator } from 'service/context-menu.service';
 //????
-//import { TextNoteInventoryService } from 'service/game-object-inventory.service';
+import { TextNoteInventoryService } from 'service/text-note-inventory.service';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { DiceBot } from '@udonarium/dice-bot';
 
 @Component({
-  selector: 'game-object-inventory',
-  templateUrl: './game-object-inventory.component.html',
-  styleUrls: ['./game-object-inventory.component.css'],
+  selector: 'text-note-inventory',
+  templateUrl: './text-note-inventory.component.html',
+  styleUrls: ['./text-note-inventory.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -36,16 +37,16 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
 
   isEdit: boolean = false;
 
-  get sortTag(): string { return this.inventoryService.sortTag; }
-  set sortTag(sortTag: string) { this.inventoryService.sortTag = sortTag; }
-  get sortOrder(): SortOrder { return this.inventoryService.sortOrder; }
-  set sortOrder(sortOrder: SortOrder) { this.inventoryService.sortOrder = sortOrder; }
-  get dataTag(): string { return this.inventoryService.dataTag; }
-  set dataTag(dataTag: string) { this.inventoryService.dataTag = dataTag; }
-  get dataTags(): string[] { return this.inventoryService.dataTags; }
+  get sortTag(): string { return this.TextNoteInventoryService.sortTag; }
+  set sortTag(sortTag: string) { this.TextNoteInventoryService.sortTag = sortTag; }
+  get sortOrder(): SortOrder { return this.TextNoteInventoryService.sortOrder; }
+  set sortOrder(sortOrder: SortOrder) { this.TextNoteInventoryService.sortOrder = sortOrder; }
+  get dataTag(): string { return this.TextNoteInventoryService.dataTag; }
+  set dataTag(dataTag: string) { this.TextNoteInventoryService.dataTag = dataTag; }
+  get dataTags(): string[] { return this.TextNoteInventoryService.dataTags; }
   get diceBotInfos() { return DiceBot.diceBotInfos }
-  get gameType(): string { return this.inventoryService.gameType; }
-  set gameType(gameType: string) { this.inventoryService.gameType = gameType; }
+  get gameType(): string { return this.TextNoteInventoryService.gameType; }
+  set gameType(gameType: string) { this.TextNoteInventoryService.gameType = gameType; }
   //GM
   get GM(): string { return this.gameCharacter.GM; }
   set GM(GM: string) { this.gameCharacter.GM = GM; }
@@ -60,13 +61,13 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
 
   get sortOrderName(): string { return this.sortOrder === SortOrder.ASC ? '升序' : '降序'; }
 
-  get newLineString(): string { return this.inventoryService.newLineString; }
+  get newLineString(): string { return this.TextNoteInventoryService.newLineString; }
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private panelService: PanelService,
     //????
-    private inventoryService: TextNoteInventoryService,
+    private TextNoteInventoryService: TextNoteInventoryService,
     private contextMenuService: ContextMenuService,
     private pointerDeviceService: PointerDeviceService
   ) { }
@@ -123,13 +124,13 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
   getInventory(inventoryType: string) {
     switch (inventoryType) {
       case 'table':
-        return this.inventoryService.tableInventory;
+        return this.TextNoteInventoryService.tableInventory;
       case Network.peerId:
-        return this.inventoryService.privateInventory;
+        return this.TextNoteInventoryService.privateInventory;
       case 'graveyard':
-        return this.inventoryService.graveyardInventory;
+        return this.TextNoteInventoryService.graveyardInventory;
       default:
-        return this.inventoryService.commonInventory;
+        return this.TextNoteInventoryService.commonInventory;
     }
   }
 
@@ -148,7 +149,7 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
-    this.selectTextNote(TextNote);
+   // this.selectTextNote(TextNote);
 
     let position = this.pointerDeviceService.pointers[0];
 
@@ -180,7 +181,7 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
     if (TextNote.location.name === 'graveyard') {
       actions.push({
         name: '刪除', action: () => {
-          this.deleteTextNote(TextNote);
+        //  this.deleteTextNote(TextNote);
           SoundEffect.play(PresetSound.sweep);
         }
       });
@@ -205,7 +206,7 @@ export class TextNoteInventoryComponent implements OnInit, AfterViewInit, OnDest
     let TextNotes = this.getTextNotes(this.selectTab);
     if (!confirm(`${tabTitle}存在的${TextNotes.length}個檔案要永久刪除？`)) return;
     for (const TextNote of TextNotes) {
-      this.deleteTextNote(TextNote);
+     // this.deleteTextNote(TextNote);
     }
     SoundEffect.play(PresetSound.sweep);
   }
