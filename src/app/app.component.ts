@@ -89,9 +89,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     chatTab.name = 'メインタブ';
     chatTab.initialize();
 
+    chatTab.receiveInfo = true;
+
+
     chatTab = new ChatTab('SubTab');
     chatTab.name = 'サブタブ';
     chatTab.initialize();
+    
 
     let fileContext = ImageFile.createEmpty('none_icon').toContext();
     fileContext.url = './assets/images/ic_account_circle_black_24dp_2x.png';

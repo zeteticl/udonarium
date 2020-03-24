@@ -29,6 +29,17 @@ export class ChatMessageService {
     return ObjectStore.instance.getObjects(ChatTab);
   }
 
+  get infoTab(): ChatTab {
+    return this.chatTabs.find(chatTab => chatTab.receiveInfo);
+  }
+  setReceiveInfo(chatTab: ChatTab, receiveInfo: boolean): void {
+    this.chatTabs
+      .filter(tab => tab.receiveInfo)
+      .forEach(tab => (tab.receiveInfo = false));
+    chatTab.receiveInfo = receiveInfo;
+  }
+
+
   calibrateTimeOffset() {
     if (this.intervalTimer != null) {
       console.log('calibrateTimeOffset was canceled.');
@@ -86,6 +97,26 @@ export class ChatMessageService {
 
     return chatTab.addMessage(chatMessage);
   }
+
+
+  sendSystemMessage(name: string, text: string, type?: string): void {
+    if (!this.infoTab) {
+      return;
+    }
+    const systemMessage: ChatMessageContext = {
+      identifier: '',
+      tabIdentifier: this.infoTab.identifier,
+      originFrom: Network.peerContext.id,
+      from: type ? `System-${type}` : 'System',
+      timestamp: this.calcTimeStamp(this.infoTab),
+      imageIdentifier: '',
+      tag: 'system',
+      name,
+      text
+    };
+    this.infoTab.addMessage(systemMessage);
+  }
+
 
   private findId(identifier: string): string {
     let object = ObjectStore.instance.get(identifier);
