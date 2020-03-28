@@ -44,12 +44,12 @@ import { SaveDataService } from 'service/save-data.service';
 
 
 export class AppComponent implements AfterViewInit, OnDestroy {
-  public static S: boolean = true;
-  public onSaveUsernameChanged(value: boolean) {
-    AppComponent.saveUsername = value;
+  public static SoundEffectSwitch: boolean = true;
+  public onSoundEffectSwitchChanged(value: boolean) {
+    AppComponent.SoundEffectSwitch = value;
   }
-  public saveUsername2() {
-    return AppComponent.saveUsername;
+  public SoundEffectSwitch2() {
+    return AppComponent.SoundEffectSwitch;
   }
 
 

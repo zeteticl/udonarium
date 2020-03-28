@@ -5,7 +5,10 @@
   <nav>
     <ul>
       <label>
-        <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox" [checked]="saveUsername2()"  (change)="onSaveUsernameChanged(saveUserNameCheckBox.checked)"  />
+        <input #SoundEffectSwitchCheckBox id="SoundEffectSwitchCheckBox" type="checkbox"
+          [checked]="SoundEffectSwitch2()" (change)="onSoundEffectSwitchChanged(SoundEffectSwitchCheckBox.checked)" />
+        <i *ngIf="SoundEffectSwitchCheckBox.checked" class="material-icons icon-size">volume_up</i>
+        <i *ngIf="!SoundEffectSwitchCheckBox.checked" class="material-icons icon-size">volume_off</i>
       </label>
       <br />
       <li (click)="open('PeerMenuComponent')">

@@ -66,8 +66,8 @@ export class SoundEffect extends GameObject {
     } else {
       identifier = arg.identifier;
     }
-    console.log(AppComponent.saveUsername)
-    if (AppComponent.saveUsername)
+    console.log(AppComponent.SoundEffectSwitch)
+    if (AppComponent.SoundEffectSwitch)
       SoundEffect._play(identifier);
   }
 
