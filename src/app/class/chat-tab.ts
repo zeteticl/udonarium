@@ -8,7 +8,6 @@ import { EventSystem } from './core/system';
 export class ChatTab extends ObjectNode implements InnerXml {
   @SyncVar() name: string = 'タブ';
   get chatMessages(): ChatMessage[] { return <ChatMessage[]>this.children; }
-  receiveInfo = false;
   private _unreadLength: number = 0;
   get unreadLength(): number { return this._unreadLength; }
   get hasUnread(): boolean { return 0 < this.unreadLength; }
