@@ -4,13 +4,6 @@
 <ui-panel [top]="0" [left]="0" [width]="100" [height]="470" [title]="'メニュー'">
   <nav>
     <ul>
-      <label>
-        <input #SoundEffectSwitchCheckBox id="SoundEffectSwitchCheckBox" type="checkbox"
-          [checked]="SoundEffectSwitch2()" (change)="onSoundEffectSwitchChanged(SoundEffectSwitchCheckBox.checked)" />
-        <i *ngIf="SoundEffectSwitchCheckBox.checked" class="material-icons icon-size">volume_up</i>
-        <i *ngIf="!SoundEffectSwitchCheckBox.checked" class="material-icons icon-size">volume_off</i>
-      </label>
-      <br />
       <li (click)="open('PeerMenuComponent')">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">people</i></div>

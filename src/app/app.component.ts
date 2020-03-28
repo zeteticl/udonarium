@@ -44,14 +44,7 @@ import { SaveDataService } from 'service/save-data.service';
 
 
 export class AppComponent implements AfterViewInit, OnDestroy {
-  public static SoundEffectSwitch: boolean = true;
-  public onSoundEffectSwitchChanged(value: boolean) {
-    AppComponent.SoundEffectSwitch = value;
-  }
-  public SoundEffectSwitch2() {
-    return AppComponent.SoundEffectSwitch;
-  }
-
+ 
 
   @ViewChild('modalLayer', { read: ViewContainerRef, static: true }) modalLayerViewContainerRef: ViewContainerRef;
   private immediateUpdateTimer: NodeJS.Timer = null;

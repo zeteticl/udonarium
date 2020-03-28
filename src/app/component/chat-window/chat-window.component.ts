@@ -56,6 +56,15 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
       this.scrollToBottom(true);
     }
   }
+  public static SoundEffectSwitch: boolean = true;
+  public onSoundEffectSwitchChanged() {
+    if (ChatWindowComponent.SoundEffectSwitch)
+      ChatWindowComponent.SoundEffectSwitch = false
+    else ChatWindowComponent.SoundEffectSwitch = true
+  }
+  public SoundEffectSwitch2() {
+    return ChatWindowComponent.SoundEffectSwitch;
+  }
 
   get chatTab(): ChatTab { return ObjectStore.instance.get<ChatTab>(this.chatTabidentifier); }
   maxLogLength: number = 1000;
