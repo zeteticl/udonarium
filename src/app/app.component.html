@@ -5,8 +5,7 @@
   <nav>
     <ul>
       <label>
-        操作ログを受け取る
-        <input type="checkbox" [(ngModel)]="receiveInfo" />
+        <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox" [checked]="saveUsername2()"  (change)="onSaveUsernameChanged(saveUserNameCheckBox.checked)"  />
       </label>
       <br />
       <li (click)="open('PeerMenuComponent')">
