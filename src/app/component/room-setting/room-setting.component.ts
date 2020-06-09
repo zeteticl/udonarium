@@ -19,6 +19,7 @@ export class RoomSettingComponent implements OnInit, OnDestroy {
   roomName: string = '我的房間';
   password: string = '';
   isPrivate: boolean = false;
+  allowWatchman: boolean = false;
 
   get peerId(): string { return Network.peerId; }
   get isConnected(): boolean { return Network.peerIds.length <= 1 ? false : true; }

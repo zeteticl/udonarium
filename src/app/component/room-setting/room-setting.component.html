@@ -1,9 +1,10 @@
 <div *ngIf="!isConnected;else other_content">
-  <div>房間名 : <input class="input" (input)="calcPeerId($event.target.value, password)" [(ngModel)]="roomName" required minlength="1" maxlength="128" #roomNameValidation="ngModel"
-      placeholder="必須有房間名稱" /></div>
-  <div>密碼: <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password" maxlength="12" #passwordValidation="ngModel" placeholder="留空即沒有密碼"
-    /></div>
-  <hr/>
+  <div>房間名 : <input class="input" (input)="calcPeerId($event.target.value, password)" [(ngModel)]="roomName" required
+      minlength="1" maxlength="128" #roomNameValidation="ngModel" placeholder="必須有房間名稱" /></div>
+  <div>密碼: <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password"
+      maxlength="12" #passwordValidation="ngModel" placeholder="留空即沒有密碼" /></div>
+      <div>允許觀戰<input type="checkbox" [(ngModel)]="Watchman" /></div>
+  <hr />
   <div *ngIf="roomNameValidation.errors && (roomNameValidation.dirty || roomNameValidation.touched)">
     <div [hidden]="!roomNameValidation.errors.required">
       必須有房間名稱。
@@ -12,7 +13,7 @@
       必須有房間名稱。
     </div>
     <div [hidden]="!roomNameValidation.errors.maxlength">
-      房間名前長度要在28以內。
+      房間名前長度要在28個字以內。
     </div>
   </div>
   <div *ngIf="passwordValidation.errors && (passwordValidation.dirty || passwordValidation.touched)">
@@ -24,7 +25,8 @@
     名稱和密碼的加起來的長度似乎太長。 嘗試讓它短一些。
   </div>
   <div>
-    <button [disabled]="!roomNameValidation.valid || !passwordValidation.valid || !validateLength" (click)="createRoom()">新增房間</button>
+    <button [disabled]="!roomNameValidation.valid || !passwordValidation.valid || !validateLength"
+      (click)="createRoom()">新增房間</button>
   </div>
 </div>
 <div><span style="font-size: 12px;">※當參與者人數變為零時，創建的房室將被解散。 如果您想在保留狀態留待下一次遊戲，請按“保存房間”。</span></div>
