@@ -204,8 +204,8 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
       let gameName: string = 'ダイスボット';
       for (let diceBotInfo of DiceBot.diceBotInfos) {
-        if (diceBotInfo.script === this.gameType) {
-          gameName = 'ダイスボット<' + diceBotInfo.game + '＞'
+        if (diceBotInfo.gameType === this.gameType) {
+          gameName = 'ダイスボット<' + diceBotInfo.gameName + '＞'
         }
       }
       gameName += 'の説明';
