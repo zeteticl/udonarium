@@ -11,15 +11,9 @@ class LostRoyal < DiceBot
   # ゲームシステム名の読みがな
   SORT_KEY = 'ろすとろいやる'
 
-<<<<<<< HEAD
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
-・D66骰子あり
-=======
   # ダイスボットの使い方
   HELP_MESSAGE = <<INFO_MESSAGE_TEXT
 ・D66ダイスあり
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
 行為判定
 　LR[x,x,x,x,x,x]

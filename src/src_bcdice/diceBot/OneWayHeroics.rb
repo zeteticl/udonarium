@@ -2,15 +2,8 @@
 # frozen_string_literal: true
 
 class OneWayHeroics < DiceBot
-<<<<<<< HEAD
-  def initialize
-    super
-    @d66Type = 2 # d66の差し替え(0=D66無し, 1=順番そのまま([5,3]->53), 2=升序入れ替え([5,3]->35)
-  end
-=======
   # ゲームシステムの識別子
   ID = 'OneWayHeroics'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = '片道勇者'

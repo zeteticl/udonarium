@@ -5,21 +5,8 @@ class DiceOfTheDead < DiceBot
   # ゲームシステムの識別子
   ID = 'DiceOfTheDead'
 
-<<<<<<< HEAD
-  def initialize
-    super
-    @sendMode = 2
-    @sortType = 1
-    @d66Type = 2
-  end
-
-  def gameName
-    '骰子・オブ・ザ・デッド'
-  end
-=======
   # ゲームシステム名
   NAME = 'ダイス・オブ・ザ・デッド'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名の読みがな
   SORT_KEY = 'たいすおふさてつと'

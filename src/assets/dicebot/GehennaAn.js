@@ -50,31 +50,8 @@
       return (self.sortType = 3);
     }, $GehennaAn_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_GehennaAn_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "ゲヘナ・アナスタシス"
-    }, TMP_GehennaAn_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_GehennaAn_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "GehennaAn"
-    }, TMP_GehennaAn_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_GehennaAn_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "戦闘判定と通常判定に対応。幸運の助け、連撃増加値(戦闘判定)、闘技チット(戦闘判定)を自動表示します。\n" + "・戦闘判定　(nGAt+m)\n" + "　骰子数n、目標値t、修正値mで戦闘判定を行います。\n" + "　幸運の助け、連撃増加値、闘技チットを自動処理します。\n" + "・通常判定　(nGt+m)\n" + "　骰子数n、目標値t、修正値mで通常判定を行います。\n" + "　幸運の助けを自動処理します。(連撃増加値、闘技チットを表示抑制します)\n"
-    }, TMP_GehennaAn_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$changeText', TMP_GehennaAn_changeText_9 = function $$changeText(string) {
-      var TMP_5, TMP_6, TMP_7, TMP_8, self = this;
-=======
     Opal.def(self, '$changeText', $GehennaAn_changeText$2 = function $$changeText(string) {
       var $$3, $$4, $$5, $$6, self = this;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       string = $send(string, 'gsub', [/(\d+)GA(\d+)([\+\-][\+\-\d]+)/], ($$3 = function(){var self = $$3.$$s || this;

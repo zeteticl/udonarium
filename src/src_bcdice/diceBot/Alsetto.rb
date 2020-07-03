@@ -2,17 +2,8 @@
 # frozen_string_literal: true
 
 class Alsetto < DiceBot
-<<<<<<< HEAD
-  setPrefixes(['\d+AL(C|G)?(\d+)?(x|\*)\d+', '\d+ALC?(\d+)?'])
-
-  def initialize
-    super
-    @sortType = 1 # 骰子のソート有
-  end
-=======
   # ゲームシステムの識別子
   ID = 'Alsetto'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = '詩片のアルセット'

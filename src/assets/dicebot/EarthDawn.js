@@ -45,29 +45,7 @@
       return (self.sortType = 1);
     }, $EarthDawn_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_EarthDawn_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "アースドーン"
-    }, TMP_EarthDawn_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_EarthDawn_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "EarthDawn"
-    }, TMP_EarthDawn_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_EarthDawn_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "ステップ骰子　(xEn+k)\n" + "ステップx、目標値n(省略可能）、カルマ骰子k(D2-D20)でステップ骰子をロールします。\n" + "振り足しも自動。\n" + "例）9E　10E8　10E+D12\n"
-    }, TMP_EarthDawn_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_EarthDawn_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $EarthDawn_rollDiceCommand$2 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var self = this;
 
       return self.$ed_step(command)

@@ -41,31 +41,8 @@
       return (self.sortType = 1);
     }, $Postman_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_Postman_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "壊れた世界のポストマン"
-    }, TMP_Postman_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Postman_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "Postman"
-    }, TMP_Postman_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Postman_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "◆判定：[n]PO[+-a][> or >= or @X]　　[]内省略可。\n" + "\n" + "達成値と判定の成否、クリティカル、ファンブルを結果表示します。\n" + "「n」で骰子数を指定。省略時は2D。\n" + "「+-a」で達成値への修正を指定。「+2+1-4」のような複数回指定可。\n" + "「>X」「>=X」「@X」で難易度を指定可。\n" + "「>X」は達成値>難易度、「>=X」「@X」は達成値>=難易度で判定します。\n" + "\n" + "【書式例】\n" + "3PO+2-1 → 3Dで達成値修正+1の判定。達成値のみ表示。\n" + "PO@5+2 → 2Dで目標値7の判定。判定の成否と達成値を表示。\n" + "4PO-2+1>7+2 → 4Dで達成値修正-1、目標値9（同値は失敗）の判定。\n" + "\n" + "\n" + "◆天候チェック：WEA[n]　　[]内省略可。\n" + "\n" + "天候チェック表を参照します。\n" + "「n」を指定すると、指定した結果を表示します。（【幸運点】使用時用）\n" + "\n" + "\n" + "◆自由行動シチュエーション表：FRE\n"
-    }, TMP_Postman_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_Postman_rollDiceCommand_7 = function $$rollDiceCommand(command) {
-      var $a, TMP_5, TMP_6, self = this, text = nil, $case = nil, diceCount = nil, modify = nil, modifyAddString = nil, type = nil, target = nil, targetAddString = nil, modify_list = nil, target_list = nil, roc = nil;
-=======
     Opal.def(self, '$rollDiceCommand', $Postman_rollDiceCommand$2 = function $$rollDiceCommand(command) {
       var $a, $$3, $$4, self = this, text = nil, $case = nil, diceCount = nil, modify = nil, modifyAddString = nil, type = nil, target = nil, targetAddString = nil, modify_list = nil, target_list = nil, roc = nil;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       text = (function() {$case = command.$upcase();

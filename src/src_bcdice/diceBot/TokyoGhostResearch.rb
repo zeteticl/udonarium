@@ -2,15 +2,8 @@
 # frozen_string_literal: true
 
 class TokyoGhostResearch < DiceBot
-<<<<<<< HEAD
-  # 骰子ボットで使用するコマンドを配列で列挙する
-  setPrefixes([
-    'OP', 'TB', 'TK?\(\d+\)'
-  ])
-=======
   # ゲームシステムの識別子
   ID = 'TokyoGhostResearch'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = '東京ゴーストリサーチ'

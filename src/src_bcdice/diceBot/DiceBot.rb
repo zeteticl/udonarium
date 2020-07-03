@@ -51,41 +51,24 @@ class DiceBot
 
     private
 
-<<<<<<< HEAD
-  # 継承された際に骰子ボットの接頭辞リストをクリアする
-  # @param [DiceBot] subclass DiceBotを継承したクラス
-  # @return [void]
-  def self.inherited(subclass)
-    subclass.clearPrefixes
-=======
     # 継承された際にダイスボットの接頭辞リストをクリアする
     # @param [DiceBot] subclass DiceBotを継承したクラス
     # @return [void]
     def inherited(subclass)
       subclass.clearPrefixes
     end
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
   end
 
   clearPrefixes
 
   @@bcdice = nil
 
-<<<<<<< HEAD
-  @@DEFAULT_SEND_MODE = 2 # デフォルトの送信形式(0=結果のみ,1=0+式,2=1+骰子個別)
-
-  def initialize
-    @sendMode = @@DEFAULT_SEND_MODE # (0=結果のみ,1=0+式,2=1+骰子個別)
-    @sortType = 0 # ソート設定(1 = 足し算骰子でソート有, 2 = バラバラロール（Bコマンド）でソート有, 3 = １と２両方ソート有）
-    @sameDiceRerollCount = 0 # ゾロ目で振り足し(0=無し, 1=全部同じ目, 2=骰子のうち2個以上同じ目)
-=======
   DEFAULT_SEND_MODE = 2 # デフォルトの送信形式(0=結果のみ,1=0+式,2=1+ダイス個別)
 
   def initialize
     @sendMode = DEFAULT_SEND_MODE # (0=結果のみ,1=0+式,2=1+ダイス個別)
     @sortType = 0 # ソート設定(1 = 足し算ダイスでソート有, 2 = バラバラロール（Bコマンド）でソート有, 3 = １と２両方ソート有）
     @sameDiceRerollCount = 0 # ゾロ目で振り足し(0=無し, 1=全部同じ目, 2=ダイスのうち2個以上同じ目)
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     @sameDiceRerollType = 0 # ゾロ目で振り足しのロール種別(0=判定のみ, 1=ダメージのみ, 2=両方)
     @d66Type = 1 # d66の差し替え(0=D66無し, 1=順番そのまま([5,3]->53), 2=升序入れ替え([5,3]->35)
     @isPrintMaxDice = false # 最大値表示
@@ -451,19 +434,6 @@ class DiceBot
     return '', 0
   end
 
-<<<<<<< HEAD
-  # 骰子目文字列から骰子値を変更する場合の処理（現状クトゥルフ・テック専用）
-  def changeDiceValueByDiceText(dice_now, _dice_str, _isCheckSuccess, _dice_max)
-    dice_now
-  end
-
-  # SW専用
-  def setRatingTable(_nick_e, _tnick, _channel_to_list)
-    '1'
-  end
-
-=======
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
   # ガンドッグのnD9専用
   def isD9
     false

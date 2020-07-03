@@ -45,32 +45,6 @@ INFO_MESSAGE_TEXT
     end
   end
 
-<<<<<<< HEAD
-  def gameName
-    'バルナ・クロニカ'
-  end
-
-  def gameType
-    "BarnaKronika"
-  end
-
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
-・通常判定　nBK
-　骰子数nで判定ロールを行います。
-　セット数が1以上の時はセット数も表示します。
-・攻撃判定　nBA
-　骰子数nで判定ロールを行い、攻撃値と命中部位も表示します。
-・クリティカルコール　nBKCt　nBACt
-　判定コマンドの後ろに「Ct」を付けるとクリティカルコールです。
-　骰子数n,コール数tで判定ロールを行います。
-　骰子数nで判定ロールを行います。
-　セット数が1以上の時はセット数も表示し、攻撃判定の場合は命中部位も表示します。
-INFO_MESSAGE_TEXT
-  end
-
-=======
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
   def changeText(string)
     debug('parren_killer_add begin string', string)
 

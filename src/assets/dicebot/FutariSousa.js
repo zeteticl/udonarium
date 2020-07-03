@@ -41,35 +41,7 @@
     }, $FutariSousa_initialize$1.$$arity = 0);
     self.$setPrefixes(["(\\d+)?DT", "(\\d+)?AS", "SHRD", "SHFM", "SHBT", "SHPI", "SHEG", "SHWP", "SHDS", "SHFT", "SHIN", "SHEM", "EVS", "EVW", "EVN", "EVC", "EVV", "OBT", "ACT", "EWT", "WMT", "BGDD", "BGDG", "BGDM", "BGAJ", "BGAP", "BGAI", "HT", "BT", "GRT", "MIT", "JBT66", "JBT10", "FST66", "FST10", "FLT66", "FLT10", "LDT66", "LDT10", "NCT66", "NCT10"]);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_FutariSousa_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "フタリソウサ"
-    }, TMP_FutariSousa_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_FutariSousa_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "FutariSousa"
-    }, TMP_FutariSousa_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_FutariSousa_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・判定用コマンド\n" + "探偵用：【DT】…10面骰子を2つ振って判定します。『有利』なら【3DT】、『不利』なら【1DT】を使います。\n" + "助手用：【AS】…6面骰子を2つ振って判定します。『有利』なら【3AS】、『不利』なら【1AS】を使います。\n" + "・各種表\n" + "【調査時】\n" + "異常な癖決定表 SHRD\n" + "　口から出る表 SHFM／強引な捜査表　　　 SHBT／すっとぼけ表　 SHPI\n" + "　事件に夢中表 SHEG／パートナーと……表 SHWP／何かしている表 SHDS\n" + "　奇想天外表　 SHFT／急なひらめき表　　 SHIN／喜怒哀楽表　　 SHEM\n" + "イベント表\n" + "　現場にて　 EVS／なぜ？　 EVW／協力者と共に EVN\n" + "　向こうから EVC／VS容疑者 EVV\n" + "調査の障害表 OBT　　変調表 ACT　　目撃者表 EWT　　迷宮入り表 WMT\n" + "【設定時】\n" + "背景表\n" + "　探偵　運命の血統 BGDD／天性の才能 BGDG／マニア　　　　 BGDM\n" + "　助手　正義の人　 BGAJ／情熱の人　 BGAP／巻き込まれの人 BGAI\n" + "身長表 HT　　たまり場表 BT　　関係表 GRT　　思い出の品決定表 MIT\n" + "職業表A・B　　JBT66・JBT10　　ファッション特徴表A・B　　　　FST66・FST10\n" + "感情表A／B　　FLT66・FLT10　　好きなもの／嫌いなもの表A・B　LDT66・LDT10\n" + "呼び名表A・B　NCT66・NCT10\n"
-    }, TMP_FutariSousa_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$changeText', TMP_FutariSousa_changeText_5 = function $$changeText(string) {
-      var self = this;
-
-      return string
-    }, TMP_FutariSousa_changeText_5.$$arity = 1);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_FutariSousa_rollDiceCommand_6 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $FutariSousa_rollDiceCommand$2 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var $a, $b, self = this, output = nil, type = nil, diceText = nil, $case = nil, count = nil;
 
       

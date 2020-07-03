@@ -5,19 +5,8 @@ class Avandner < DiceBot
   # ゲームシステムの識別子
   ID = 'Avandner'
 
-<<<<<<< HEAD
-  def initialize
-    super
-    @sortType = 1 # 骰子のソート有
-  end
-
-  def gameName
-    '黒絢のアヴァンドナー'
-  end
-=======
   # ゲームシステム名
   NAME = '黒絢のアヴァンドナー'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名の読みがな
   SORT_KEY = 'こつけんのあうあんとなあ'

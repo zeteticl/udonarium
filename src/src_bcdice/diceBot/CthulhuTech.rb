@@ -26,17 +26,9 @@ class CthulhuTech < DiceBot
 　成功、失敗、クリティカル、ファンブルを自動判定します。
 　例）2D10>=12　4D10+2>=28　5D10+2-4>=32
 
-<<<<<<< HEAD
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
-テストの骰子計算を実装。
-成功、失敗、クリティカル、ファンブルの自動判定。
-コンバットテスト(防御側有利なので「>=」ではなく「>」で入力)の時はダメージ骰子も表示。
-=======
 ・対抗判定（contest）：nD10+m>d
 　行為判定と同様ですが、防御側有利のため「>=」ではなく「>」を入力します。
 　ダメージダイスも表示します。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 INFO_MESSAGE_TEXT
 
   # 行為判定のノード
@@ -156,13 +148,6 @@ INFO_MESSAGE_TEXT
         max
     end
 
-<<<<<<< HEAD
-  def getDamageDice(total_n, diff)
-    debug('getDamageDice total_n, diff', total_n, diff)
-    damageDiceCount = ((total_n - diff) / 5.0).ceil
-    debug('damageDiceCount', damageDiceCount)
-    damageDice = "(#{damageDiceCount}d10)" # ダメージ骰子の表示
-=======
     # ストレートの和の最大値を求める
     #
     # ストレートとは、昇順で3個以上連続した値のこと。
@@ -173,23 +158,10 @@ INFO_MESSAGE_TEXT
     def sum_of_largest_straight(sorted_dice_values)
       # 出目が3個未満ならば、ストレートは存在しない
       return 0 if sorted_dice_values.length < 3
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       # ストレートの和の最大値
       max_sum = 0
 
-<<<<<<< HEAD
-  # 骰子目文字列から骰子値を変更する場合の処理
-  # クトゥルフ・テックの判定用骰子計算
-  def changeDiceValueByDiceText(dice_now, dice_str, isCheckSuccess, dice_max)
-    debug("changeDiceValueByDiceText dice_now, dice_str, isCheckSuccess, dice_max", dice_now, dice_str, isCheckSuccess, dice_max)
-    if isCheckSuccess && (dice_max == 10)
-      debug('cthulhutech_check(dice_str) called')
-      debug('dice_str, dice_now', dice_str, dice_now)
-      dice_now = cthulhutech_check(dice_str)
-    end
-    debug('dice_str, dice_now', dice_str, dice_now)
-=======
       # 連続した値の数
       n_consecutive_values = 0
       # 連続した値の和
@@ -218,23 +190,15 @@ INFO_MESSAGE_TEXT
           max_sum = sum
         end
       end
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       return max_sum
     end
   end
 
-<<<<<<< HEAD
-  ####################           CthulhuTech         ########################
-  # CthulhuTechの判定用骰子計算
-  def cthulhutech_check(dice_str)
-    dice_aRR = dice_str.split(/,/).collect { |i| i.to_i }
-=======
   # 対抗判定のノード
   class Contest < Test
     # 判定で用いる比較演算子
     COMPARE_OP = :>
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
     # 判定結果の文字列を返す
     #
@@ -251,31 +215,13 @@ INFO_MESSAGE_TEXT
         damage_roll_num = (diff / 5.0).ceil
         damage_roll = "#{damage_roll_num}D10"
 
-<<<<<<< HEAD
-      if dice_n > max_num # 1.個別の骰子の最大値
-        max_num = dice_n
-=======
         "#{formatted}（ダメージ：#{damage_roll}）"
       else
         formatted
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       end
     end
   end
 
-<<<<<<< HEAD
-    if dice_aRR.length >= 2 # 骰子が2個以上ロールされている
-      10.times do |i|
-        if dice_num[i] > 1 # 2.同じ出目の合計値
-          dice_now = dice_num[i] * (i + 1)
-          max_num = dice_now if dice_now > max_num
-        end
-      end
-
-      if dice_aRR.length >= 3 # 骰子が3個以上ロールされている
-        10.times do |i|
-          break if  dice_num[i + 2].nil?
-=======
   # ダイスボットを初期化する
   def initialize
     super
@@ -283,7 +229,6 @@ INFO_MESSAGE_TEXT
     # 加算ロールで出目をソートする
     @sortType = 1
   end
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ダイスボット固有コマンドの処理を行う
   # @param [String] command コマンド

@@ -5,29 +5,16 @@ class CardRanker < DiceBot
   # ゲームシステムの識別子
   ID = 'CardRanker'
 
-<<<<<<< HEAD
-  def gameName
-    '卡牌ランカー'
-  end
-=======
   # ゲームシステム名
   NAME = 'カードランカー'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名の読みがな
   SORT_KEY = 'かあとらんかあ'
 
-<<<<<<< HEAD
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
-ランダムで怪獸卡牌を選ぶ (RM)
-特定の怪獸卡牌を選ぶ (CMxy　x：色、y：番号）
-=======
   # ダイスボットの使い方
   HELP_MESSAGE = <<INFO_MESSAGE_TEXT
 ランダムでモンスターカードを選ぶ (RM)
 特定のモンスターカードを選ぶ (CMxy　x：色、y：番号）
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 　白：W、青：U、緑：V、金：G、赤：R、黒：B
 　例）CMW1→白の2：白竜　CMG12→金の12：土精霊
 場所表 (ST)

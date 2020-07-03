@@ -2,20 +2,8 @@
 # frozen_string_literal: true
 
 class Villaciel < DiceBot
-<<<<<<< HEAD
-  setPrefixes(%w(\d+VBS(>=\d+)? \d+VF \d+VM \d+VG PJ[VA]? PQ[VA]? AC MM([IAD]|V[VA]?) F[LRWGBCS] IP[VA]? EP[VA]?\d? MP IS))
-
-  def initialize
-    super
-
-    @sortType = 0 # 足し算骰子、バラバラロール、どちらもソートしない
-    @d66Type = 1 # D66あり。ただし、現行ルールにある6x6の表については別のコマンドを用意
-    @fractionType = 'roundUp' # 端数は切り上げ
-  end
-=======
   # ゲームシステムの識別子
   ID = 'Villaciel'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = '蒼天のヴィラシエル'

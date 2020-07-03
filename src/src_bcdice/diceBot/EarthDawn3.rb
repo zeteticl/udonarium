@@ -13,17 +13,10 @@ class EarthDawn3 < EarthDawn
   # ゲームシステム名の読みがな
   SORT_KEY = 'ああすとおん3'
 
-<<<<<<< HEAD
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
-ステップ骰子　(xEn+k)
-ステップx、目標値n(省略可能）、カルマ骰子k(D2～D20)でステップ骰子をロールします。
-=======
   # ダイスボットの使い方
   HELP_MESSAGE = <<INFO_MESSAGE_TEXT
 ステップダイス　(xEn+k)
 ステップx、目標値n(省略可能）、カルマダイスk(D2～D20)でステップダイスをロールします。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 振り足しも自動。
 例）ステップ10：10E
 　　ステップ10、目標値8：10E8

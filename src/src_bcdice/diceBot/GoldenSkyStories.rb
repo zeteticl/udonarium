@@ -11,17 +11,10 @@ class GoldenSkyStories < DiceBot
   # ゲームシステム名の読みがな
   SORT_KEY = 'ゆうやけこやけ'
 
-<<<<<<< HEAD
-  def getHelpMessage
-    return <<MESSAGETEXT
-※「ゆうやけこやけ」は骰子ロールを使用しないシステムです。
-※この骰子ボットは部屋のシステム名表示用となります。
-=======
   # ダイスボットの使い方
   HELP_MESSAGE = <<MESSAGETEXT
 ※「ゆうやけこやけ」はダイスロールを使用しないシステムです。
 ※このダイスボットは部屋のシステム名表示用となります。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
 ・下駄占い (GETA)
   あーしたてんきになーれ

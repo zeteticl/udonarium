@@ -11,17 +11,10 @@ class Paranoia < DiceBot
   # ゲームシステム名の読みがな
   SORT_KEY = 'はらのいあ'
 
-<<<<<<< HEAD
-  def getHelpMessage
-    return <<MESSAGETEXT
-※「パラノイア」は完璧なゲームであるため特殊な骰子コマンドを必要としません。
-※この骰子ボットは部屋のシステム名表示用となります。
-=======
   # ダイスボットの使い方
   HELP_MESSAGE = <<MESSAGETEXT
 ※「パラノイア」は完璧なゲームであるため特殊なダイスコマンドを必要としません。
 ※このダイスボットは部屋のシステム名表示用となります。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 MESSAGETEXT
 
   setPrefixes(['geta'])

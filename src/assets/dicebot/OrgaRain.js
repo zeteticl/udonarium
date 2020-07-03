@@ -35,29 +35,7 @@
     }, $OrgaRain_initialize$1.$$arity = 0);
     self.$setPrefixes(["(\\d+)?OR([0-9])?([0-9])?([0-9])?([0-9])?([0-9])?([0-9])?"]);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_OrgaRain_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "在りて遍くオルガレイン"
-    }, TMP_OrgaRain_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_OrgaRain_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "OrgaRain"
-    }, TMP_OrgaRain_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_OrgaRain_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "判定：[n]OR(count)\n" + "\n" + "[]内のコマンドは省略可能。\n" + "「n」で骰子数を指定。省略時は「1」。\n" + "(count)で命数を指定。「3111」のように記述。最大6つ。順不同可。\n" + "\n" + "【書式例】\n" + "・5OR6042 → 5dで命数「0,2,4,6」の判定\n" + "・6OR33333 → 6dで命数「3,3,3,3,3」の判定。\n"
-    }, TMP_OrgaRain_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_OrgaRain_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $OrgaRain_rollDiceCommand$2 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var $a, self = this, diceCount = nil, countNo = nil;
 
       

@@ -2,20 +2,8 @@
 # frozen_string_literal: true
 
 class Raisondetre < DiceBot
-<<<<<<< HEAD
-  def initialize
-    super
-    @sortType = 1 # 骰子のソート有
-  end
-
-  setPrefixes([
-    '(-)?(\d+)?RD(\d+)?(@(\d+))?',
-    '(-)?(\d+)?DD([1-9])?([\+\-]\d+)?'
-  ])
-=======
   # ゲームシステムの識別子
   ID = 'Raisondetre'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = '叛逆レゾンデートル'

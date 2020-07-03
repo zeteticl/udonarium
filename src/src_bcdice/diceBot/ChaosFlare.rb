@@ -2,9 +2,6 @@
 # frozen_string_literal: true
 
 class ChaosFlare < DiceBot
-<<<<<<< HEAD
-  # 骰子ボット設定後に行う処理
-=======
   # ゲームシステムの識別子
   ID = 'Chaos Flare'
   # ゲームシステム名
@@ -20,7 +17,6 @@ class ChaosFlare < DiceBot
 INFO_MESSAGE_TEXT
 
   # ダイスボット設定後に行う処理
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
   # @return [void]
   def postSet
     if bcdice

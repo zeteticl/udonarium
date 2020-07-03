@@ -5,22 +5,8 @@ class FutariSousa < DiceBot
   # ゲームシステムの識別子
   ID = 'FutariSousa'
 
-<<<<<<< HEAD
-    @success_threshold = 4 # 成功の目標値（固定）
-    @special_dice = 6 # スペシャルとなる出目（骰子の種別によらず固定）
-  end
-
-  setPrefixes(
-    ['(\d+)?DT', '(\d+)?AS', 'SHRD', 'SHFM', 'SHBT', 'SHPI', 'SHEG', 'SHWP', 'SHDS', 'SHFT', 'SHIN', 'SHEM', 'EVS', 'EVW', 'EVN', 'EVC', 'EVV', 'OBT', 'ACT', 'EWT', 'WMT', 'BGDD', 'BGDG', 'BGDM', 'BGAJ', 'BGAP', 'BGAI', 'HT', 'BT', 'GRT', 'MIT', 'JBT66', 'JBT10', 'FST66', 'FST10', 'FLT66', 'FLT10', 'LDT66', 'LDT10', 'NCT66', 'NCT10',]
-  )
-
-  def gameName
-    'フタリソウサ'
-  end
-=======
   # ゲームシステム名
   NAME = 'フタリソウサ'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名の読みがな
   SORT_KEY = 'ふたりそうさ'

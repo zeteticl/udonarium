@@ -36,23 +36,7 @@
     Opal.const_set($nesting[0], 'HELP_MESSAGE', "" + "\u30FB\u30B9\u30C8\u30E9\u30A4\u30AF\u30FB\u30E9\u30F3\u30AF\u3000(SRx)\n" + "\u3000\"SR\u30B9\u30C8\u30E9\u30A4\u30AF\u30FB\u30E9\u30F3\u30AF\"\u306E\u5F62\u3067\u8A18\u5165\u3057\u307E\u3059\u3002\n" + "\u3000\u30B9\u30C8\u30E9\u30A4\u30AF\u30FB\u30E9\u30F3\u30AF\u30FB\u30C1\u30E3\u30FC\u30C8\u306B\u5F93\u3063\u3066\u81EA\u52D5\u3067\u30C0\u30A4\u30B9\u30ED\u30FC\u30EB\u3092\u884C\u3044\u3001\n" + "\u3000\u8CA0\u50B7\u3068\u30B9\u30BF\u30DF\u30CA\u30ED\u30B9\u3092\u8A08\u7B97\u3057\u307E\u3059\u3002\n" + "\u3000\u30C0\u30A4\u30B9\u30ED\u30FC\u30EB\u3068\u540C\u69D8\u306B\u3001\u4ED6\u306E\u30D7\u30EC\u30A4\u30E4\u30FC\u306B\u96A0\u308C\u3066\u30ED\u30FC\u30EB\u3059\u308B\u3053\u3068\u3082\u53EF\u80FD\u3067\u3059\u3002\n" + "\u3000\u4F8B\uFF09SR7\u3000\u3000\u3000sr13\u3000\u3000\u3000SR(7+4)\u3000\u3000\u3000Ssr10\n");
     self.$setPrefixes(["SR\\d+.*"]);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameType', TMP_Chill_gameType_1 = function $$gameType() {
-      var self = this;
-
-      return "Chill"
-    }, TMP_Chill_gameType_1.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Chill_getHelpMessage_2 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・ストライク・ランク　(SRx)\n" + "　\"SRストライク・ランク\"の形で記入します。\n" + "　ストライク・ランク・チャートに従って自動で骰子ロールを行い、\n" + "　負傷とスタミナロスを計算します。\n" + "　骰子ロールと同様に、他の玩家に隠れてロールすることも可能です。\n" + "　例）SR7　　　sr13　　　SR(7+4)　　　Ssr10\n"
-    }, TMP_Chill_getHelpMessage_2.$$arity = 0);
-    
-    Opal.defn(self, '$check_1D100', TMP_Chill_check_1D100_3 = function $$check_1D100(total_n, _dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max) {
-=======
     Opal.def(self, '$check_1D100', $Chill_check_1D100$1 = function $$check_1D100(total, _dice_total, cmp_op, target) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var self = this;
 
       

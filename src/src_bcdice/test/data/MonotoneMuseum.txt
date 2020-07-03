@@ -51,13 +51,8 @@ rand:1/6,1/6
 input:
 WDT
 output:
-<<<<<<< HEAD:src/src_bcdice/test/data/MonotoneMusium.txt
-MonotoneMusium : 世界歪曲表(2) ＞ 【消失】
-世界からボス角色が消去され、消滅する。エンディングフェイズへ。
-=======
 MonotoneMuseum : 世界歪曲表(2) ＞ 【消失】
 世界からボスキャラクターが消去され、消滅する。エンディングフェイズへ。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848:src/src_bcdice/test/data/MonotoneMuseum.txt
 rand:1/6,1/6
 ============================
 input:
@@ -87,13 +82,8 @@ rand:1/6,2/6
 input:
 DT2
 output:
-<<<<<<< HEAD:src/src_bcdice/test/data/MonotoneMusium.txt
-MonotoneMusium : 歪み表ver2.0(66) ＞ 【地域消滅】
-演目の舞台となっている地域そのものが消えてなくなる。影響下にあるすべての角色（伽藍を含む）は【縫製】難易度10の判定に成功すれば脱出できる。失敗した場合即座に死亡する。エキストラは無条件で死亡する。
-=======
 MonotoneMuseum : 歪み表ver2.0(66) ＞ 【地域消滅】
 演目の舞台となっている地域そのものが消えてなくなる。影響下にあるすべてのキャラクター（伽藍を含む）は【縫製】難易度10の判定に成功すれば脱出できる。失敗した場合即座に死亡する。エキストラは無条件で死亡する。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848:src/src_bcdice/test/data/MonotoneMuseum.txt
 rand:6/6,6/6
 ============================
 input:
@@ -120,13 +110,8 @@ rand:6/6,3/6
 input:
 DTO
 output:
-<<<<<<< HEAD:src/src_bcdice/test/data/MonotoneMusium.txt
-MonotoneMusium : 歪み表(野外)(63) ＞ 【汚染世界】
-水は毒を含み、大気は有毒の霧に包まれる。登場している全ての角色は【体力】難易度10の判定を行い、失敗すると邪毒5を受ける。エキストラがどうなるかはGMが決定するが、治療されなければ早晩死亡するだろう。
-=======
 MonotoneMuseum : 歪み表(野外)(63) ＞ 【汚染世界】
 水は毒を含み、大気は有毒の霧に包まれる。登場している全てのキャラクターは【体力】難易度10の判定を行い、失敗すると邪毒5を受ける。エキストラがどうなるかはGMが決定するが、治療されなければ早晩死亡するだろう。
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848:src/src_bcdice/test/data/MonotoneMuseum.txt
 rand:6/6,3/6
 ============================
 input:

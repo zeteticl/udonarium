@@ -2,15 +2,8 @@
 # frozen_string_literal: true
 
 class OrgaRain < DiceBot
-<<<<<<< HEAD
-  def initialize
-    super
-    @sortType = 1 # 骰子のソート有
-  end
-=======
   # ゲームシステムの識別子
   ID = 'OrgaRain'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = '在りて遍くオルガレイン'

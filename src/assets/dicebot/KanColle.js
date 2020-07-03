@@ -38,29 +38,7 @@
       return (self.d66Type = 2);
     }, $KanColle_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_KanColle_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "艦これRPG"
-    }, TMP_KanColle_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_KanColle_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "KanColle"
-    }, TMP_KanColle_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_KanColle_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "例) 2D6 ： 単純に2D6した値を出します。\n" + "例) 2D6>=7 ： 行為判定。2D6して目標値7以上出れば成功。\n" + "例) 2D6+2>=7 ： 行為判定。2D6に修正+2をした上で目標値7以上になれば成功。\n" + "\n" + "2D6での行為判定時は1ゾロでファンブル、6ゾロでスペシャル扱いになります。\n" + "天龍ちゃんスペシャルは手動で判定してください。\n" + "\n" + "・各種表\n" + "　・感情表　ET／アクシデント表　ACT\n" + "　・日常イベント表　EVNT／交流イベント表　EVKT／遊びイベント表　EVAT\n" + "　　演習イベント表　EVET／遠征イベント表　EVENT／作戦イベント表　EVST\n" + "　・ほのぼのイベント表　ETHT／航海イベント表　ETVT　外出イベント表　ETGT\n" + "　　激戦イベント表　ETBT／任務イベント表　ETMT／恐怖イベント表　ETFT／侵攻効果表　ETIT\n" + "　・大規模部隊表 LSFT／艦隊敗北表 LFDT／艦隊勝利表 LFVT\n" + "　・開発表　DVT／開発表（一括）DVTM\n" + "　　　装備１種表　WP1T／装備２種表　WP2T／装備３種表　WP3T／装備４種表　WP4T\n" + "　・アイテム表　ITT／目標表　MHT／戦果表　SNT／特殊戦果表　SPSNT\n" + "　・ランダム個性選択：一括　KTM／分野　BT\n" + "　　　背景　KHT／魅力　KMT／性格　KST／趣味　KSYT／航海　KKT／戦闘　KSNT\n" + "　・戦場表　SNZ　暴走表／RNT\n" + "　・特殊開発表　WPMC　(燃料6/弾薬3/鋼材6/ボーキ3)\n" + "　・新・特殊開発表　WPMCN\n" + "　・艦載機関開発表　WPFA　(燃料3/弾薬6/鋼材3/ボーキ6)\n" + "　・砲類開発表　WPCN　(燃料3/弾薬6/鋼材6/ボーキ3)　\n" + "　・敵深海棲艦の装備決定 BT2～BT12\n" + "・D66骰子(D66S相当=低い方が10の桁になる)\n"
-    }, TMP_KanColle_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$check_2D6', TMP_KanColle_check_2D6_5 = function $$check_2D6(total_n, dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max) {
-=======
     Opal.def(self, '$check_2D6', $KanColle_check_2D6$2 = function $$check_2D6(total, dice_total, _dice_list, cmp_op, target) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var self = this;
 
       
@@ -205,11 +183,7 @@
       var self = this, table = nil;
 
       
-<<<<<<< HEAD
-      table = ["よかったぁ。何もなし。", "意外な手応え。その判定に使った個性の属性（【長所】と【弱点】）が反対になる。自分が判定を行うとき以外はこの効果は無視する。", "えーん。大失態。この角色に対して【感情値】を持っている角色全員の声援欄にチェックが入る。", "奇妙な猫がまとわりつく。サイクルの終了時、もしくは、艦隊戦の終了時まで、自分の行う行為判定にマイナス１の修正がつく（この効果は、マイナス２まで累積する）。", "いててて。損傷が一つ発生する。もしも艦隊戦中なら、自分と同じ航行序列にいる味方艦にも損傷が一つ発生する。", "ううう。やりすぎちゃった！自分の【行動力】が１Ｄ６点減少する。"];
-=======
       table = ["\u3088\u304B\u3063\u305F\u3041\u3002\u4F55\u3082\u306A\u3057\u3002", "\u610F\u5916\u306A\u624B\u5FDC\u3048\u3002\u305D\u306E\u5224\u5B9A\u306B\u4F7F\u3063\u305F\u500B\u6027\u306E\u5C5E\u6027\uFF08\u3010\u9577\u6240\u3011\u3068\u3010\u5F31\u70B9\u3011\uFF09\u304C\u53CD\u5BFE\u306B\u306A\u308B\u3002\u81EA\u5206\u304C\u5224\u5B9A\u3092\u884C\u3046\u3068\u304D\u4EE5\u5916\u306F\u3053\u306E\u52B9\u679C\u306F\u7121\u8996\u3059\u308B\u3002", "\u3048\u30FC\u3093\u3002\u5927\u5931\u614B\u3002\u3053\u306E\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u306B\u5BFE\u3057\u3066\u3010\u611F\u60C5\u5024\u3011\u3092\u6301\u3063\u3066\u3044\u308B\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u5168\u54E1\u306E\u58F0\u63F4\u6B04\u306B\u30C1\u30A7\u30C3\u30AF\u304C\u5165\u308B\u3002", "\u5947\u5999\u306A\u732B\u304C\u307E\u3068\u308F\u308A\u3064\u304F\u3002\u30B5\u30A4\u30AF\u30EB\u306E\u7D42\u4E86\u6642\u3001\u3082\u3057\u304F\u306F\u3001\u8266\u968A\u6226\u306E\u7D42\u4E86\u6642\u307E\u3067\u3001\u81EA\u5206\u306E\u884C\u3046\u884C\u70BA\u5224\u5B9A\u306B\u30DE\u30A4\u30CA\u30B9\uFF11\u306E\u4FEE\u6B63\u304C\u3064\u304F\uFF08\u3053\u306E\u52B9\u679C\u306F\u3001\u30DE\u30A4\u30CA\u30B9\uFF12\u307E\u3067\u7D2F\u7A4D\u3059\u308B\uFF09\u3002", "\u3044\u3066\u3066\u3066\u3002\u640D\u50B7\u304C\u4E00\u3064\u767A\u751F\u3059\u308B\u3002\u3082\u3057\u3082\u8266\u968A\u6226\u4E2D\u306A\u3089\u3001\u81EA\u5206\u3068\u540C\u3058\u822A\u884C\u5E8F\u5217\u306B\u3044\u308B\u5473\u65B9\u8266\u306B\u3082\u640D\u50B7\u304C\u4E00\u3064\u767A\u751F\u3059\u308B\u3002", "\u3046\u3046\u3046\u3002\u3084\u308A\u3059\u304E\u3061\u3083\u3063\u305F\uFF01\u81EA\u5206\u306E\u3010\u884C\u52D5\u529B\u3011\u304C\uFF11\uFF24\uFF16\u70B9\u6E1B\u5C11\u3059\u308B\u3002"];
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$get_table_by_1d6(table);
     }, $KanColle_get_accident_table$5.$$arity = 0);
     
@@ -265,17 +239,11 @@
       table = $send(["\u5927\u3052\u3093\u304B\uFF01\uFF1A\u63D0\u7763\u304C\u9078\u3093\u3060\uFF08\u30AD\u30FC\u30EF\u30FC\u30C9\uFF09\u306B\u5BFE\u5FDC\u3057\u305F\u6307\u5B9A\u500B\u6027\u3067\u5224\u5B9A\u3002\u601D\u3044\u3064\u304B\u306A\u3044\u5834\u5408\u306F\u300A\u8CA0\u3051\u305A\u5ACC\u3044\uFF0F\u6027\u683C\uFF16\u300B\u3067\u5224\u5B9A\u3002", "\u96F7\u6483\u6F14\u7FD2\uFF1A\u300A\u9B5A\u96F7\uFF0F\u6226\u95D8\uFF11\uFF10\u300B\u3067\u5224\u5B9A\u3002", "\u5EA7\u5B66\u306E\u8B1B\u7FA9\uFF1A\u63D0\u7763\u304C\u9078\u3093\u3060\uFF08\u30AD\u30FC\u30EF\u30FC\u30C9\uFF09\u306B\u5BFE\u5FDC\u3057\u305F\u6307\u5B9A\u500B\u6027\u3067\u5224\u5B9A\u3002\u601D\u3044\u3064\u304B\u306A\u3044\u5834\u5408\u306F\u300A\u30DE\u30B8\u30E1\uFF0F\u6027\u683C\uFF15\u300B\u3067\u5224\u5B9A\u3002", "\u901F\u529B\u6F14\u7FD2\uFF1A\u300A\u6A5F\u52D5\uFF0F\u822A\u6D77\uFF18\u300B\u3067\u5224\u5B9A\u3002", "\u6551\u63F4\u6F14\u7FD2\uFF1A\u300A\u652F\u63F4\uFF0F\u6226\u95D8\uFF19\u300B\u3067\u5224\u5B9A\u3002\u30B7\u30FC\u30F3\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\uFF30\uFF23\u306F\u3001\u7D4C\u9A13\u70B9\u3092\uFF11\uFF10\u70B9\u7372\u5F97\u3059\u308B\u3002\u6B8B\u5FF5\uFF1A\uFF30\uFF23\u5168\u54E1\u306E\u3010\u884C\u52D5\u529B\u3011\u304C\uFF11\uFF24\uFF16\u70B9\u6E1B\u5C11\u3059\u308B\u3002", "\u7832\u6483\u6F14\u7FD2\uFF1A\u63D0\u7763\u304C\u9078\u3093\u3060\uFF08\u30AD\u30FC\u30EF\u30FC\u30C9\uFF09\u306B\u5BFE\u5FDC\u3057\u305F\u6307\u5B9A\u500B\u6027\u3067\u5224\u5B9A\u3002\u601D\u3044\u3064\u304B\u306A\u3044\u5834\u5408\u306F\u300A\u7832\u6483\uFF0F\u6226\u95D8\uFF17\u300B\u3067\u5224\u5B9A\u3002", "\u8266\u968A\u6226\u6F14\u7FD2\uFF1A\u300A\u6D3E\u624B\uFF0F\u9B45\u529B\uFF11\uFF12\u300B\u3067\u5224\u5B9A\u3002", "\u6574\u5099\u6F14\u7FD2\uFF1A\u300A\u6574\u5099\uFF0F\u822A\u6D77\uFF11\uFF12\u300B\u3067\u5224\u5B9A\u3002", "\u591C\u6226\u6F14\u7FD2\uFF1A\u63D0\u7763\u304C\u9078\u3093\u3060\uFF08\u30AD\u30FC\u30EF\u30FC\u30C9\uFF09\u306B\u5BFE\u5FDC\u3057\u305F\u6307\u5B9A\u500B\u6027\u3067\u5224\u5B9A\u3002\u601D\u3044\u3064\u304B\u306A\u3044\u5834\u5408\u306F\u300A\u591C\u6226\uFF0F\u6226\u95D8\uFF11\uFF12\u300B\u3067\u5224\u5B9A\u3002", "\u958B\u767A\u6F14\u7FD2\uFF1A\u300A\u79D8\u5BC6\u5175\u5668\uFF0F\u80CC\u666F\uFF19\u300B\u3067\u5224\u5B9A\u3002", "\u9632\u7A7A\u5C04\u6483\u6F14\u7FD2\uFF1A\u63D0\u7763\u304C\u9078\u3093\u3060\uFF08\u30AD\u30FC\u30EF\u30FC\u30C9\uFF09\u306B\u5BFE\u5FDC\u3057\u305F\u6307\u5B9A\u500B\u6027\u3067\u5224\u5B9A\u3002\u601D\u3044\u3064\u304B\u306A\u3044\u5834\u5408\u306F\u300A\u5BFE\u7A7A\u6226\u95D8\uFF0F\u6226\u95D8\uFF15\u300B\u3067\u5224\u5B9A\u3002"], 'map', [], ($$13 = function(i){var self = $$13.$$s || this;
 
       
-<<<<<<< HEAD
-      table = $send(["大げんか！：提督が選んだ（キーワード）に対応した指定個性で判定。思いつかない場合は《負けず嫌い／性格６》で判定。", "雷撃演習：《魚雷／戦闘１０》で判定。", "座学の講義：提督が選んだ（キーワード）に対応した指定個性で判定。思いつかない場合は《マジメ／性格５》で判定。", "速力演習：《機動／航海８》で判定。", "救援演習：《支援／戦闘９》で判定。シーン玩家のＰＣは、経験点を１０点獲得する。残念：ＰＣ全員の【行動力】が１Ｄ６点減少する。", "砲撃演習：提督が選んだ（キーワード）に対応した指定個性で判定。思いつかない場合は《砲撃／戦闘７》で判定。", "艦隊戦演習：《派手／魅力１２》で判定。", "整備演習：《整備／航海１２》で判定。", "夜戦演習：提督が選んだ（キーワード）に対応した指定個性で判定。思いつかない場合は《夜戦／戦闘１２》で判定。", "開発演習：《秘密兵器／背景９》で判定。", "防空射撃演習：提督が選んだ（キーワード）に対応した指定個性で判定。思いつかない場合は《対空戦闘／戦闘５》で判定。"], 'map', [], (TMP_15 = function(i){var self = TMP_15.$$s || this;
-if (i == null) i = nil;
-      return $rb_plus(i, "（着任p223）")}, TMP_15.$$s = self, TMP_15.$$arity = 1, TMP_15));
-=======
         
         if (i == null) {
           i = nil;
         };
         return $rb_plus(i, "\uFF08\u7740\u4EFBp223\uFF09");}, $$13.$$s = self, $$13.$$arity = 1, $$13));
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$get_table_by_2d6(table);
     }, $KanColle_get_ensyuu_event_table$12.$$arity = 0);
     
@@ -498,11 +466,7 @@ if (i == null) i = nil;
       var self = this, table = nil;
 
       
-<<<<<<< HEAD
-      table = ["燃料／１Ｄ６＋[敵艦隊の人数]個", "弾薬／１Ｄ６＋[敵艦隊の人数]個", "鋼材／１Ｄ６＋[敵艦隊の人数]個", "ボーキサイト／１Ｄ６＋[敵艦隊の人数]個", "任意の資材／１Ｄ６＋[敵艦隊の人数]個", "感情値／各自好きな角色への【感情値】＋１"];
-=======
       table = ["\u71C3\u6599\uFF0F\uFF11\uFF24\uFF16\uFF0B[\u6575\u8266\u968A\u306E\u4EBA\u6570]\u500B", "\u5F3E\u85AC\uFF0F\uFF11\uFF24\uFF16\uFF0B[\u6575\u8266\u968A\u306E\u4EBA\u6570]\u500B", "\u92FC\u6750\uFF0F\uFF11\uFF24\uFF16\uFF0B[\u6575\u8266\u968A\u306E\u4EBA\u6570]\u500B", "\u30DC\u30FC\u30AD\u30B5\u30A4\u30C8\uFF0F\uFF11\uFF24\uFF16\uFF0B[\u6575\u8266\u968A\u306E\u4EBA\u6570]\u500B", "\u4EFB\u610F\u306E\u8CC7\u6750\uFF0F\uFF11\uFF24\uFF16\uFF0B[\u6575\u8266\u968A\u306E\u4EBA\u6570]\u500B", "\u611F\u60C5\u5024\uFF0F\u5404\u81EA\u597D\u304D\u306A\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u3078\u306E\u3010\u611F\u60C5\u5024\u3011\uFF0B\uFF11"];
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$get_table_by_1d6(table);
     }, $KanColle_get_senka_table$39.$$arity = 0);
     

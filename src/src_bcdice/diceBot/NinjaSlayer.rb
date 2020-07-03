@@ -5,19 +5,8 @@ require 'diceBot/DiceBot'
 require 'utils/table'
 
 class NinjaSlayer < DiceBot
-<<<<<<< HEAD
-  # 骰子ボットで使用するコマンドを配列で列挙する
-  setPrefixes([
-    'NJ\d+.*',
-    'EV\d+.*',
-    'AT\d+.*',
-    'EL\d+.*',
-    'SB'
-  ])
-=======
   # ゲームシステムの識別子
   ID = 'NinjaSlayer'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名
   NAME = 'ニンジャスレイヤーTRPG'

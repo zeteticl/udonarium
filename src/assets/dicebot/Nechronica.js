@@ -49,31 +49,8 @@
       return (self.defaultSuccessTarget = "6");
     }, $Nechronica_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_Nechronica_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "ネクロニカ"
-    }, TMP_Nechronica_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Nechronica_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "Nechronica"
-    }, TMP_Nechronica_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Nechronica_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・判定　(nNC+m)\n" + "　骰子数n、修正値mで判定ロールを行います。\n" + "　骰子数が2以上の時のパーツ破損数も表示します。\n" + "・攻撃判定　(nNA+m)\n" + "　骰子数n、修正値mで攻撃判定ロールを行います。\n" + "　命中部位と骰子数が2以上の時のパーツ破損数も表示します。\n"
-    }, TMP_Nechronica_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$changeText', TMP_Nechronica_changeText_9 = function $$changeText(string) {
-      var TMP_5, TMP_6, TMP_7, TMP_8, self = this;
-=======
     Opal.def(self, '$changeText', $Nechronica_changeText$2 = function $$changeText(string) {
       var $$3, $$4, $$5, $$6, self = this;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       string = $send(string, 'gsub', [/(\d+)NC(10)?([\+\-][\+\-\d]+)/i], ($$3 = function(){var self = $$3.$$s || this;

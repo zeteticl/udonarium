@@ -18,40 +18,7 @@
     Opal.const_set($nesting[0], 'HELP_MESSAGE', "" + "\u203B\u300C\u3086\u3046\u3084\u3051\u3053\u3084\u3051\u300D\u306F\u30C0\u30A4\u30B9\u30ED\u30FC\u30EB\u3092\u4F7F\u7528\u3057\u306A\u3044\u30B7\u30B9\u30C6\u30E0\u3067\u3059\u3002\n" + "\u203B\u3053\u306E\u30C0\u30A4\u30B9\u30DC\u30C3\u30C8\u306F\u90E8\u5C4B\u306E\u30B7\u30B9\u30C6\u30E0\u540D\u8868\u793A\u7528\u3068\u306A\u308A\u307E\u3059\u3002\n" + "\n" + "\u30FB\u4E0B\u99C4\u5360\u3044 (GETA)\n" + "  \u3042\u30FC\u3057\u305F\u3066\u3093\u304D\u306B\u306A\u30FC\u308C\n");
     self.$setPrefixes(["geta"]);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$initialize', TMP_GoldenSkyStories_initialize_1 = function $$initialize() {
-      var self = this, $iter = TMP_GoldenSkyStories_initialize_1.$$p, $yield = $iter || nil, $zuper = nil, $zuper_i = nil, $zuper_ii = nil;
-
-      if ($iter) TMP_GoldenSkyStories_initialize_1.$$p = null;
-      // Prepare super implicit arguments
-      for($zuper_i = 0, $zuper_ii = arguments.length, $zuper = new Array($zuper_ii); $zuper_i < $zuper_ii; $zuper_i++) {
-        $zuper[$zuper_i] = arguments[$zuper_i];
-      }
-      return $send(self, Opal.find_super_dispatcher(self, 'initialize', TMP_GoldenSkyStories_initialize_1, false), $zuper, $iter)
-    }, TMP_GoldenSkyStories_initialize_1.$$arity = 0);
-    
-    Opal.defn(self, '$gameName', TMP_GoldenSkyStories_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "ゆうやけこやけ"
-    }, TMP_GoldenSkyStories_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_GoldenSkyStories_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "GoldenSkyStories"
-    }, TMP_GoldenSkyStories_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_GoldenSkyStories_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "※「ゆうやけこやけ」は骰子ロールを使用しないシステムです。\n" + "※この骰子ボットは部屋のシステム名表示用となります。\n" + "\n" + "・下駄占い (GETA)\n" + "  あーしたてんきになーれ\n"
-    }, TMP_GoldenSkyStories_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$isGetOriginalMessage', TMP_GoldenSkyStories_isGetOriginalMessage_5 = function $$isGetOriginalMessage() {
-=======
     Opal.def(self, '$isGetOriginalMessage', $GoldenSkyStories_isGetOriginalMessage$1 = function $$isGetOriginalMessage() {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var self = this;
 
       return true

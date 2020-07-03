@@ -22,17 +22,8 @@ INFO_MESSAGE_TEXT
     return '' unless cmp_op == :<=
 
     # ゾロ目ならC-ResultかBotch
-<<<<<<< HEAD
-    s10 = dice_n.div(10) # 10's骰子の出目
-    s1 = dice_n % 10 # 1's骰子の出目
-
-    if s10 == 10
-      s10 = 0 # 10'sと1'sの表記をそろえる
-    end
-=======
     tens = (dice_total / 10).floor % 10 # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
     ones = dice_total % 10
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
     if tens == ones
       if (total > target) || (dice_total == 100) # 00は必ず失敗

@@ -104,13 +104,8 @@
         $b = self.$roll(1, 100), $a = Opal.to_ary($b), (dice = ($a[0] == null ? nil : $a[0])), $b;
         return "" + "1D100 \uFF1E " + (dice);};
       if ($truthy(self.bonus_dice_range['$include?'](bonus_dice_count))) {
-<<<<<<< HEAD
-        } else {
-        return "" + "エラー。ボーナス・ペナルティ骰子の値は" + (self.bonus_dice_range.$min()) + "～" + (self.bonus_dice_range.$max()) + "です。"
-=======
       } else {
         return "" + "\u30A8\u30E9\u30FC\u3002\u30DC\u30FC\u30CA\u30B9\u30FB\u30DA\u30CA\u30EB\u30C6\u30A3\u30C0\u30A4\u30B9\u306E\u5024\u306F" + (self.bonus_dice_range.$min()) + "\uFF5E" + (self.bonus_dice_range.$max()) + "\u3067\u3059\u3002"
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       };
       units_digit = self.$rollPercentD10();
       total_list = self.$getTotalLists(bonus_dice_count, units_digit);
@@ -250,13 +245,8 @@
         output = $rb_plus(output, "\n\u6545\u969C\u30CA\u30F3\u30D0\u30FC\u306F\u6B63\u306E\u6570\u3067\u3059\u3002\u30DE\u30A4\u30CA\u30B9\u8A18\u53F7\u3092\u5916\u3057\u307E\u3059\u3002\n");
         broken_number = broken_number.$abs();};
       if ($truthy(self.bonus_dice_range['$include?'](bonus_dice_count))) {
-<<<<<<< HEAD
-        } else {
-        return "" + "\nエラー。ボーナス・ペナルティ骰子の値は" + (self.bonus_dice_range.$min()) + "～" + (self.bonus_dice_range.$max()) + "です。"
-=======
       } else {
         return "" + "\n\u30A8\u30E9\u30FC\u3002\u30DC\u30FC\u30CA\u30B9\u30FB\u30DA\u30CA\u30EB\u30C6\u30A3\u30C0\u30A4\u30B9\u306E\u5024\u306F" + (self.bonus_dice_range.$min()) + "\uFF5E" + (self.bonus_dice_range.$max()) + "\u3067\u3059\u3002"
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       };
       output = $rb_plus(output, "" + "\u30DC\u30FC\u30CA\u30B9\u30FB\u30DA\u30CA\u30EB\u30C6\u30A3\u30C0\u30A4\u30B9[" + (bonus_dice_count) + "]");
       output = $rb_plus(output, self.$rollFullAuto(bullet_count, diff, broken_number, bonus_dice_count, stop_count));

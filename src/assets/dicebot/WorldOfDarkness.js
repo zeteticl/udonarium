@@ -42,19 +42,8 @@
       return (self.rerollDice = 0);
     }, $WorldOfDarkness_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$getHelpMessage', TMP_WorldOfDarkness_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・判定コマンド(xSTn+y or xSTSn+y)\n" + "　(骰子個数)ST(難易度)+(自動成功)\n" + "　(骰子個数)STS(難易度)+(自動成功)　※出目10で振り足し\n" + "\n" + "　難易度=省略時6\n" + "　自動成功=省略時0\n" + "\n" + "　例）3ST7　5ST+1　4ST5+2\n"
-    }, TMP_WorldOfDarkness_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_WorldOfDarkness_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-      var self = this, result = nil;
-=======
     Opal.def(self, '$rollDiceCommand', $WorldOfDarkness_rollDiceCommand$2 = function $$rollDiceCommand(command) {
       var $a, $b, $c, self = this, dice_pool = nil, diff = nil, auto_success = nil, enable_reroll = nil, enable_20th = nil, md = nil, $case = nil, sequence = nil, total_success = nil, total_botch = nil, dice = nil, success = nil, botch = nil, output = nil, secret = nil;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       dice_pool = 1;

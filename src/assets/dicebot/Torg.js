@@ -197,11 +197,7 @@
       var self = this, interaction_results_table = nil;
 
       
-<<<<<<< HEAD
-      interaction_results_table = [[0, "技能なし"], [5, "萎縮"], [10, "逆転負け"], [15, "モラル崩壊"], [17, "玩家ズコール"]];
-=======
       interaction_results_table = [[0, "\u6280\u80FD\u306A\u3057"], [5, "\u840E\u7E2E"], [10, "\u9006\u8EE2\u8CA0\u3051"], [15, "\u30E2\u30E9\u30EB\u5D29\u58CA"], [17, "\u30D7\u30EC\u30A4\u30E4\u30FC\u30BA\u30B3\u30FC\u30EB"]];
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$get_torg_table_result(value, interaction_results_table);
     }, $Torg_get_torg_interaction_result_intimidate_test$9.$$arity = 1);
     
@@ -209,11 +205,7 @@
       var self = this, interaction_results_table = nil;
 
       
-<<<<<<< HEAD
-      interaction_results_table = [[0, "技能なし"], [5, "萎縮"], [10, "逆転負け"], [15, "高揚／逆転負け"], [17, "玩家ズコール"]];
-=======
       interaction_results_table = [[0, "\u6280\u80FD\u306A\u3057"], [5, "\u840E\u7E2E"], [10, "\u9006\u8EE2\u8CA0\u3051"], [15, "\u9AD8\u63DA\uFF0F\u9006\u8EE2\u8CA0\u3051"], [17, "\u30D7\u30EC\u30A4\u30E4\u30FC\u30BA\u30B3\u30FC\u30EB"]];
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$get_torg_table_result(value, interaction_results_table);
     }, $Torg_get_torg_interaction_result_taunt_trick$10.$$arity = 1);
     
@@ -221,11 +213,7 @@
       var self = this, interaction_results_table = nil;
 
       
-<<<<<<< HEAD
-      interaction_results_table = [[0, "技能なし"], [5, "疲労"], [10, "萎縮／疲労"], [15, "逆転負け／疲労"], [17, "玩家ズコール"]];
-=======
       interaction_results_table = [[0, "\u6280\u80FD\u306A\u3057"], [5, "\u75B2\u52B4"], [10, "\u840E\u7E2E\uFF0F\u75B2\u52B4"], [15, "\u9006\u8EE2\u8CA0\u3051\uFF0F\u75B2\u52B4"], [17, "\u30D7\u30EC\u30A4\u30E4\u30FC\u30BA\u30B3\u30FC\u30EB"]];
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$get_torg_table_result(value, interaction_results_table);
     }, $Torg_get_torg_interaction_result_maneuver$11.$$arity = 1);
     

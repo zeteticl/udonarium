@@ -42,29 +42,7 @@
       return (self.d66Type = 1);
     }, $LostRoyal_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_LostRoyal_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "ロストロイヤル"
-    }, TMP_LostRoyal_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_LostRoyal_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "LostRoyal"
-    }, TMP_LostRoyal_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_LostRoyal_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・D66骰子あり\n" + "\n" + "行為判定\n" + "　LR[x,x,x,x,x,x]\n" + "　　x の並びには【判定表】の数値を順番に入力する。\n" + "　　（例： LR[1,3,0,1,2] ）\n" + "\n" + "ファンブル表\n" + "　FC\n" + "\n" + "風力決定表\n" + "　WPC\n" + "\n" + "感情決定表\n" + "　EC\n" + "\n" + "希望点の決定\n" + "　HRx\n" + "　　x には骰子の数（ 1 - 2 ）を指定\n"
-    }, TMP_LostRoyal_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_LostRoyal_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $LostRoyal_rollDiceCommand$2 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var self = this, $case = nil;
 
       

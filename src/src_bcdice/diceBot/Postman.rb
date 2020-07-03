@@ -5,19 +5,8 @@ class Postman < DiceBot
   # ゲームシステムの識別子
   ID = 'Postman'
 
-<<<<<<< HEAD
-  def initialize
-    super
-    @sortType = 1 # 骰子のソート有
-  end
-
-  def gameName
-    '壊れた世界のポストマン'
-  end
-=======
   # ゲームシステム名
   NAME = '壊れた世界のポストマン'
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
   # ゲームシステム名の読みがな
   SORT_KEY = 'ほすとまん'
