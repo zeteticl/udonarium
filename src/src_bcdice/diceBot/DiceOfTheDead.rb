@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+# frozen_string_literal: true
 
 class DiceOfTheDead < DiceBot
-  setPrefixes(['(ZMB|BIO).*'])
+  # ゲームシステムの識別子
+  ID = 'DiceOfTheDead'
 
+<<<<<<< HEAD
   def initialize
     super
     @sendMode = 2
@@ -13,19 +16,30 @@ class DiceOfTheDead < DiceBot
   def gameName
     '骰子・オブ・ザ・デッド'
   end
+=======
+  # ゲームシステム名
+  NAME = 'ダイス・オブ・ザ・デッド'
+>>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
-  def gameType
-    "DiceOfTheDead"
-  end
+  # ゲームシステム名の読みがな
+  SORT_KEY = 'たいすおふさてつと'
 
-  def getHelpMessage
-    return <<INFO_MESSAGE_TEXT
+  # ダイスボットの使い方
+  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
 ・ゾンビ化表　ZMB+x
 （x=オープン中の感染度マスの数。+xは省略可能、省略時は0）
 ・感染度表　BIOx
 （xは被弾回数。xは省略可能、省略時は1）
 （上記二つは最初からシークレット骰子で行われます）
 INFO_MESSAGE_TEXT
+
+  setPrefixes(['(ZMB|BIO).*'])
+
+  def initialize
+    super
+    @sendMode = 2
+    @sortType = 1
+    @d66Type = 2
   end
 
   def rollDiceCommand(command)

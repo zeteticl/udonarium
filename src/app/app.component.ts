@@ -21,6 +21,7 @@ import { PeerCursor } from '@udonarium/peer-cursor';
 import { PresetSound, SoundEffect } from '@udonarium/sound-effect';
 
 import { ChatWindowComponent } from 'component/chat-window/chat-window.component';
+import { ContextMenuComponent } from 'component/context-menu/context-menu.component';
 import { FileStorageComponent } from 'component/file-storage/file-storage.component';
 import { GameCharacterGeneratorComponent } from 'component/game-character-generator/game-character-generator.component';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
@@ -28,8 +29,10 @@ import { GameObjectInventoryComponent } from 'component/game-object-inventory/ga
 import { NoteInventoryComponent } from 'component/note-inventory/note-inventory.component';
 import { GameTableSettingComponent } from 'component/game-table-setting/game-table-setting.component';
 import { JukeboxComponent } from 'component/jukebox/jukebox.component';
+import { ModalComponent } from 'component/modal/modal.component';
 import { PeerMenuComponent } from 'component/peer-menu/peer-menu.component';
 import { TextViewComponent } from 'component/text-view/text-view.component';
+import { UIPanelComponent } from 'component/ui-panel/ui-panel.component';
 import { AppConfig, AppConfigService } from 'service/app-config.service';
 import { ChatMessageService } from 'service/chat-message.service';
 import { ContextMenuService } from 'service/context-menu.service';
@@ -274,3 +277,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
 }
+
+PanelService.UIPanelComponentClass = UIPanelComponent;
+ContextMenuService.UIPanelComponentClass = ContextMenuComponent;
+ModalService.ModalComponentClass = ModalComponent;

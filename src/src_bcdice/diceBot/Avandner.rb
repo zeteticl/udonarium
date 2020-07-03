@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+# frozen_string_literal: true
 
 class Avandner < DiceBot
-  setPrefixes(['\d+AV\d+((x|\*)\d+(\+\d+)?)?(c\d+)?'])
+  # ゲームシステムの識別子
+  ID = 'Avandner'
 
+<<<<<<< HEAD
   def initialize
     super
     @sortType = 1 # 骰子のソート有
@@ -11,13 +14,16 @@ class Avandner < DiceBot
   def gameName
     '黒絢のアヴァンドナー'
   end
+=======
+  # ゲームシステム名
+  NAME = '黒絢のアヴァンドナー'
+>>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
-  def gameType
-    "Avandner"
-  end
+  # ゲームシステム名の読みがな
+  SORT_KEY = 'こつけんのあうあんとなあ'
 
-  def getHelpMessage
-    return <<MESSAGETEXT
+  # ダイスボットの使い方
+  HELP_MESSAGE = <<MESSAGETEXT
 ・調査判定：nAVm[Cx]
 ・命中判定：nAVm*p[+t][Cx]
 []内は省略可能。
@@ -37,6 +43,12 @@ class Avandner < DiceBot
 ・7AV2x10 → 7d10で目標値2、攻撃力10の命中判定。
 ・8av4*7+10 → 8d10で目標値4、攻撃力7、クリティカルトリガー10の命中判定。
 MESSAGETEXT
+
+  setPrefixes(['\d+AV\d+((x|\*)\d+(\+\d+)?)?(c\d+)?'])
+
+  def initialize
+    super
+    @sortType = 1 # ダイスのソート有
   end
 
   def rollDiceCommand(command)

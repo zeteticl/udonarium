@@ -11,12 +11,17 @@ require 'diceBot/DiceBot'
 class TestDiceBotPrefixesCompatibility < Test::Unit::TestCase
   def test_prefixesCompatibility
     kariDiceClass = Class.new(DiceBot) do |_|
+<<<<<<< HEAD
       def gameName
         '仮骰子'
+=======
+      def id
+        'KariDice'
+>>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       end
 
-      def gameType
-        'KariDice'
+      def name
+        '仮ダイス'
       end
 
       # 従来の方法で接頭辞を設定する

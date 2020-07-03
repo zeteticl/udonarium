@@ -1,77 +1,32 @@
 # -*- coding: utf-8 -*-
 
+require "utils/normalize"
+require "dice/add_dice/parser"
+require "dice/add_dice/randomizer"
+
 class AddDice
   def initialize(bcdice, diceBot)
     @bcdice = bcdice
     @diceBot = diceBot
     @nick_e = @bcdice.nick_e
+
+    @dice_list = []
   end
 
   ####################             加算骰子        ########################
 
   def rollDice(string)
-    debug("AddDice.rollDice() begin string", string)
+    parser = Parser.new(string)
 
-    m = %r{(^|\s)S?(([\d\+\*\-]*[\d]+D[\d/UR@]*[\d\+\*\-D/UR]*)(([<>=]+)([?\-\d]+))?)($|\s)}i.match(string)
-    return "1" unless m
-
-    string = m[2]
-    judgeText = m[4] # '>=10'といった成否判定文字
-    judgeOperator = m[5] # '>=' といった判定の条件演算子 文字
-    diffText = m[6]
-
-    signOfInequality = ""
-    isCheckSuccess = false
-
-    if judgeText
-      isCheckSuccess = true
-      string = m[3]
-      signOfInequality = @bcdice.marshalSignOfInequality(judgeOperator)
+    command = parser.parse()
+    if parser.error?
+      return '1'
     end
 
-    dice_cnt = 0
-    dice_max = 0
-    total_n = 0
-    dice_n = 0
-    output = ""
-    n1 = 0
-    n_max = 0
+    randomizer = Randomizer.new(@bcdice, @diceBot, command.cmp_op)
+    total = command.lhs.eval(randomizer)
 
-    addUpTextList = string.split("+")
-
-    addUpTextList.each do |addUpText|
-      subtractTextList = addUpText.split("-")
-
-      subtractTextList.each_with_index do |subtractText, index|
-        next if subtractText.empty?
-
-        debug("begin rollDiceAddingUp(subtractText, isCheckSuccess)", subtractText, isCheckSuccess)
-        dice_now, dice_n_wk, dice_str, n1_wk, n_max_wk, cnt_wk, max_wk = rollDiceAddingUp(subtractText, isCheckSuccess)
-        debug("end rollDiceAddingUp(subtractText, isCheckSuccess) -> dice_now", dice_now)
-
-        rate = (index == 0 ? 1 : -1)
-
-        total_n += dice_now * rate
-        dice_n += dice_n_wk * rate
-        n1 += n1_wk
-        n_max += n_max_wk
-        dice_cnt += cnt_wk
-        dice_max = max_wk if max_wk > dice_max
-
-        next if @diceBot.sendMode == 0
-
-        operatorText = getOperatorText(rate, output)
-        output += "#{operatorText}#{dice_str}"
-      end
-    end
-
-    if signOfInequality != ""
-      string += "#{signOfInequality}#{diffText}"
-    end
-
-    @diceBot.setDiceText(output)
-    @diceBot.setDiffText(diffText)
-
+<<<<<<< HEAD
     # 骰子目による補正処理（現状ナイトメアハンターディープ専用）
     addText, revision = @diceBot.getDiceRevision(n_max, dice_max, total_n)
     debug('addText, revision', addText, revision)
@@ -80,9 +35,15 @@ class AddDice
     if @diceBot.sendMode > 0
       if output =~ /[^\d\[\]]+/
         output = "#{@nick_e}: (#{string}) ＞ #{output} ＞ #{total_n}#{addText}"
+=======
+    output =
+      if randomizer.dice_list.size <= 1 && command.lhs.is_a?(Node::DiceRoll)
+        "#{@nick_e}: (#{command}) ＞ #{total}"
+>>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       else
-        output = "#{@nick_e}: (#{string}) ＞ #{total_n}#{addText}"
+        "#{@nick_e}: (#{command}) ＞ #{command.lhs.output} ＞ #{total}"
       end
+<<<<<<< HEAD
     else
       output = "#{@nick_e}: (#{string}) ＞ #{total_n}#{addText}"
     end
@@ -131,64 +92,25 @@ class AddDice
     end
 
     debug("double_check", double_check)
+=======
 
-    while (m = /(^([\d]+\*[\d]+)\*(.+)|(.+)\*([\d]+\*[\d]+)$|(.+)\*([\d]+\*[\d]+)\*(.+))/.match(string))
-      if  m[2]
-        string = @bcdice.parren_killer('(' + m[2] + ')') + '*' + m[3]
-      elsif  m[5]
-        string = m[4] + '*' + @bcdice.parren_killer('(' + m[5] + ')')
-      elsif  m[7]
-        string = m[6] + '*' + @bcdice.parren_killer('(' + m[7] + ')') + '*' + m[8]
-      end
+    dice_list = randomizer.dice_list
+    num_one = dice_list.count(1)
+    num_max = dice_list.count(randomizer.sides)
+
+    suffix, revision = @diceBot.getDiceRevision(num_max, randomizer.sides, total)
+    output += suffix
+    total += revision
+>>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
+
+    if command.cmp_op
+      dice_total = dice_list.inject(&:+)
+      output += @diceBot.check_result(total, dice_total, dice_list, randomizer.sides, command.cmp_op, command.rhs)
     end
 
-    debug("string", string)
+    output += @diceBot.getDiceRolledAdditionalText(num_one, num_max, randomizer.sides)
 
-    emptyResult = [dice_total, dice_n, output, n1, n_max, dice_cnt_total, dice_max]
-
-    mul_cmd = string.split("*")
-    mul_cmd.each do |mul_line|
-      if (m = mul_line.match(%r{([\d]+)D([\d]+)(@(\d+))?(/\d+[UR]?)?}i))
-        dice_count = m[1].to_i
-        dice_max = m[2].to_i
-        critical = m[4].to_i
-        slashMark = m[5]
-
-        return emptyResult if  (critical != 0) && !@diceBot.is2dCritical
-        return emptyResult if  dice_max > $DICE_MAXNUM
-
-        dice_max, dice_now, output_tmp, n1_count, max_number_tmp, result_dice_count =
-          rollDiceAddingUpCommand(dice_count, dice_max, slashMark, double_check, isCheckSuccess, critical)
-
-        output += "*" if output != ""
-        output += output_tmp
-
-        dice_total *= dice_now
-
-        dice_n += dice_now
-        dice_cnt_total += result_dice_count
-        n1 += n1_count
-        n_max += max_number_tmp
-
-      else
-        mul_line = mul_line.to_i
-        debug('dice_total', dice_total)
-        debug('mul_line', mul_line)
-
-        dice_total *= mul_line
-
-        unless output.empty?
-          output += "*"
-        end
-
-        if mul_line < 0
-          output += "(#{mul_line})"
-        else
-          output += mul_line.to_s
-        end
-      end
-    end
-
+<<<<<<< HEAD
     debug("rollDiceAddingUp() end output", dice_total, dice_n, output, n1, n_max, dice_cnt_total, dice_max)
     return dice_total, dice_n, output, n1, n_max, dice_cnt_total, dice_max
   end
@@ -321,5 +243,8 @@ class AddDice
     else
       "+"
     end
+=======
+    return output
+>>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
   end
 end
