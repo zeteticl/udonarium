@@ -13,7 +13,7 @@ import { TextViewComponent } from 'component/text-view/text-view.component';
 import { ChatMessageService } from 'service/chat-message.service';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
-import { GameObjectInventoryService} from 'service/game-object-inventory.service';
+import { GameObjectInventoryService } from 'service/game-object-inventory.service';
 
 @Component({
   selector: 'chat-palette',
@@ -162,8 +162,8 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
     DiceBot.getHelpMessage(this.gameType).then(help => {
       let gameName: string = '骰子機械人';
       for (let diceBotInfo of DiceBot.diceBotInfos) {
-        if (diceBotInfo.script === this.gameType) {
-          gameName = '骰子機械人<' + diceBotInfo.game + '＞'
+        if (diceBotInfo.gameType === this.gameType) {
+          gameName = '骰子機械人<' + diceBotInfo.gameName + '＞'
         }
       }
       gameName += '的説明';
@@ -174,22 +174,24 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
       textView.title = gameName;
       textView.text =
         '【擲骰BOT】你可以在聊天中進行自定義的擲骰\n'
-      + '例如輸入）2D6+1　攻撃！\n'
-      + '會輸出）   2D6+1　攻撃！\n'
-      + '　　　　  DiceBot: (2D6) → 7\n'
-      + '如上面一樣,在骰子數字後方隔空白位打字,就可以進行發言。\n'
-      + '以下還有其他例子\n'
-      + '　3D6+1>=9 ：骰出3d6+1然後判定是否大過等於9\n'
-      + '　1D100<=50 ：進行D100 50%的判定\n'
-      + '　3U6[5] ：擲出3D6，每骰出一粒5或以上的話會有獎勵骰一粒(可以無限獎勵)\n'
-      + '　3B6 ：和3D6一樣,但不進行合併計算\n'
-      + '　10B6>=4 ：擲出10d6,計算其中有多少粒骰大過等於4\n'
-      + '　(8/2)D(4+6)<=(5*3)：骰子粒數和條件可以用算式\n'
-      + '　C(10-4*3/2+2)：C(計算式）也可以只進行數字計算\n'
-      + '　Choice[a,b,c]：列出不同的元素去選擇。例如隨機選出攻擊對象\n'
-      + '　S3D6 ： 進行暗骰，其他人看不到結果\n'
-      + '　3D6/2 ： 骰出的點數除2 (捨棄小數點)。RoundUp /2U、四捨五入 /2R。\n'
-      + '　D66 ： 投擲D66。順序根據遊戲設定。D66N：正常、D66S：升序。\n'
+        + '例如輸入）2D6+1　攻撃！\n'
+        + '會輸出）   2D6+1　攻撃！\n'
+        + '　　　　  DiceBot: (2D6) → 7\n'
+        + '如上面一樣,在骰子數字後方隔空白位打字,就可以進行發言。\n'
+        + '以下還有其他例子\n'
+        + '　3D6+1>=9 ：骰出3d6+1然後判定是否大過等於9\n'
+        + '　1D100<=50 ：進行D100 50%的判定\n'
+        + '　3U6[5] ：擲出3D6，每骰出一粒5或以上的話會有獎勵骰一粒(可以無限獎勵)\n'
+        + '　3B6 ：和3D6一樣,但不進行合併計算\n'
+        + '　10B6>=4 ：擲出10d6,計算其中有多少粒骰大過等於4\n'
+        + '　(8/2)D(4+6)<=(5*3)：骰子粒數和條件可以用算式\n'
+        + '　C(10-4*3/2+2)：C(計算式）也可以只進行數字計算\n'
+        + '　Choice[a,b,c]：列出不同的元素去選擇。例如隨機選出攻擊對象\n'
+        + '　S3D6 ： 進行暗骰，其他人看不到結果\n'
+        + '　3D6/2 ： 骰出的點數除2 (捨棄小數點)。RoundUp /2U、四捨五入 /2R。\n'
+        + '　4D6KH3 ： 大きな出目から3個取った後の和。大きな出目を取る KH、小さな出目を取る KL。\n'
+        + '　2D20DL1+1 ： 小さな出目から1個除いた後の和+1。大きな出目を除く DH、小さな出目を除く DL。\n'
+        + '　D66 ： 投擲D66。順序根據遊戲設定。D66N：正常、D66S：升序。\n'
         + '===================================\n'
         + help;
       console.log('onChangeGameType done');
