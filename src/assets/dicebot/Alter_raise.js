@@ -30,40 +30,7 @@
     Opal.const_set($nesting[0], 'HELP_MESSAGE', "" + "\u25C6\u89E3\u653E\u5224\u5B9A\uFF1AEMA[x]\n" + "\n" + "[x]\u3067\u9054\u6210\u5024\u3092\u6307\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u7701\u7565\u6642\u306F\u30C0\u30A4\u30B9\u30ED\u30FC\u30EB\u3057\u307E\u3059\u3002\n" + "\n" + "\n" + "\u3010\u5404\u7A2E\u8868\u3011\n" + "\u25C6\u6027\u683C\u50BE\u5411\u8868\uFF1APER[n]\u3000\u3000\u3000\u3000\u3000\u3000 \u25C6\u5834\u6240\u8868\uFF1ALOC[ab]\n" + "\u25C6\u5E73\u7A4F\u30FB\u7D4C\u9A13\u8868\uFF1AQUI[ab]\u3000\u3000\u3000\u3000\u3000\u25C6\u559C\u3073\u30FB\u7D4C\u9A13\u8868\uFF1ADEL[ab]\n" + "\u25C6\u5FC3\u306E\u50B7\u30FB\u7D4C\u9A13\u8868\uFF1ATRA[ab]\u3000\u3000\u3000\u3000\u25C6\u30B7\u30FC\u30F3\u6F14\u51FA\u8868\uFF1ASCE[n]\n" + "\u25C6\u30B9\u30BF\u30F3\u30B9\u8868\uFF1ASTA[n]\u3000\u3000\u3000\u3000\u3000\u3000 \u25C6\u611F\u60C5\u8868\uFF1AEMO[ab]\n" + "\n" + "[]\u5185\u306E\u30B3\u30DE\u30F3\u30C9\u3092\u7701\u7565\u3067\u30C0\u30A4\u30B9\u30ED\u30FC\u30EB\u3001\u6307\u5B9A\u3067ROC\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3059\u3002\n" + "[n]\u306F\u300C1D6\u300D\u3001[ab]\u306F\u300CD66\u300D\u306E\u51FA\u76EE\u3092\u6307\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002\n" + "\n" + "\u3010\u66F8\u5F0F\u4F8B\u3011\n" + "PER3\uFF1A\u6027\u683C\u50BE\u5411\u8868\u306E\u300C3\u300D\u3092ROC\n" + "LOC52\uFF1A\u5834\u6240\u8868\u306E\u300C52\u300D\u3092ROC\n" + "QUI\uFF1A\u5E73\u7A4F\u30FB\u7D4C\u9A13\u8868\u3092\u30C0\u30A4\u30B9\u30ED\u30FC\u30EB\n");
     self.$setPrefixes(["EMA(\\d+)?", "PER(\\d+)?", "LOC(\\d+)?", "QUI(\\d+)?", "DEL(\\d+)?", "TRA(\\d+)?", "SCE(\\d+)?", "STA(\\d+)?", "EMO(\\d+)?"]);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$initialize', TMP_Alter_raise_initialize_1 = function $$initialize() {
-      var self = this, $iter = TMP_Alter_raise_initialize_1.$$p, $yield = $iter || nil, $zuper = nil, $zuper_i = nil, $zuper_ii = nil;
-
-      if ($iter) TMP_Alter_raise_initialize_1.$$p = null;
-      // Prepare super implicit arguments
-      for($zuper_i = 0, $zuper_ii = arguments.length, $zuper = new Array($zuper_ii); $zuper_i < $zuper_ii; $zuper_i++) {
-        $zuper[$zuper_i] = arguments[$zuper_i];
-      }
-      return $send(self, Opal.find_super_dispatcher(self, 'initialize', TMP_Alter_raise_initialize_1, false), $zuper, $iter)
-    }, TMP_Alter_raise_initialize_1.$$arity = 0);
-    
-    Opal.defn(self, '$gameName', TMP_Alter_raise_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "心衝想機TRPGアルトレイズ"
-    }, TMP_Alter_raise_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Alter_raise_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "Alter_raise"
-    }, TMP_Alter_raise_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Alter_raise_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "◆解放判定：EMA[x]\n" + "\n" + "[x]で達成値を指定してください。省略時は骰子ロールします。\n" + "\n" + "\n" + "【各種表】\n" + "◆性格傾向表：PER[n]　　　　　　 ◆場所表：LOC[ab]\n" + "◆平穏・経験表：QUI[ab]　　　　　◆喜び・経験表：DEL[ab]\n" + "◆心の傷・経験表：TRA[ab]　　　　◆シーン演出表：SCE[n]\n" + "◆スタンス表：STA[n]　　　　　　 ◆感情表：EMO[ab]\n" + "\n" + "[]内のコマンドを省略で骰子ロール、指定でROC結果を表示します。\n" + "[n]は「1D6」、[ab]は「D66」の出目を指定してください。\n" + "\n" + "【書式例】\n" + "PER3：性格傾向表の「3」をROC\n" + "LOC52：場所表の「52」をROC\n" + "QUI：平穏・経験表を骰子ロール\n"
-    }, TMP_Alter_raise_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_Alter_raise_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $Alter_raise_rollDiceCommand$1 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var $a, self = this, output = nil, $case = nil, roc = nil;
 
       

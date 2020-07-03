@@ -64,31 +64,8 @@
       }
     }, $BarnaKronika_postSet$2.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_BarnaKronika_gameName_3 = function $$gameName() {
-      var self = this;
-
-      return "バルナ・クロニカ"
-    }, TMP_BarnaKronika_gameName_3.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_BarnaKronika_gameType_4 = function $$gameType() {
-      var self = this;
-
-      return "BarnaKronika"
-    }, TMP_BarnaKronika_gameType_4.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_BarnaKronika_getHelpMessage_5 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・通常判定　nBK\n" + "　骰子数nで判定ロールを行います。\n" + "　セット数が1以上の時はセット数も表示します。\n" + "・攻撃判定　nBA\n" + "　骰子数nで判定ロールを行い、攻撃値と命中部位も表示します。\n" + "・クリティカルコール　nBKCt　nBACt\n" + "　判定コマンドの後ろに「Ct」を付けるとクリティカルコールです。\n" + "　骰子数n,コール数tで判定ロールを行います。\n" + "　骰子数nで判定ロールを行います。\n" + "　セット数が1以上の時はセット数も表示し、攻撃判定の場合は命中部位も表示します。\n"
-    }, TMP_BarnaKronika_getHelpMessage_5.$$arity = 0);
-    
-    Opal.defn(self, '$changeText', TMP_BarnaKronika_changeText_10 = function $$changeText(string) {
-      var TMP_6, TMP_7, TMP_8, TMP_9, self = this;
-=======
     Opal.def(self, '$changeText', $BarnaKronika_changeText$3 = function $$changeText(string) {
       var $$4, $$5, $$6, $$7, self = this;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       self.$debug("parren_killer_add begin string", string);

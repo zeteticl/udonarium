@@ -25516,16 +25516,6 @@ Opal.modules["CardTrader"] = function(Opal) {
       $send(self.deal_cards, 'each', [], ($$81 = function(place, cards){var self = $$81.$$s || this;
 
       
-<<<<<<< HEAD
-        $send(messages, 'each', [], send_to_sender.$to_proc());
-        return self.$sleep(1);}, TMP_10.$$s = self, TMP_10.$$arity = 1, TMP_10));
-      self.$sleep(1);
-      $send(["・卡牌を配る　　　　　　　(c-deal[n]相手)", "・卡牌を見てから配る　　　(c-vdeal[n]相手)", "・卡牌のシャッフル　　　　(c-shuffle)", "・捨て卡牌を山に戻す　　　(c-rshuffle)", "・全員の場の卡牌を捨てる　(c-clean)"], 'each', [], send_to_sender.$to_proc());
-      self.$sleep(1);
-      $send(["・相手の手札と場札を見る　　(c-vhand) (Talk不可)", "・枚数配置を見る　　　　　　(c-check)", "・復活の呪文　　　　　　　　(c-spell[呪文]) (c-spellで呪文の表示)"], 'each', [], send_to_sender.$to_proc());
-      return self.$sendMessageToOnlySender("  -- END ---");
-    }, TMP_CardTrader_printCardHelp_11.$$arity = 0);
-=======
         
         if (place == null) {
           place = nil;
@@ -25537,7 +25527,6 @@ Opal.modules["CardTrader"] = function(Opal) {
         return self.$clearAllPlayerCardsWhenPlayedPlace(place, cards);}, $$81.$$s = self, $$81.$$arity = 2, $$81));
       return "\u5834\u306E\u30AB\u30FC\u30C9\u3092\u6368\u3066\u307E\u3057\u305F";
     }, $CardTrader_clearAllPlaceAllPlayerCards$80.$$arity = 0);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$clearAllPlayerCardsWhenPlayedPlace', $CardTrader_clearAllPlayerCardsWhenPlayedPlace$82 = function $$clearAllPlayerCardsWhenPlayedPlace(place, cards) {
       var self = this;
@@ -25546,44 +25535,18 @@ Opal.modules["CardTrader"] = function(Opal) {
         return self.$clearAllPlayerCards(place, cards)
       } else {
         return nil
-<<<<<<< HEAD
-      };
-      self.card_place = Opal.const_get_relative($nesting, 'Regexp').$last_match(1).$to_i();
-      if ($truthy($rb_gt(self.card_place, 0))) {
-        return self.$sendMessageToChannels("卡牌置き場ありに変更しました")
-        } else {
-        return self.$sendMessageToChannels("卡牌置き場無しに変更しました")
-      };
-    }, TMP_CardTrader_setCardMode_12.$$arity = 0);
-=======
       }
     }, $CardTrader_clearAllPlayerCardsWhenPlayedPlace$82.$$arity = 2);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$clearAllPlayerCards', $CardTrader_clearAllPlayerCards$83 = function $$clearAllPlayerCards(place, cards) {
       var $a, self = this, cardset = nil, $writer = nil;
 
-<<<<<<< HEAD
-      try {
-        
-        self.$readExtraCard(self.tnick);
-        return self.$sendMessageToOnlySender("卡牌セットの読み込み成功しました");
-      } catch ($err) {
-        if (Opal.rescue($err, [Opal.const_get_relative($nesting, 'StandardError')])) {e = $err;
-          try {
-            return self.$sendMessageToOnlySender(e.$to_s())
-          } finally { Opal.pop_exception() }
-        } else { throw $err; }
-      }
-    }, TMP_CardTrader_readCardSet_13.$$arity = 0);
-=======
       
       cardset = cards.$join(",");
       self.$discardCards("" + "c-discard[" + (cardset) + "]", place);
       ($truthy($a = self.deal_cards['$[]'](place)) ? $a : (($writer = [place, []]), $send(self.deal_cards, '[]=', Opal.to_a($writer)), $writer[$rb_minus($writer["length"], 1)]));
       return self.deal_cards['$[]'](place).$clear();
     }, $CardTrader_clearAllPlayerCards$83.$$arity = 2);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$returnCards', $CardTrader_returnCards$84 = function $$returnCards() {
       var $a, self = this, $writer = nil, cards = nil;
@@ -25671,21 +25634,9 @@ Opal.modules["CardTrader"] = function(Opal) {
       var self = this, hand = nil, place = nil;
 
       
-<<<<<<< HEAD
-      self.$debug("drawCardByCommandText arg", arg);
-      cards = self.$drawCard(arg);
-      self.$debug("drawCardByCommandText cards", cards);
-      if ($truthy(cards['$empty?']()['$!']())) {
-        
-        self.$sendMessageToOnlySender(self.$getCardsTextFromCards(cards));
-        self.$sendMessage(self.channel, "" + (self.nick_e) + ": " + (cards.$length()) + "枚引きました");
-        } else {
-        self.$sendMessage(self.channel, "卡牌が残っていません")
-=======
       
       if (destination == null) {
         destination = nil;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       };
       self.$debug("getHandAndPlaceCardInfoText(str, destination)", str, destination);
       if ($truthy(destination['$nil?']())) {
@@ -25702,21 +25653,6 @@ Opal.modules["CardTrader"] = function(Opal) {
       var self = this, out_msg = nil;
 
       
-<<<<<<< HEAD
-      cmd = "c-draw";
-      if ($truthy(value['$nil?']())) {
-        } else {
-        cmd = $rb_plus(cmd, value)
-      };
-      cards = self.$drawCard(cmd);
-      if ($truthy(cards['$empty?']()['$!']())) {
-        self.$sendMessage(self.channel, $rb_plus($rb_plus("" + (self.nick_e) + ": ", self.$getCardsTextFromCards(cards)), "を引きました"))
-        } else {
-        self.$sendMessage(self.channel, "卡牌が残っていません")
-      };
-      return ($truthy($a = self.card_channels['$[]'](self.nick_e)) ? $a : (($writer = [self.nick_e, self.channel]), $send(self.card_channels, '[]=', Opal.to_a($writer)), $writer[$rb_minus($writer["length"], 1)]));
-    }, TMP_CardTrader_drawCardOpen_22.$$arity = 1);
-=======
       destination = destination.$upcase();
       self.$debug("getHandCardInfoText destination", destination);
       out_msg = self.$getDealCardsText(destination);
@@ -25724,7 +25660,6 @@ Opal.modules["CardTrader"] = function(Opal) {
         out_msg = "\u30AB\u30FC\u30C9\u3092\u6301\u3063\u3066\u3044\u307E\u305B\u3093"};
       return out_msg;
     }, $CardTrader_getHandCardInfoText$92.$$arity = 1);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$getDealCardsText', $CardTrader_getDealCardsText$93 = function $$getDealCardsText(destination) {
       var self = this, cards = nil, cardsText = nil;
@@ -25906,18 +25841,6 @@ Opal.modules["CardTrader"] = function(Opal) {
       var $$107, self = this, spellWords = nil;
 
       
-<<<<<<< HEAD
-      self.$debug("dealCard count, targetNick", count, targetNick);
-      cards = self.$drawCard("" + "c-draw" + (count), targetNick);
-      if ($truthy(cards['$empty?']()['$!']())) {
-        self.$sendDealResult(targetNick, count, self.$getCardsTextFromCards(cards), isLook)
-        } else {
-        self.$sendMessage(self.channel, "卡牌が残っていません")
-      };
-      ($truthy($a = self.card_channels['$[]'](targetNick)) ? $a : (($writer = [targetNick, self.channel]), $send(self.card_channels, '[]=', Opal.to_a($writer)), $writer[$rb_minus($writer["length"], 1)]));
-      return count;
-    }, TMP_CardTrader_dealCard_38.$$arity = -3);
-=======
       spellWords = "";
       $send(self.card_val, 'each', [], ($$107 = function(card){var self = $$107.$$s || this, index = nil, indexWord = nil;
 
@@ -25932,7 +25855,6 @@ Opal.modules["CardTrader"] = function(Opal) {
       spellWords = self.$shrinkSpellWords(spellWords);
       return spellWords;
     }, $CardTrader_getSpellWords$106.$$arity = 0);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$getIndexWord', $CardTrader_getIndexWord$108 = function $$getIndexWord(index) {
       var self = this;
@@ -26334,19 +26256,6 @@ Opal.modules["TableFileData"] = function(Opal) {
 
       
         
-<<<<<<< HEAD
-        self.$debug("卡牌指定がないのでランダムで一枚渡す");
-        thisCard = self.$ejectOneCardRandomFromCards(cards);
-        isTargetCardInHand = true;
-        restCards = self.deal_cards['$[]'](from);
-        } else {
-        
-        self.$debug("卡牌指定あり targetCard", targetCard);
-        $b = self.$transferTargetCard(targetCard, cards, toSend, from), $a = Opal.to_ary($b), (thisCard = ($a[0] == null ? nil : $a[0])), (restCards = ($a[1] == null ? nil : $a[1])), (isTargetCardInHand = ($a[2] == null ? nil : $a[2])), $b;
-      };
-      self.$debug("transferOneCard isTargetCardInHand", isTargetCardInHand);
-      if ($truthy(isTargetCardInHand)) {
-=======
         if (fileName == null) {
           fileName = nil;
         };
@@ -26356,7 +26265,6 @@ Opal.modules["TableFileData"] = function(Opal) {
         };
         key = $$($nesting, 'Regexp').$last_match(1);
         if ($truthy(new RegExp("" + "^(s|S)?" + (key) + "(\\s|$)", 'i')['$==='](arg))) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
         } else {
           return nil;
         };
@@ -26627,13 +26535,6 @@ Opal.modules["TableFileData"] = function(Opal) {
       var $a, self = this;
 
       
-<<<<<<< HEAD
-      $b = self.$getCardMilstone(commandText), $a = Opal.to_ary($b), (count = ($a[0] == null ? nil : $a[0])), (output_msg = ($a[1] == null ? nil : $a[1])), $b;
-      if ($truthy($rb_gt(count, 0))) {
-        return self.$sendMessage(self.channel, "" + (self.nick_e) + ": " + (self.$getCardsText(output_msg)) + "が出ました")
-        } else {
-        return self.$sendMessage(self.channel, "卡牌が残っていません")
-=======
       self.originalCommand = self.params['$[]']("originalCommand");
       self.gameType = self.params['$[]']("gameType");
       self.originalGameType = self.params['$[]']("originalGameType");
@@ -26641,7 +26542,6 @@ Opal.modules["TableFileData"] = function(Opal) {
         return self.$checkFileWhenFileNameNotChanged(fileName)
       } else {
         return self.$checkFileWhenFileNameChanged(fileName)
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       };
     }, $TableFileEditer_checkFile$36.$$arity = 1);
     
@@ -26837,20 +26737,9 @@ Opal.modules["diceBot/DiceBot"] = function(Opal) {
     Opal.def(self, '$prefixes', $DiceBot_prefixes$14 = function $$prefixes() {
       var self = this;
 
-<<<<<<< HEAD
-      
-      destination = destination.$upcase();
-      self.$debug("getHandCardInfoText destination", destination);
-      out_msg = self.$getDealCardsText(destination);
-      if ($truthy(out_msg['$empty?']())) {
-        out_msg = "卡牌を持っていません"};
-      return out_msg;
-    }, TMP_CardTrader_getHandCardInfoText_92.$$arity = 1);
-=======
       return self.$class().$prefixes()
     }, $DiceBot_prefixes$14.$$arity = 0);
     Opal.alias(self, "prefixs", "prefixes");
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$setSendMode', $DiceBot_setSendMode$15 = function $$setSendMode(m) {
       var self = this;
@@ -26916,32 +26805,12 @@ Opal.modules["diceBot/DiceBot"] = function(Opal) {
       var $post_args, args, $b, self = this;
 
       
-<<<<<<< HEAD
-      output_msg = self.$throwCardRestorationSpell(spellText);
-      if (output_msg['$==']("readSpell")) {
-        return self.$sendMessage(self.channel, "" + (self.nick_e) + ": 卡牌配置を復活しました")
-        } else {
-        return self.$sendMessage(self.channel, output_msg)
-      };
-    }, TMP_CardTrader_printCardRestorationSpellResult_103.$$arity = 1);
-=======
-      
-      $post_args = Opal.slice.call(arguments, 0, arguments.length);
-      
-      args = $post_args;;
-      return $send((($b = $nesting[0].$$cvars['@@bcdice']) == null ? nil : $b), 'getD66Value', Opal.to_a(args));
-    }, $DiceBot_d66$23.$$arity = -1);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
-    
-    Opal.def(self, '$parren_killer', $DiceBot_parren_killer$24 = function $$parren_killer(string) {
-      var $a, self = this;
 
       return (($a = $nesting[0].$$cvars['@@bcdice']) == null ? nil : $a).$parren_killer(string)
     }, $DiceBot_parren_killer$24.$$arity = 1);
     
     Opal.def(self, '$changeText', $DiceBot_changeText$25 = function $$changeText(string) {
       var self = this;
-
       
       self.$debug("DiceBot.parren_killer_add called");
       return string;
@@ -28269,16 +28138,6 @@ Opal.modules["dice/add_dice/parser"] = function(Opal) {
 
         if ($truthy(self.$consume("+"))) {
             
-<<<<<<< HEAD
-            self.$debug("DiceBotLoader.loadUnknownGame: 骰子ボットの読み込みに失敗しました", e.$to_s());
-            return nil;
-          } finally { Opal.pop_exception() }
-        } else { throw $err; }
-      };;
-    }, TMP_DiceBotLoader_loadUnknownGame_2.$$arity = 1);
-    Opal.defs(self, '$collectDiceBots', TMP_DiceBotLoader_collectDiceBots_3 = function $$collectDiceBots() {
-      var self = this;
-=======
             $b = self.$sub_negative_number("+", self.$mul()), $a = Opal.to_ary($b), (op = ($a[0] == null ? nil : $a[0])), (rhs = ($a[1] == null ? nil : $a[1])), $b;
             return (node = $$$($$$($$($nesting, 'AddDice'), 'Node'), 'BinaryOp').$new(node, op, rhs));
           } else if ($truthy(self.$consume("-"))) {
@@ -28295,7 +28154,6 @@ Opal.modules["dice/add_dice/parser"] = function(Opal) {
       
       Opal.def(self, '$sub_negative_number', $Parser_sub_negative_number$9 = function $$sub_negative_number(op, rhs) {
         var $a, self = this;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
         
         if ($truthy(($truthy($a = rhs['$is_a?']($$$($$($nesting, 'Node'), 'Number'))) ? $rb_lt(rhs.$literal(), 0) : $a))) {
@@ -29621,12 +29479,6 @@ Opal.modules["bcdiceCore"] = function(Opal) {
       if ($gvars.READY_CMD == null) $gvars.READY_CMD = nil;
 
       
-<<<<<<< HEAD
-      send_to_sender = $send(self, 'lambda', [], (TMP_40 = function(message){var self = TMP_40.$$s || this;
-if (message == null) message = nil;
-      return self.$sendMessageToOnlySender(message)}, TMP_40.$$s = self, TMP_40.$$arity = 1, TMP_40));
-      $send(["・加算ロール　　　　　　　　(xDn) (n面体骰子をx個)", "・バラバラロール　　　　　　(xBn)", "・個数振り足しロール　　　　(xRn[振り足し値])", "・上方無限ロール　　　　　　(xUn[境界値])", "・シークレットロール　　　　(S骰子コマンド)", "" + "・シークレットをオープンする(" + ($gvars.OPEN_DICE) + ")", "・四則計算(端数切捨て)　　　(C(式))"], 'each', [], send_to_sender.$to_proc());
-=======
       send_to_sender = $send(self, 'lambda', [], ($$40 = function(message){var self = $$40.$$s || this;
 
       
@@ -29636,7 +29488,6 @@ if (message == null) message = nil;
         };
         return self.$sendMessageToOnlySender(message);}, $$40.$$s = self, $$40.$$arity = 1, $$40));
       $send(["\u30FB\u52A0\u7B97\u30ED\u30FC\u30EB\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000(xDn) (n\u9762\u4F53\u30C0\u30A4\u30B9\u3092x\u500B)", "\u30FB\u30D0\u30E9\u30D0\u30E9\u30ED\u30FC\u30EB\u3000\u3000\u3000\u3000\u3000\u3000(xBn)", "\u30FB\u500B\u6570\u632F\u308A\u8DB3\u3057\u30ED\u30FC\u30EB\u3000\u3000\u3000\u3000(xRn[\u632F\u308A\u8DB3\u3057\u5024])", "\u30FB\u4E0A\u65B9\u7121\u9650\u30ED\u30FC\u30EB\u3000\u3000\u3000\u3000\u3000\u3000(xUn[\u5883\u754C\u5024])", "\u30FB\u30B7\u30FC\u30AF\u30EC\u30C3\u30C8\u30ED\u30FC\u30EB\u3000\u3000\u3000\u3000(S\u30C0\u30A4\u30B9\u30B3\u30DE\u30F3\u30C9)", "" + "\u30FB\u30B7\u30FC\u30AF\u30EC\u30C3\u30C8\u3092\u30AA\u30FC\u30D7\u30F3\u3059\u308B(" + ($gvars.OPEN_DICE) + ")", "\u30FB\u56DB\u5247\u8A08\u7B97(\u7AEF\u6570\u5207\u6368\u3066)\u3000\u3000\u3000(C(\u5F0F))"], 'each', [], send_to_sender.$to_proc());
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       self.$sleepForIrc(2);
       $send(self.diceBot.$help_message().$lines(), 'each_slice', [5], ($$41 = function(lines){var self = $$41.$$s || this;
 
@@ -29655,11 +29506,7 @@ if (message == null) message = nil;
       self.$sleepForIrc(1);
       $send(["\u30FB\u540C\u4E00\u30BF\u30B0\u306E\u30AB\u30A6\u30F3\u30BF\u5024\u4E00\u89A7\u3000\u3000(#OPEN!\u30BF\u30B0)", "\u30FB\u81EA\u30AD\u30E3\u30E9\u306E\u30AB\u30A6\u30F3\u30BF\u5024\u4E00\u89A7\u3000\u3000(Talk\u3067#OPEN![\u30BF\u30B0]) (\u5168\u30AB\u30A6\u30F3\u30BF\u8868\u793A\u6642\u3001\u30BF\u30B0\u7701\u7565)", "\u30FB\u81EA\u30AD\u30E3\u30E9\u306E\u30AB\u30A6\u30F3\u30BF\u524A\u9664\u3000\u3000\u3000(#[\u540D\u524D:]DIED!) (\u30C7\u30D5\u30A9\u30EB\u30C8\u6642\u3001\u8B58\u5225\u540D\u7701\u7565)", "\u30FB\u5168\u81EA\u30AD\u30E3\u30E9\u306E\u30AB\u30A6\u30F3\u30BF\u524A\u9664\u3000\u3000(#ALL!:DIED!)", "" + "\u30FB\u30AB\u30A6\u30F3\u30BF\u8868\u793A\u30C1\u30E3\u30F3\u30CD\u30EB\u767B\u9332\u3000(" + ($gvars.READY_CMD) + ")", "  ---"], 'each', [], send_to_sender.$to_proc());
       self.$sleepForIrc(2);
-<<<<<<< HEAD
-      self.$sendMessageToOnlySender("・卡牌機能ヘルプ　　　　　　(c-help)");
-=======
       self.$sendMessageToOnlySender("\u30FB\u30AB\u30FC\u30C9\u6A5F\u80FD\u30D8\u30EB\u30D7\u3000\u3000\u3000\u3000\u3000\u3000(c-help)");
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       return self.$sendMessageToOnlySender("  -- END ---");
     }, $BCDice_printHelp$39.$$arity = 0);
     

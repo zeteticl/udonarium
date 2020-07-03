@@ -47,29 +47,7 @@
       self.sendMode = 2;
       self.sortType = 0;
       return (self.d66Type = 2);
-<<<<<<< HEAD
-    }, TMP_BeastBindTrinity_initialize_1.$$arity = 0);
-    
-    Opal.defn(self, '$gameName', TMP_BeastBindTrinity_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "ビーストバインド トリニティ"
-    }, TMP_BeastBindTrinity_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_BeastBindTrinity_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "BeastBindTrinity"
-    }, TMP_BeastBindTrinity_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_BeastBindTrinity_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・判定　(nBB+m%w@x#y$z&v)\n" + "　n個のD6を振り、出目の大きい2個から達成値を算出。修正mも可能。\n" + "　\n" + "　%w、@x、#y、$z、&vはすべて省略可能。\n" + "＞%w：現在の人間性が w であるとして、クリティカル値(C値)を計算。\n" + "・省略した場合、C値=12として達成値を算出する。\n" + "＞@x：クリティカル値修正。（加減式でも入力可能）\n" + "・xに直接数字を書くと、C値をその数字に上書きする。\n" + "　「絶対にクリティカルしない」状態は、@13など xを13以上に指定すること。\n" + "・xの先頭が「+」か「-」なら、計算したC値にその値を加算。例）@-1、@+2\n" + "　この方法でC値をプラスする場合、上限は12となる。\n" + "＞#y、#Ay：ファンブル値修正。（加減式でも入力可能）\n" + "・yに直接数字を書くと、ファンブル値をその数字に設定。\n" + "・yの数字の先頭が「+」か「-」なら、ファンブル値=2にその数字を加算。例）#+2\n" + "・※#Ayとすると、ファンブルしても達成値を通常通り算出。　例）#A+1\n" + "＞$z：骰子の出目をzに固定して判定する。複数指定可。\n" + "　　　《運命歪曲》など「骰子の１個を振り直す」効果等に使用する。\n" + "　例）2BB$1 →骰子を2個振る判定で、骰子1個の出目を1で固定\n" + "　例）2BB$16→骰子を2個振る判定で、骰子の出目を1と6で固定\n" + "＞&v：出目がv未満の骰子があれば、出目がvだったものとして達成値を計算する。\n" + "　例）2BB&3 →出目3未満（→出目1、2）を出目3だったものとして計算。\n" + "\n" + "・D66骰子あり\n" + "・邂逅表：EMO\n" + "・暴露表：EXPO_A　　・魔獣化暴露表：EXPO_B\n" + "・アイドル専用暴露表：EXPO_I\n" + "・アイドル専用魔獣化暴露表：EXPO_J\n" + "・正体判明チャートA～C：FACE_A、FACE_B、FACE_C\n"
-    }, TMP_BeastBindTrinity_getHelpMessage_4.$$arity = 0);
-=======
     }, $BeastBindTrinity_initialize$1.$$arity = 0);
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
     
     Opal.def(self, '$changeText', $BeastBindTrinity_changeText$2 = function $$changeText(string) {
       var $$3, $$4, $$5, $$6, $$7, $$8, $$9, $$10, $$11, self = this;
@@ -235,13 +213,8 @@
             return dicesubs.$push(i.$to_i())
           } else {
             return nil
-<<<<<<< HEAD
-          }}, TMP_19.$$s = self, TMP_19.$$arity = 1, TMP_19));
-        self.$debug("" + "▼骰子出目予約 " + (dicesubs));};
-=======
           };}, $$16.$$s = self, $$16.$$arity = 1, $$16));
         self.$debug("" + "\u25BC\u30C0\u30A4\u30B9\u51FA\u76EE\u4E88\u7D04 " + (dicesubs));};
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       dice_now = 0;
       dice_str = "";
       total_n = 0;
@@ -261,13 +234,8 @@
           };
           return n.$to_i();}, $$17.$$s = self, $$17.$$arity = 1, $$17));
       } else if ($truthy(dicesubs['$empty?']())) {
-<<<<<<< HEAD
-        return "ERROR:振る骰子の数が0個です"
-        } else {
-=======
         return "ERROR:\u632F\u308B\u30C0\u30A4\u30B9\u306E\u6570\u304C0\u500B\u3067\u3059"
       } else {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
         dice_num = dicesubs
       };
       dice_num['$sort!']();

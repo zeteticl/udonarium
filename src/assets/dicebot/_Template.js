@@ -26,29 +26,7 @@
       return $send(self, Opal.find_super_dispatcher(self, 'initialize', $Template_initialize$1, false), $zuper, $iter)
     }, $Template_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_Template_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "ゲーム名"
-    }, TMP_Template_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Template_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "GameType"
-    }, TMP_Template_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Template_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "ヘルプメッセージ\n" + "骰子ボットの使い方をここに記述します。\n"
-    }, TMP_Template_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$changeText', TMP_Template_changeText_5 = function $$changeText(string) {
-=======
     Opal.def(self, '$changeText', $Template_changeText$2 = function $$changeText(string) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var self = this;
 
       return string

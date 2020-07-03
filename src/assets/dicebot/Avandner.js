@@ -41,29 +41,7 @@
       return (self.sortType = 1);
     }, $Avandner_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_Avandner_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "黒絢のアヴァンドナー"
-    }, TMP_Avandner_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Avandner_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "Avandner"
-    }, TMP_Avandner_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Avandner_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・調査判定：nAVm[Cx]\n" + "・命中判定：nAVm*p[+t][Cx]\n" + "[]内は省略可能。\n" + "\n" + "クリティカルヒットの分だけ、自動で振り足し処理を行います。0\n" + "「n」で骰子数を指定。\n" + "「m」で目標値を指定。省略は出来ません。\n" + "「Cx」でクリティカル値を指定。省略時は「1」、最大値は「2」、「0」でクリティカル無し。\n" + "「p」で攻撃力を指定。「*」は「x」でも可。\n" + "「+t」でクリティカルトリガーを指定。省略可能です。\n" + "攻撃力指定で命中判定となり、成功数ではなく、ダメージを結果表示します。\n" + "\n" + "【書式例】\n" + "・5AV3 → 5d10で目標値3。\n" + "・6AV2C0 → 6d10で目標値2。クリティカル無し。\n" + "・4AV3*5 → 4d10で目標値3、攻撃力5の命中判定。\n" + "・7AV2x10 → 7d10で目標値2、攻撃力10の命中判定。\n" + "・8av4*7+10 → 8d10で目標値4、攻撃力7、クリティカルトリガー10の命中判定。\n"
-    }, TMP_Avandner_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_Avandner_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $Avandner_rollDiceCommand$2 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var $a, self = this, diceCount = nil, target = nil, damage = nil, criticalTrigger = nil, criticalNumber = nil;
 
       

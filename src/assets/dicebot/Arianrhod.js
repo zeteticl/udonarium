@@ -32,36 +32,8 @@
       return (self.d66Type = 1);
     }, $Arianrhod_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_Arianrhod_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "アリアンロッド"
-    }, TMP_Arianrhod_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Arianrhod_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "Arianrhod"
-    }, TMP_Arianrhod_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Arianrhod_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・クリティカル、ファンブルの自動判定を行います。(クリティカル時の追加ダメージも表示されます)\n" + "・D66骰子あり\n"
-    }, TMP_Arianrhod_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$check_2D6', TMP_Arianrhod_check_2D6_5 = function $$check_2D6(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max) {
-      var self = this;
-
-      return self.$check_nD6(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
-    }, TMP_Arianrhod_check_2D6_5.$$arity = 8);
-    return (Opal.defn(self, '$check_nD6', TMP_Arianrhod_check_nD6_6 = function $$check_nD6(total_n, _dice_n, signOfInequality, diff, dice_cnt, _dice_max, n1, n_max) {
-      var self = this, result = nil;
-=======
     Opal.def(self, '$check_nD6', $Arianrhod_check_nD6$2 = function $$check_nD6(total, _dice_total, dice_list, cmp_op, target) {
       var $a, self = this, n_max = nil;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       n_max = dice_list.$count(6);

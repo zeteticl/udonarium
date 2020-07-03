@@ -83,31 +83,8 @@ Opal.modules["utils/normalize"] = function(Opal) {
       return (self.sendMode = 2);
     }, $ArsMagica_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_ArsMagica_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "アルスマギカ"
-    }, TMP_ArsMagica_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_ArsMagica_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "ArsMagica"
-    }, TMP_ArsMagica_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_ArsMagica_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・ストレス骰子　(ArSx+y)\n" + "　\"ArS(ボッチ骰子)+(修正)\"です。判定にも使えます。Rコマンド(1R10+y[m])に読替をします。\n" + "　ボッチ骰子と修正は省略可能です。(ボッチ骰子を省略すると1として扱います)\n" + "　botch骰子の0の数が2以上の時は、数えて表示します。\n" + "　（注意！） botchの判断が発生したときには、その骰子を含めてロールした全ての骰子を[]の中に並べて表示します。\n" + "　例) (1R10[5]) ＞ 0[0,1,8,0,8,1] ＞ Botch!\n" + "　　最初の0が判断基準で、その右側5つがボッチ骰子です。1*2,8*2,0*1なので1botchという訳です。\n"
-    }, TMP_ArsMagica_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$changeText', TMP_ArsMagica_changeText_9 = function $$changeText(string) {
-      var TMP_5, TMP_6, TMP_7, TMP_8, self = this;
-=======
     Opal.def(self, '$changeText', $ArsMagica_changeText$2 = function $$changeText(string) {
       var $$3, $$4, $$5, $$6, self = this;
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
 
       
       if ($truthy(/ArS/i['$=~'](string))) {

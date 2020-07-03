@@ -41,29 +41,7 @@
       return (self.sortType = 1);
     }, $Alsetto_initialize$1.$$arity = 0);
     
-<<<<<<< HEAD
-    Opal.defn(self, '$gameName', TMP_Alsetto_gameName_2 = function $$gameName() {
-      var self = this;
-
-      return "詩片のアルセット"
-    }, TMP_Alsetto_gameName_2.$$arity = 0);
-    
-    Opal.defn(self, '$gameType', TMP_Alsetto_gameType_3 = function $$gameType() {
-      var self = this;
-
-      return "Alsetto"
-    }, TMP_Alsetto_gameType_3.$$arity = 0);
-    
-    Opal.defn(self, '$getHelpMessage', TMP_Alsetto_getHelpMessage_4 = function $$getHelpMessage() {
-      var self = this;
-
-      return "" + "・成功判定：nAL[m]　　　　・トライアンフ無し：nALC[m]\n" + "・命中判定：nAL[m]*p　　　・トライアンフ無し：nALC[m]*p\n" + "・命中判定（ガンスリンガーの根源詩）：nALG[m]*p\n" + "[]内は省略可能。\n" + "\n" + "ALコマンドはトライアンフの分だけ、自動で振り足し処理を行います。\n" + "「n」で骰子数を指定。\n" + "「m」で目標値を指定。省略時は、デフォルトの「3」が使用されます。\n" + "「p」で攻撃力を指定。「*」は「x」でも可。\n" + "攻撃力指定で命中判定となり、成功数ではなく、ダメージを結果表示します。\n" + "\n" + "ALCコマンドはトライアンフ無しで、成功数、ダメージを結果表示します。\n" + "ALGコマンドは「2以下」でトライアンフ処理を行います。\n" + "\n" + "【書式例】\n" + "・5AL → 5d6で目標値3。\n" + "・5ALC → 5d6で目標値3。トライアンフ無し。\n" + "・6AL2 → 6d6で目標値2。\n" + "・4AL*5 → 4d6で目標値3、攻撃力5の命中判定。\n" + "・7AL2x10 → 7d6で目標値2、攻撃力10の命中判定。\n" + "・8ALC4x5 → 8d6で目標値4、攻撃力5、トライアンフ無しの命中判定。\n"
-    }, TMP_Alsetto_getHelpMessage_4.$$arity = 0);
-    
-    Opal.defn(self, '$rollDiceCommand', TMP_Alsetto_rollDiceCommand_5 = function $$rollDiceCommand(command) {
-=======
     Opal.def(self, '$rollDiceCommand', $Alsetto_rollDiceCommand$2 = function $$rollDiceCommand(command) {
->>>>>>> 0dfe93a1d368ac1ad3ef24167156b31a70848848
       var $a, self = this, rapid = nil, isCritical = nil, criticalNumber = nil, target = nil, damage = nil;
 
       
