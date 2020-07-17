@@ -1,11 +1,15 @@
-<button (click)="openModal()">選擇圖片</button>
+<div class="flex-container" *ngIf=isWatchMode()>
+  觀戰模式下不能使用此功能！
+</div>
+<div *ngIf=!isWatchMode()>
+<button (click)="openModal()">選擇圖像</button>
 <div>
   <img height="120" [src]="tableBackgroundImage.url | safe: 'resourceUrl'">
 </div>
 <input [(ngModel)]="name" placeholder="Name" name="name" />
 <div>
   <div>
-    <input [(ngModel)]="size" type="range" min="{{minSize}}" max="{{maxSize}}" name="size" /> Size : <input [(ngModel)]="size"
+    <input [(ngModel)]="size" type="range" min="{{minSize}}" max="{{maxSize}}" name="size" /> 尺寸 : <input [(ngModel)]="size"
       type="number" min="{{minSize}}" max="{{maxSize}}">
   </div>
   <button (click)="createGameCharacter()">新增角色</button>
@@ -16,4 +20,5 @@
     <textarea style="width:100%; height:5em; resize: none;" [(ngModel)]="xml" placeholder="XML"></textarea>
   </div>
   -->
+</div>
 </div>

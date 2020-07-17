@@ -21,10 +21,7 @@ export class DataSummarySetting extends GameObject implements InnerXml {
 
   @SyncVar() sortTag: string = 'name';
   @SyncVar() sortOrder: SortOrder = SortOrder.ASC;
-
-  @SyncVar() dataTag: string = 'HP MP SAN DEX 生命力 ';
-  @SyncVar() gameType: string = "";
-
+  @SyncVar() dataTag: string = localStorage.getItem("SummarySetting")? localStorage.getItem("SummarySetting") : 'HP MP SAN DEX 生命力 ';
 
   private _dataTag: string;
   private _dataTags: string[];

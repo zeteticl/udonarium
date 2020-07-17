@@ -217,9 +217,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private _color: string = "#000000";
-  onChangeColor(color: string) {
-    this._color = color;
+  color: string = (localStorage.getItem("PlayerColor"))? localStorage.getItem("PlayerColor"): "#000000";
+  onChangeColor() {
+    localStorage.setItem("PlayerColor", this.color);
   }
 
   showDicebotHelp() {
@@ -301,7 +301,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 200);
     }
     this.previousWritingLength = this.text.length;
-    this.calcFitHeight();
+    //this.calcFitHeight();
   }
 
   calcFitHeight() {
@@ -337,5 +337,16 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
   trackByChatTab(index: number, chatTab: ChatTab) {
     return chatTab.identifier;
+  }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
+  isPeerWatchMode(peer: PeerCursor): boolean {
+    return (peer.peerId.match(/-true$/) != null);
+  }
+  clearCurrentTab() {
+    if(!this.isWatchMode() && this.chatTab && this.chatTab.chatMessages.length>0 && confirm("你確定要把當前分頁的紀錄全部刪除嗎?")){
+      this.chatTab.clearMessage();
+      EventSystem.trigger('MESSAGE_CLEAR', { tabIdentifier: this.chatTab.identifier });
+    }
   }
 }

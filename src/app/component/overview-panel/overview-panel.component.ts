@@ -185,4 +185,8 @@ export class OverviewPanelComponent implements AfterViewInit, OnDestroy {
   private getInventoryTags(gameObject: TabletopObject): DataElement[] {
     return this.inventoryService.tableInventory.dataElementMap.get(gameObject.identifier);
   }
+
+  isWatchMode(): boolean {
+    return Network.isSelfWatchMode();
+  }
 }

@@ -16,11 +16,11 @@ import { PanelService } from 'service/panel.service';
   styleUrls: ['./lobby.component.css'],
 })
 export class LobbyComponent implements OnInit, OnDestroy {
-  rooms: { alias: string, roomName: string, peers: PeerContext[] }[] = [];
+  rooms: { alias: string, roomName: string, peers: PeerContext[], isAllowWatch: boolean }[] = [];
 
   isReloading: boolean = false;
 
-  help: string = '「一覧を更新」ボタンを押すと連線可能なルーム一覧を表示します。';
+  help: string = '按下「更新列表」按鈕，便會更新列出所有可連線的房間列表。';
 
   get currentRoom(): string { return Network.peerContext.room };
   get peerId(): string { return Network.peerId; }
@@ -72,7 +72,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
       }
     }
     for (let alias in peersOfroom) {
-      this.rooms.push({ alias: alias, roomName: peersOfroom[alias][0].roomName, peers: peersOfroom[alias] });
+      this.rooms.push({ alias: alias, roomName: peersOfroom[alias][0].roomName, peers: peersOfroom[alias], isAllowWatch: peersOfroom[alias][0].isAllowWatch });
     }
     this.rooms.sort((a, b) => {
       if (a.alias < b.alias) return -1;
@@ -83,16 +83,16 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.isReloading = false;
   }
 
-  async connect(peerContexts: PeerContext[]) {
+  async connect(peerContexts: PeerContext[], isWatch?: boolean) {
     let context = peerContexts[0];
 
-    if (context.password.length) {
+    if (!isWatch && context.password.length) {
       let input = await this.modalService.open(PasswordCheckComponent, { password: context.password, title: `${context.roomName}/${context.room}` });
       if (input !== context.password) return;
     }
 
     let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    Network.open(peerId, context.room, context.roomName, context.password);
+    Network.open(peerId, context.room, context.roomName, context.password, context.isAllowWatch, isWatch);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     let triedPeer: string[] = [];
@@ -100,7 +100,9 @@ export class LobbyComponent implements OnInit, OnDestroy {
       .on('OPEN_NETWORK', event => {
         console.log('LobbyComponent OPEN_PEER', event.data.peer);
         EventSystem.unregister(triedPeer);
+        this.clearGameObject();
         ObjectStore.instance.clearDeleteHistory();
+
         for (let peer of peerContexts) {
           Network.connect(peer.fullstring);
         }
@@ -137,5 +139,12 @@ export class LobbyComponent implements OnInit, OnDestroy {
     await this.modalService.open(RoomSettingComponent, { width: 700, height: 400, left: 0, top: 400 });
     this.reload();
     this.help = '按下「更新列表」按鈕，顯示可連線的房間。';
+  }
+
+  clearGameObject() {
+    for (let object of ObjectStore.instance.getAllGameObject()) {
+      if(object["location"]!=null || object.aliasName=="chat-tab" || object.aliasName=="game-table")
+        object.destroy();
+    }
   }
 }

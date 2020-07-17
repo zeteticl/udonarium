@@ -193,6 +193,7 @@ export class CardStackComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDoubleClick() {
+    if (Network.isSelfWatchMode()) return;
     this.stopDoubleClickTimer();
     let distance = (this.doubleClickPoint.x - this.input.pointer.x) ** 2 + (this.doubleClickPoint.y - this.input.pointer.y) ** 2;
     if (distance < 10 ** 2) {
@@ -224,6 +225,7 @@ export class CardStackComponent implements OnInit, AfterViewInit, OnDestroy {
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
       {

@@ -3,6 +3,7 @@
       placeholder="必須有房間名稱" /></div>
   <div>密碼: <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password" maxlength="12" #passwordValidation="ngModel" placeholder="留空即沒有密碼"
     /></div>
+  <div><input type="checkbox" [(ngModel)]="allowWatch" />開放觀戰</div>
   <hr/>
   <div *ngIf="roomNameValidation.errors && (roomNameValidation.dirty || roomNameValidation.touched)">
     <div [hidden]="!roomNameValidation.errors.required">
@@ -12,12 +13,12 @@
       必須有房間名稱。
     </div>
     <div [hidden]="!roomNameValidation.errors.maxlength">
-      房間名前長度要在28以內。
+      房間名稱長度必須要在28字元以內。
     </div>
   </div>
   <div *ngIf="passwordValidation.errors && (passwordValidation.dirty || passwordValidation.touched)">
     <div [hidden]="!passwordValidation.errors.maxlength">
-      密碼長度不得超過12。
+      密碼長度不得超過12字元。
     </div>
   </div>
   <div *ngIf="!validateLength">

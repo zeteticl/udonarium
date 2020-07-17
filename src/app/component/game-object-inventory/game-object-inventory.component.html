@@ -1,3 +1,7 @@
+<div class="flex-container" *ngIf=isWatchMode()>
+  觀戰模式下不能使用此功能！
+</div>
+<div *ngIf=!isWatchMode()>
 <div class="component">
   <ng-container *ngTemplateOutlet="inventoryTab"></ng-container>
   <ng-container *ngTemplateOutlet="inventoryViewSetting"></ng-container>
@@ -127,3 +131,4 @@
     </ng-container>
   </div>
 </ng-template>
+</div>

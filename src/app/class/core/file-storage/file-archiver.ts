@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip/dist/jszip.min.js';
 
-import { EventSystem } from '../system';
+import { Network, EventSystem } from '../system';
 import { XmlUtil } from '../system/util/xml-util';
 import { AudioStorage } from './audio-storage';
 import { FileReaderUtil } from './file-reader-util';
@@ -64,6 +64,11 @@ export class FileArchiver {
   private onDrop(event: DragEvent) {
     event.stopPropagation();
     event.preventDefault();
+
+    if( Network.isSelfWatchMode() ){
+      alert("You cannot upload file when you are in watch-mode!");
+      return ;
+    }
 
     console.log('onDrop', event.dataTransfer);
     let files = event.dataTransfer.files

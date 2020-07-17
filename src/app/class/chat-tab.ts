@@ -48,6 +48,11 @@ export class ChatTab extends ObjectNode implements InnerXml {
     this.appendChild(chat);
     return chat;
   }
+  clearMessage() {
+    for(let child of this.children){
+      this.removeChild(child);
+    }
+  }
 
   markForRead() {
     this._unreadLength = 0;
@@ -65,4 +70,20 @@ export class ChatTab extends ObjectNode implements InnerXml {
   parseInnerXml(element: Element) {
     return super.parseInnerXml(element);
   };
+  easyAppendMessage(message: ChatMessageContext){
+    message.tabIdentifier = this.identifier;
+    let chat = new ChatMessage();
+    for (let key in message) {
+      if (key === 'identifier') continue;
+      if (key === 'tabIdentifier') continue;
+      if (key === 'text') {
+        chat.value = message[key];
+        continue;
+      }
+      if (message[key] == null || message[key] === '') continue;
+      chat.setAttribute(key, message[key]);
+    }
+    chat.initialize();
+    this.appendChild(chat);
+  }
 }

@@ -51,6 +51,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open<string>(FileSelecterComponent).then(value => {
       if (!this.myPeer || !value) return;
       this.myPeer.imageIdentifier = value;
+      localStorage.setItem("PlayerIcon", value);
     });
   }
 
@@ -63,8 +64,10 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   connectPeer() {
     this.help = '';
+    if (this.targetPeerId == "") return;
     let context = PeerContext.create(this.targetPeerId);
     if (!context.isRoom) {
+      this.clearGameObject();
       ObjectStore.instance.clearDeleteHistory();
       Network.connect(this.targetPeerId);
     } else {
@@ -79,6 +82,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       let dummy = {};
       EventSystem.register(dummy)
         .on('OPEN_NETWORK', event => {
+          this.clearGameObject();
           ObjectStore.instance.clearDeleteHistory();
           Network.connect(this.targetPeerId);
           EventSystem.unregister(dummy);
@@ -153,20 +157,31 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open(LobbyComponent, { width: 700, height: 400, left: 0, top: 400 });
   }
 
+  saveNickname(nickname: string) {
+    localStorage.setItem("PlayerNickname", nickname);
+  }
+
   findPeerName(peerId: string) {
     const peerCursor = PeerCursor.find(peerId);
     return peerCursor ? peerCursor.name : '';
   }
-
   onChangeNickname(name: string) {
     // this.isChangedNickname = true;
     const value = name
     localStorage.setItem('PeerName', value)
   }
-
-  onBlurNickname(): void {
-    //if (this.isChangedNickname) {
-      //EventSystem.call('CHANGE_NICKNAME', this.myPeer.name, this.myPeer.peerId);
-   // }
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
+  test() {
+    console.log("TEST ============");
+    //localStorage.setItem("Objects", JSON.stringify(arr));
+    //console.log(localStorage.getItem("SummarySetting"));
+  }
+  test2() {
+    localStorage.clear();
+  }
+  clearGameObject() {
+    for (let object of ObjectStore.instance.getAllGameObject()) {
+      if (object["location"] != null || object.aliasName == "chat-tab" || object.aliasName == "game-table") object.destroy();
+    }
   }
 }

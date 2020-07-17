@@ -113,4 +113,15 @@ export class DiceSymbol extends TabletopObject {
     object.initialize();
     return object;
   }
+
+  static easyCreate(raw_obj): DiceSymbol {
+    let game_obj: DiceSymbol = new DiceSymbol();
+    let key_arr = ["location", "posZ", "rotate", "face", "owner"];
+    game_obj.easyAssign(raw_obj, key_arr)
+    game_obj.initialize();
+    game_obj.easyCreateGameData(raw_obj.commonDataElement, raw_obj.imageDataElement, raw_obj.detailDataElement);
+    game_obj.imageDataElement.getFirstElementByName("imageIdentifier").destroy();
+
+    return game_obj;
+  }
 }

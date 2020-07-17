@@ -112,7 +112,7 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
       case Network.peerId:
         return '個人倉庫';
       case 'graveyard':
-        return '墓場';
+        return '墓地';
       default:
         return '共有倉庫';
     }
@@ -282,5 +282,6 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
       console.log('onChangeGameType done\n' + help + this.gameType);
     });
   }
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }
 

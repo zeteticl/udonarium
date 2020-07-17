@@ -138,4 +138,6 @@ export class GameDataElementComponent implements OnInit, OnDestroy, AfterViewIni
       this.updateTimer = null;
     }, 66);
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

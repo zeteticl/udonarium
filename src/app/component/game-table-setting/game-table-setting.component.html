@@ -1,4 +1,7 @@
-<div class="flex-container">
+<div class="flex-container" *ngIf=isWatchMode()>
+  觀戰模式下不能使用此功能！
+</div>
+<div class="flex-container" *ngIf=!isWatchMode()>
   <div class="flex-item no-grow">
     <div>
       <button (click)="createGameTable()">新增桌面</button>
@@ -26,17 +29,17 @@
           </div>
         </div>
       </div>
-      <div>Name :
+      <div>名稱 :
         <input [(ngModel)]="tableName" placeholder="Name" [attr.disabled]="!isEditable ? '' : null" />
       </div>
       <div>
         <input [(ngModel)]="tableWidth" type="range" min="{{minSize}}" max="{{maxSize}}" name="tableWidth" [attr.disabled]="!isEditable ? '' : null"
-        /> Width :
+        /> 寬度 :
         <input [(ngModel)]="tableWidth" type="number" min="{{minSize}}" max="{{maxSize}}" style="width: 5em;" [attr.disabled]="!isEditable ? '' : null">
       </div>
       <div>
         <input [(ngModel)]="tableHeight" type="range" min="{{minSize}}" max="{{maxSize}}" name="tableHeight" [attr.disabled]="!isEditable ? '' : null"
-        /> Height :
+        /> 高度 :
         <input [(ngModel)]="tableHeight" type="number" min="{{minSize}}" max="{{maxSize}}" style="width: 5em;" [attr.disabled]="!isEditable ? '' : null">
       </div>
       <div>

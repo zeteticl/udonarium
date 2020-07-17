@@ -12,14 +12,13 @@ import {
 import { ImageFile } from '@udonarium/core/file-storage/image-file';
 import { ObjectNode } from '@udonarium/core/synchronize-object/object-node';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { GameTableMask } from '@udonarium/game-table-mask';
 import { PresetSound, SoundEffect } from '@udonarium/sound-effect';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
 import { InputHandler } from 'directive/input-handler';
 import { MovableOption } from 'directive/movable.directive';
 import { ContextMenuSeparator, ContextMenuService } from 'service/context-menu.service';
-import { Network } from '@udonarium/core/system';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { TabletopService } from 'service/tabletop.service';
@@ -47,8 +46,8 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
   get name(): string { return this.gameTableMask.name; }
-  get width(): number { return this.adjustMinBounds(this.gameTableMask.width); }
-  get height(): number { return this.adjustMinBounds(this.gameTableMask.height); }
+  get width(): number { return this.adjustMinMaxBounds(this.gameTableMask.width); }
+  get height(): number { return this.adjustMinMaxBounds(this.gameTableMask.height); }
   get opacity(): number { return this.gameTableMask.opacity; }
   get imageFile(): ImageFile { return this.gameTableMask.imageFile; }
   get isLock(): boolean { return this.gameTableMask.isLock; }
@@ -126,13 +125,14 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
     let menuPosition = this.pointerDeviceService.pointers[0];
     let objectPosition = this.tabletopService.calcTabletopLocalCoordinate();
     this.contextMenuService.open(menuPosition, [
 
       (this.isLock
         ? {
-          name: '固定解除', action: () => {
+          name: '解除固定', action: () => {
             this.isLock = false;
             SoundEffect.play(PresetSound.unlock);
           }
@@ -190,8 +190,8 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
     SoundEffect.play(PresetSound.cardPut);
   }
 
-  private adjustMinBounds(value: number, min: number = 0): number {
-    return value < min ? min : value;
+  private adjustMinMaxBounds(value: number, min: number = 0, max: number = 50): number {
+    return value < min ? min : value > max ? max : value;
   }
 
   public showDetail(gameObject: GameTableMask) {

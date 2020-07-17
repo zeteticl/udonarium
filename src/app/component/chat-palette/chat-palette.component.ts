@@ -76,7 +76,6 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
 
     this.gameType = this.character.chatPalette ? this.character.chatPalette.dicebot : '';
     this.color = this.character.chatPalette ? this.character.chatPalette.color : '#000000';
-
     EventSystem.register(this)
       .on('UPDATE_GAME_OBJECT', -1000, event => {
         if (event.data.aliasName !== GameCharacter.aliasName) return;
@@ -146,7 +145,7 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
       console.log('onChangeGameType done\n' + help);
     });
   }
-
+  
   private _color: string = "#000000";
   get color(): string { return this._color };
   set color(color: string) {

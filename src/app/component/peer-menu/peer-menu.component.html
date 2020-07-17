@@ -12,6 +12,8 @@
   <span>你的ID： <span *ngIf="networkService.isOpen" style="font-weight: bold;"> {{networkService.peerContext.id}}</span>
   <span *ngIf="!networkService.isOpen" style="font-weight: bold;">???</span>
   </span>
+  <!--<button (click)="test()">手動儲存LS</button>
+  <button (click)="test2()">清localStorage</button>-->
 </div>
 <!--<div>host ID:{{networkService.hostPeerID}}</div>-->
 <ng-container *ngIf="18 < networkService.peerId.length">

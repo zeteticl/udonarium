@@ -36,7 +36,7 @@ export class Network {
   }
 
   open(peerId?: string)
-  open(peerId: string, roomId: string, roomName: string, password: string)
+  open(peerId: string, roomId: string, roomName: string, password: string, isAllowWatch?: boolean, isWatch?: boolean)
   open(...args: any[]) {
     if (this.connection && this.connection.peerContext) {
       console.warn('It is already opened.');
@@ -137,5 +137,9 @@ export class Network {
     if (0 < this.queue.length && this.sendInterval === null) this.sendInterval = setZeroTimeout(this.sendCallback);
 
     return store;
+  }
+
+  isSelfWatchMode(): boolean {
+    return this.peerContext && this.peerContext.isWatch;
   }
 }

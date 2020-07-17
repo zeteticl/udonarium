@@ -56,6 +56,8 @@ export class TabletopService {
   private textNoteCache = new TabletopCache<TextNote>(() => ObjectStore.instance.getObjects(TextNote));
   private diceSymbolCache = new TabletopCache<DiceSymbol>(() => ObjectStore.instance.getObjects(DiceSymbol));
 
+  private cahceTableIdentifierMap = {};
+
   get characters(): GameCharacter[] { return this.characterCache.objects; }
   get cards(): Card[] { return this.cardCache.objects; }
   get cardStacks(): CardStack[] { return this.cardStackCache.objects; }
@@ -349,11 +351,20 @@ export class TabletopService {
 
   makeDefaultTable() {
     let tableSelecter = new TableSelecter('tableSelecter');
+    if(localStorage.getItem("TableSelecter")){
+      try{
+        let ts_setting = JSON.parse(localStorage.getItem("TableSelecter"));
+        tableSelecter.gridShow = ts_setting.gridShow;
+        tableSelecter.gridSnap = ts_setting.gridSnap;
+      } catch(e){
+        console.error(e);
+      }
+    }
     tableSelecter.initialize();
 
-    let gameTable = new GameTable('gameTable');
+    let gameTable;
     let testBgFile: ImageFile = null;
-    let bgFileContext = ImageFile.createEmpty('testTableBackgroundImage_image').toContext();
+    let bgFileContext = ImageFile.createEmpty('./assets/images/BG10a_80.jpg').toContext();
     bgFileContext.url = './assets/images/BG10a_80.jpg';
     testBgFile = ImageStorage.instance.add(bgFileContext);
     ImageTag.create(testBgFile.identifier).tag = 'default 桌面';

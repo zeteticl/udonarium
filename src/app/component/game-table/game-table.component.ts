@@ -445,6 +445,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
 
     let menuPosition = this.pointerDeviceService.pointers[0];
     let objectPosition = this.tabletopService.calcTabletopLocalCoordinate();

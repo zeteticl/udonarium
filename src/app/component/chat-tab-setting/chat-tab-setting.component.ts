@@ -4,7 +4,7 @@ import { ChatTab } from '@udonarium/chat-tab';
 import { ChatTabList } from '@udonarium/chat-tab-list';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 
 import { ChatMessageService } from 'service/chat-message.service';
 import { ModalService } from 'service/modal.service';
@@ -118,7 +118,7 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    if (!this.isEmpty && this.selectedTab) {
+    if (!this.isEmpty && this.selectedTab && ( this.selectedTab.chatMessages.length==0 || confirm("這個分頁存有紀錄，你確定要把這個分頁刪除嗎?")) ) {
       this.selectedTabXml = this.selectedTab.toXml();
       this.selectedTab.destroy();
     }
@@ -165,4 +165,5 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
       parentElement.insertBefore(nextElement, this.selectedTab);
     }
   }
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

@@ -64,7 +64,7 @@
     <div class="component-background text-note-container">
       <div style="position: relative;">
         <div class="is-fill">
-          <textarea class="textarea" [(ngModel)]="note.text" spellcheck="false"></textarea>
+          <textarea class="textarea" [(ngModel)]="note.text" spellcheck="false" [disabled]="isWatchMode()"></textarea>
         </div>
         <div class="textarea-spacer">{{note.text}}</div>
       </div>
@@ -167,7 +167,7 @@
           <div>{{dataElm.name}}</div>
           <div class="note" style="position: relative;">
             <div class="is-fill">
-              <textarea class="textarea" [(ngModel)]="dataElm.value" spellcheck="false"></textarea>
+              <textarea class="textarea" [(ngModel)]="dataElm.value" spellcheck="false" [disabled]="isWatchMode()"></textarea>
             </div>
             <div class="textarea-spacer">{{dataElm.value}}</div>
           </div>
@@ -178,21 +178,21 @@
         <div class="value">
           <div style="display: inline-block; width: min-content;">
             <div class="hidden-spacer" style="margin-right: 2em;">{{dataElm.currentValue}}</div>
-            <input class="input" type="number" size="1" [(ngModel)]="dataElm.currentValue" />
+            <input class="input" type="number" size="1" [(ngModel)]="dataElm.currentValue" [disabled]="isWatchMode()" />
           </div>
           <div style="display: inline;"> / {{dataElm.value}}</div>
         </div>
         <div class="section" style="line-height: 1em;">
           <input type="range"
             [style]="'font-size: 0.8em; width: 100%; --min: 0; --max:' + dataElm.value + '; --val:' + dataElm.currentValue +';' | safe: 'style'"
-            min="0" max="{{dataElm.value}}" [(ngModel)]="dataElm.currentValue" />
+            min="0" max="{{dataElm.value}}" [(ngModel)]="dataElm.currentValue" [disabled]="isWatchMode()" />
         </div>
       </ng-container>
       <ng-container *ngSwitchDefault>
         <div class="tag">{{dataElm.name}}</div>
         <div class="value">
           <div class="hidden-spacer">{{dataElm.value}}</div>
-          <input class="input" size="1" [(ngModel)]="dataElm.value" />
+          <input class="input" size="1" [(ngModel)]="dataElm.value" [disabled]="isWatchMode()" />
         </div>
       </ng-container>
     </ng-container>

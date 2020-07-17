@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, E
 import { ImageFile } from '@udonarium/core/file-storage/image-file';
 import { ObjectNode } from '@udonarium/core/synchronize-object/object-node';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { PresetSound, SoundEffect } from '@udonarium/sound-effect';
 import { Terrain, TerrainViewState } from '@udonarium/terrain';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
@@ -14,8 +14,8 @@ import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { TabletopService } from 'service/tabletop.service';
 import { PeerCursor } from '@udonarium/peer-cursor';
-import {  Network } from '@udonarium/core/system';
-
+ 
+ 
 
 @Component({
   selector: 'terrain',
@@ -47,9 +47,9 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
   get wallImage(): ImageFile { return this.terrain.wallImage; }
   get floorImage(): ImageFile { return this.terrain.floorImage; }
 
-  get height(): number { return this.adjustMinBounds(this.terrain.height); }
-  get width(): number { return this.adjustMinBounds(this.terrain.width); }
-  get depth(): number { return this.adjustMinBounds(this.terrain.depth); }
+  get height(): number { return this.adjustMinMaxBounds(this.terrain.height); }
+  get width(): number { return this.adjustMinMaxBounds(this.terrain.width); }
+  get depth(): number { return this.adjustMinMaxBounds(this.terrain.depth); }
 
   gridSize: number = 50;
 
@@ -125,13 +125,14 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isSelfWatchMode()) return;
 
     let menuPosition = this.pointerDeviceService.pointers[0];
     let objectPosition = this.tabletopService.calcTabletopLocalCoordinate();
     this.contextMenuService.open(menuPosition, [
       (this.isLocked
         ? {
-          name: '固定解除', action: () => {
+          name: '解除固定', action: () => {
             this.isLocked = false;
             SoundEffect.play(PresetSound.unlock);
           }
@@ -200,8 +201,8 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
     SoundEffect.play(PresetSound.blockPut);
   }
 
-  private adjustMinBounds(value: number, min: number = 0): number {
-    return value < min ? min : value;
+  private adjustMinMaxBounds(value: number, min: number = 0, max: number = 50): number {
+    return value < min ? min : value > max ? max : value;
   }
 
   public showDetail(gameObject: Terrain) {

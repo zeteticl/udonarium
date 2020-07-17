@@ -4,7 +4,7 @@ import { ImageFile } from '@udonarium/core/file-storage/image-file';
 import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { Network, EventSystem } from '@udonarium/core/system';
 import { GameCharacter } from '@udonarium/game-character';
 import { GameTableMask } from '@udonarium/game-table-mask';
 import { TableSelecter } from '@udonarium/table-selecter';
@@ -56,6 +56,7 @@ export class GameCharacterGeneratorComponent implements OnInit, OnDestroy, After
   }
 
   createGameCharacter() {
+    this.size = (this.size<1)? 1: (this.size>20)? 20: this.size;
     GameCharacter.create(this.name, this.size, this.tableBackgroundImage.identifier);
   }
   createGameTableMask() {
@@ -72,4 +73,6 @@ export class GameCharacterGeneratorComponent implements OnInit, OnDestroy, After
   openModal() {
     this.modalService.open(FileSelecterComponent);
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }

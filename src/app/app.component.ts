@@ -40,6 +40,7 @@ import { PointerDeviceService } from 'service/pointer-device.service';
 import { SaveDataService } from 'service/save-data.service';
 import { ImageTag } from '@udonarium/image-tag';
 import { GameCharacter } from '@udonarium/game-character';
+import { ChatTab } from '@udonarium/chat-tab';
 
 @Component({
   selector: 'app-root',
@@ -48,12 +49,13 @@ import { GameCharacter } from '@udonarium/game-character';
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
 
-
+  networkService = Network;
 
   @ViewChild('modalLayer', { read: ViewContainerRef, static: true }) modalLayerViewContainerRef: ViewContainerRef;
   private immediateUpdateTimer: NodeJS.Timer = null;
   private lazyUpdateTimer: NodeJS.Timer = null;
   private openPanelCount: number = 0;
+  private autoSave: boolean = false;
 
   constructor(
     private modalService: ModalService,
@@ -65,6 +67,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     private ngZone: NgZone
   ) {
 
+    let self = this;
     this.ngZone.runOutsideAngular(() => {
       EventSystem;
       Network;
@@ -84,6 +87,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     ChatTabList.instance.initialize();
     DataSummarySetting.instance.initialize();
 
+    this.autoSave = (localStorage.getItem("AutoSave")=="true");
+
     let diceBot: DiceBot = new DiceBot('DiceBot');
     diceBot.initialize();
 
@@ -93,10 +98,40 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     let soundEffect: SoundEffect = new SoundEffect('SoundEffect');
     soundEffect.initialize();
 
-    ChatTabList.instance.addChatTab('主要分頁', 'MainTab', true);
-    ChatTabList.instance.addChatTab('閒聊分頁', 'SubTab', false);
+    let chatTab: ChatTab;
+    if(localStorage.getItem("ChatTab")){
+      let chattab_arr = JSON.parse(localStorage.getItem("ChatTab"));
+      for(let tab of chattab_arr){
+        chatTab = new ChatTab();
+        chatTab.name = tab.name;
+        chatTab.initialize();
 
-    let fileContext = ImageFile.createEmpty('none_icon').toContext();
+        for(let msg of tab.children){
+          let msg_context = {
+            from: msg["from"],
+            timestamp: msg["timestamp"],
+            imageIdentifier: msg["imageIdentifier"],
+            tag: '',
+            name: msg["name"],
+            text: msg["text"],
+            color: msg["color"]
+          };
+          chatTab.easyAppendMessage(msg_context);
+        }
+      }
+    }
+    else{
+      chatTab = new ChatTab();
+      chatTab.name = '主要';
+      chatTab.initialize();
+
+      chatTab = new ChatTab();
+      chatTab.name = '閒聊';
+      chatTab.initialize();
+    }
+    
+
+    let fileContext = ImageFile.createEmpty('./assets/images/ic_account_circle_black_24dp_2x.png').toContext();
     fileContext.url = './assets/images/ic_account_circle_black_24dp_2x.png';
     let noneIconImage = ImageStorage.instance.add(fileContext);
     ImageTag.create(noneIconImage.identifier).tag = 'default';
@@ -135,15 +170,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     AudioStorage.instance.get(PresetSound.sweep).isHidden = true;
 
     PeerCursor.createMyCursor();
-
-    if (window.localStorage.getItem('PeerName')) {
-      PeerCursor.myCursor.name = window.localStorage.getItem('PeerName')
+    PeerCursor.myCursor.name = (localStorage.getItem("PlayerNickname"))? localStorage.getItem("PlayerNickname"): '玩家' + ('000' + (Math.floor(Math.random() * 1000))).slice(-3);;
+    if(localStorage.getItem("PlayerIcon")){
+      let url = localStorage.getItem("PlayerIcon");
+      PeerCursor.myCursor.imageIdentifier = ImageStorage.instance.loadImageFromUrl(url);
     }
-    else {
-      PeerCursor.myCursor.name = '玩家' + ('000' + (Math.floor(Math.random() * 1000))).slice(-3);
-    }
-
-    PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
+    else
+      PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
 
     EventSystem.register(this)
       .on('UPDATE_GAME_OBJECT', event => { this.lazyNgZoneUpdate(event.isSendFromSelf); })
@@ -180,13 +213,17 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       .on('DISCONNECT_PEER', event => {
         this.lazyNgZoneUpdate(event.isSendFromSelf);
       });
+
+    window.onbeforeunload = function(){
+      if(localStorage.getItem("AutoSave")=="true") self.saveLocalCache();
+    }
   }
 
   ngAfterViewInit() {
     PanelService.defaultParentViewContainerRef = ModalService.defaultParentViewContainerRef = ContextMenuService.defaultParentViewContainerRef = this.modalLayerViewContainerRef;
     setTimeout(() => {
-      this.panelService.open(PeerMenuComponent, { width: 300, height: 300, left: 100 });
-      this.panelService.open(ChatWindowComponent, { width: 700, height: 300, left: 100, top: 450 });
+      this.panelService.open(PeerMenuComponent, { width: 500, height: 450, left: 100 });
+      this.panelService.open(ChatWindowComponent, { width: 700, height: 400, left: 100, top: 450 });
     }, 0);
   }
 
@@ -275,6 +312,151 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       }, 100);
     }
   }
+
+  private changeAutoSave(target){
+    if(target.checked){
+      localStorage.setItem("AutoSave", "true");
+      //this.saveLocalCache();
+    }
+    else{
+      localStorage.setItem("AutoSave", "false");
+      console.log("Clear all Cahce");
+      let gameObject_key = ["SummarySetting", "TableSelecter", "ChatTab", "GameTable", "GameCharacter", "TableMask", "Terrain", "TextNote", "DiceSymbol", "Card", "CardStack"];
+      for(let key of gameObject_key){
+        localStorage.removeItem(key);
+      }
+    }
+  }
+
+  private saveLocalCache(){
+    console.log("SAVE");
+    let objects_arr={}, arr=[];
+    for(let object of ObjectStore.instance.getAllGameObject()){
+      switch(object.aliasName){
+        case "summary-setting":
+          localStorage.setItem("SummarySetting", object["dataTag"]);
+          break;
+        case "TableSelecter":
+        case "game-table":
+        case "character":
+        case "table-mask":
+        case "terrain":
+        case "text-note":
+        case "dice-symbol":
+        case "chat-tab":
+        case "card-stack":
+          if(!objects_arr[object.aliasName]) objects_arr[object.aliasName] = [];
+          objects_arr[object.aliasName].push(this.getCacheObject( object ));
+          break;
+        case "card":
+          if(object["parentIdentifier"]!="") break;
+          if(!objects_arr["card"]) objects_arr["card"] = [];
+          objects_arr["card"].push(this.getCacheObject( object ));
+          break;
+        default:
+          break;
+      }
+      //arr.push(object);
+    }
+    //console.log(arr);
+
+    // Set Local Storage
+    this.updateLocalStorage(objects_arr, "chat-tab", "ChatTab");
+    this.updateLocalStorage(objects_arr, "game-table", "GameTable");
+    this.updateLocalStorage(objects_arr, "character", "GameCharacter");
+    this.updateLocalStorage(objects_arr, "table-mask", "TableMask");
+    this.updateLocalStorage(objects_arr, "terrain", "Terrain");
+    this.updateLocalStorage(objects_arr, "text-note", "TextNote");
+    this.updateLocalStorage(objects_arr, "dice-symbol", "DiceSymbol");
+    this.updateLocalStorage(objects_arr, "card", "Card");
+    this.updateLocalStorage(objects_arr, "card-stack", "CardStack");
+  }
+
+  private updateLocalStorage(save_obj: Object, saveObj_key: string, localStorage_key: string ){
+    if(save_obj[saveObj_key])
+      localStorage.setItem(localStorage_key, JSON.stringify(save_obj[saveObj_key]));
+    else
+      localStorage.removeItem(localStorage_key);
+  }
+
+  private getCacheObject(object): Object {
+    let key_arr, temp_obj;
+    switch(object.aliasName){
+      case "chat":
+        key_arr = ["form", "name", "imageIdentifier", "timestamp", "color", "text"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "chat-tab":
+        temp_obj = this.getObjectWithSpecificAttribute( object, ["name"] );
+        temp_obj["children"] = [];
+        for(let msg of object["children"])
+          temp_obj["children"].push( this.getCacheObject(msg) );
+        return temp_obj;
+      case "chat-palette":
+        key_arr = ["color", "dicebot", "value"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "TableSelecter":
+        key_arr = ["gridShow", "gridSnap"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "game-table":
+        key_arr = ["name", "width", "height", "gridSize", "imageIdentifier", "backgroundImageIdentifier", 
+                    "backgroundFilterType", "selected", "gridType", "gridColor", "identifier"];
+        return this.getObjectWithSpecificAttribute( object, key_arr );
+      case "character":
+        key_arr = ["location", "posZ", "roll", "rotate"];
+        temp_obj = this.getObjectWithSpecificAttribute( object, key_arr, true );
+        temp_obj["chatPalette"] = this.getCacheObject(object["chatPalette"]);
+        return temp_obj;
+      case "table-mask":
+        key_arr = ["location", "posZ", "isLock", "parentId"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "terrain":
+        key_arr = ["location", "mode", "posZ", "rotate", "isLocked", "parentId"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "text-note":
+        key_arr = ["location", "posZ", "rotate"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "dice-symbol":
+        key_arr = ["location", "posZ", "rotate", "face", "owner"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "card":
+        key_arr = ["location", "posZ", "rotate", "state", "owner"];
+        return this.getObjectWithSpecificAttribute( object, key_arr, true );
+      case "card-stack":
+        key_arr = ["location", "posZ", "rotate", "isShowTotal", "owner"];
+        temp_obj = this.getObjectWithSpecificAttribute( object, key_arr, true );
+        temp_obj["children"] = [];
+        for(let msg of object["cardRoot"]["children"])
+          temp_obj["children"].push( this.getCacheObject(msg) );
+        return temp_obj;
+    }
+  }
+
+  private getObjectWithSpecificAttribute (object: Object, key_arr: Array<string>, isTableObjectBasic?: boolean): Object{
+    var obj = {};
+    for(let key of key_arr) obj[key] = object[key];
+    if(isTableObjectBasic){
+      obj["commonDataElement"] = this.getDataElementObject(object["commonDataElement"]);
+      obj["detailDataElement"] = this.getDataElementObject(object["detailDataElement"]);
+      obj["imageDataElement"]  = this.getDataElementObject(object["imageDataElement"]);
+    }
+    return obj;
+  }
+  private getDataElementObject(object: Object): Object{
+    let obj = {
+      name: object["name"],
+      type: object["type"],
+      value: object["value"],
+      currentValue: object["currentValue"]
+    };
+    if(object["children"].length>0){
+      obj["children"] = [];
+      for(let child of object["children"]){
+        obj["children"].push(this.getDataElementObject(child));
+      }
+    }
+    return obj;
+  }
+
 }
 
 PanelService.UIPanelComponentClass = UIPanelComponent;

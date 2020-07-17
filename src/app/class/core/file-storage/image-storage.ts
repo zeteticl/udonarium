@@ -97,6 +97,22 @@ export class ImageStorage {
     return null;
   }
 
+  loadImageFromUrl(url: string): string {
+    if(this.get(url)) return url;
+    if(url=="null" || url=="") return "";
+
+    if(url.match(/^([a-z0-9])+$/)){
+      let missing_img_url = "./assets/images/missing.jpg";
+      if(!this.get(missing_img_url))
+        this.add(missing_img_url);
+      return missing_img_url;
+    }
+    else{
+      this.add(url);
+      return url;
+    }
+  }
+
   synchronize(peer?: string) {
     clearTimeout(this.lazyTimer);
     this.lazyTimer = null;

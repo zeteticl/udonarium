@@ -184,6 +184,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   ngOnInit() {
     let messages: ChatMessage[] = [];
+    this.isFirst = true;
     for (let context of this.sampleMessages) {
       let message = new ChatMessage();
       for (let key in context) {
@@ -210,6 +211,14 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
           this.changeDetector.markForCheck();
           this.needUpdate = true;
           this.onMessageInit();
+          this.maxMessages += 1;
+          this.isFirst = false;
+        }
+      })
+      .on('MESSAGE_CLEAR', event => {
+        if(event.data.tabIdentifier == this.chatTab.identifier){
+          if (!this.needUpdate) this.changeDetector.markForCheck();
+          this.needUpdate = true;
         }
       })
       .on('UPDATE_GAME_OBJECT', event => {

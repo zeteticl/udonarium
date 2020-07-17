@@ -51,7 +51,7 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
   @Input() is3D: boolean = false;
 
   get name(): string { return this.gameCharacter.name; }
-  get size(): number { return this.adjustMinBounds(this.gameCharacter.size); }
+  get size(): number { return this.adjustMinMaxBounds(this.gameCharacter.size); }
   get imageFile(): ImageFile { return this.gameCharacter.imageFile; }
   get rotate(): number { return this.gameCharacter.rotate; }
   set rotate(rotate: number) { this.gameCharacter.rotate = rotate; }
@@ -221,8 +221,8 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     SoundEffect.play(PresetSound.piecePut);
   }
 
-  private adjustMinBounds(value: number, min: number = 0): number {
-    return value < min ? min : value;
+  private adjustMinMaxBounds(value: number, min: number = 0, max: number = 20): number {
+    return value < min ? min : value > max ? max : value;
   }
 
   public showDetail(gameObject: GameCharacter) {
@@ -239,5 +239,18 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     let option: PanelOption = { left: coordinate.x - 250, top: coordinate.y - 175, width: 630, height: 350 };
     let component = this.panelService.open<ChatPaletteComponent>(ChatPaletteComponent, option);
     component.character = gameObject;
+  }
+
+  private appendCloneNumber(objectname: string): string {    
+    let reg = new RegExp('([0-9]+)$');
+    let res = objectname.match(reg);
+    
+    if(res != null) {
+      let cloneNumber:number = parseInt(res[1]) + 1;
+      let real_name = objectname.slice(0, objectname.length-res[1].length);
+      return real_name + cloneNumber;
+    } else {
+      return objectname + "2";
+    }
   }
 }

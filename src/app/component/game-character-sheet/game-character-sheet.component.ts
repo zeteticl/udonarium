@@ -109,4 +109,6 @@ export class GameCharacterSheetComponent implements OnInit, OnDestroy, AfterView
       element.value = value;
     });
   }
+
+  isWatchMode(): boolean { return Network.isSelfWatchMode(); }
 }
