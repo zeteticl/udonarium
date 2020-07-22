@@ -36,7 +36,7 @@ export class Network {
   }
 
   open(peerId?: string)
-  open(peerId: string, roomId: string, roomName: string, password: string)
+  open(peerId: string, roomId: string, roomName: string, password: string, isAllowWatchman?: boolean, isWatchman?: boolean, pcPassword?: string, isPC?: boolean)
   open(...args: any[]) {
     if (this.connection && this.connection.peerContext) {
       console.warn('It is already opened.');
