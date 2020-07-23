@@ -17,6 +17,11 @@ export class PeerContext implements IPeerContext {
   password: string = '';
   isOpen: boolean = false;
 
+  isAllowWatchman: boolean = false;
+  isWatchman: boolean = false;
+  pcPassword: string = '';
+  isPC: boolean = false;
+
   get isRoom(): boolean { return 0 < this.room.length ? true : false; }
 
   constructor(fullstring: string) {
@@ -26,12 +31,19 @@ export class PeerContext implements IPeerContext {
   private parse(fullstring) {
     try {
       this.fullstring = fullstring;
-      let array = /^(\w{6})((\w{3})(\w*)-(\w*))?/ig.exec(fullstring);
+      let array = /^(\w{6})((\w{3})(\w*)-(\w*)(-(\w*))?(-(\w*))?(-(\w*))?(-(\w*))?)?/ig.exec(fullstring)
       this.id = array[1];
       if (array[2] == null) return;
       this.room = array[3];
       this.roomName = lzbase62.decompress(array[4]);
       this.password = lzbase62.decompress(array[5]);
+
+      this.isAllowWatchman = (array[7] == "true");
+      this.isWatchman = (array[9] == "true");
+
+      this.pcPassword = lzbase62.decompress(array[10]);
+      this.isPC = (array[12] == "true");
+      console.log('array:', array)
     } catch (e) {
       this.id = fullstring;
       console.warn(e);
@@ -39,7 +51,7 @@ export class PeerContext implements IPeerContext {
   }
 
   static create(peerId: string): PeerContext
-  static create(peerId: string, roomId: string, roomName: string, password: string): PeerContext
+  static create(peerId: string, roomId: string, roomName: string, password: string, isAllowWatchman?: boolean, isWatchman?: boolean, pcPassword?: string, isPC?: boolean): PeerContext
   static create(...args: any[]): PeerContext {
     console.log('create', args);
     if (args.length <= 1) {
@@ -53,8 +65,12 @@ export class PeerContext implements IPeerContext {
     return new PeerContext(peerId);
   }
 
-  private static _createRoom(peerId: string = '', roomId: string = '', roomName: string = '', password: string = ''): PeerContext {
-    let fullstring: string = peerId + roomId + lzbase62.compress(roomName) + '-' + lzbase62.compress(password);
+  private static _createRoom(peerId: string = '', roomId: string = '', roomName: string = '', password: string = '',
+    isAllowWatchman: boolean = true,
+    isWatchman: boolean = false,
+    pcPassword: string = '',
+    isPC: boolean = false): PeerContext {
+    let fullstring: string = peerId + roomId + lzbase62.compress(roomName) + '-' + lzbase62.compress(password) + '-' + isAllowWatchman + '-' + isWatchman + '-' + pcPassword + '-' + isPC;
     try {
       console.log(fullstring);
     } catch (e) {
