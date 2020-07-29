@@ -203,8 +203,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     EventSystem.register(this)
       .on('MESSAGE_ADDED', event => {
         let message = ObjectStore.instance.get<ChatMessage>(event.data.messageIdentifier);
-        if (!message) return;
-        if (!this.chatTab || !this.chatTab.contains(message)) return;
+        if (!message || !this.chatTab.contains(message)) return;
 
         if (this.topTimestamp < message.timestamp) {
           this.changeDetector.markForCheck();
@@ -351,7 +350,8 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   }
 
   private markForReadIfNeeded() {
-    if (!this.chatTab||!this.chatTab.hasUnread) return;
+    if (!this.chatTab) return;
+    if (!this.chatTab.hasUnread) return;
 
     let scrollPosition = this.getScrollPosition();
     if (scrollPosition.scrollHeight <= scrollPosition.bottom + 100) {
