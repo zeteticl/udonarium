@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Illusio < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Illusio'
+  def initialize
+    super
+    @sortType = 1 # 骰子のソート有
+  end
 
-  # ゲームシステム名
-  NAME = '晃天のイルージオ'
+  setPrefixes([
+    '(\d+)?IL([1-6])?([1-6])?([1-6])?([1-6])?([1-6])?([1-6])?(P)?'
+  ])
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'いるうしお'
+  def gameName
+    '晃天のイルージオ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Illusio"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 判定：[n]IL(BNo)[P]
 
 []内のコマンドは省略可能。
@@ -25,15 +32,7 @@ class Illusio < DiceBot
 ・IL4512 → 1dでブロックナンバー「1,2,4,5」の判定。
 ・2IL1P → 2dでパリィナンバー「1」の判定。
 MESSAGETEXT
-
-  def initialize
-    super
-    @sortType = 1 # ダイスのソート有
   end
-
-  setPrefixes([
-    '(\d+)?IL([1-6])?([1-6])?([1-6])?([1-6])?([1-6])?([1-6])?(P)?'
-  ])
 
   def rollDiceCommand(command)
     if /(\d+)?IL([1-6])?([1-6])?([1-6])?([1-6])?([1-6])?([1-6])?(P)?$/i === command

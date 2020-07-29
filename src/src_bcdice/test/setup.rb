@@ -1,10 +1,10 @@
 if RUBY_VERSION > '1.8.x'
   require 'simplecov'
 
-  if ENV['CI'] == 'true' && RUBY_VERSION.start_with?(ENV['COVERAGE_TARGET_VERSION'])
+  if ENV['CI'] == 'true'
     require 'codecov'
     SimpleCov.formatter = SimpleCov::Formatter::Codecov
-  else
+  elsif /--enable-frozen-string-literal/.match(ENV['RUBYOPT'])
     SimpleCov.formatter = SimpleCov::Formatter::SimpleFormatter
   end
 

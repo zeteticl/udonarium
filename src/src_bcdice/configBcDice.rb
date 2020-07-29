@@ -5,7 +5,7 @@ require 'configBcDiceForSystem.rb'
 
 $isDebug = false
 
-$bcDiceVersion = "2.06.01"
+$bcDiceVersion = "2.03.05"
 
 $SEND_STR_MAX = 405; # 最大送信文字数(本来は500byte上限)
 $isRollVoidDiceAtAnyRecive = true; # 発言の度に空骰子を振るか？
@@ -78,7 +78,7 @@ $allGameTypes = %w{
   DoubleCross
   Dracurouge
   Dracurouge:Korean
-  DungeonsAndDragons
+  DungeonsAndDoragons
   EarthDawn
   EarthDawn3
   EarthDawn4
@@ -117,7 +117,6 @@ $allGameTypes = %w{
   Kamigakari
   Kamigakari:Korean
   KanColle
-  KemonoNoMori
   KillDeathBusiness
   KillDeathBusiness:Korean
   KurayamiCrying
@@ -131,8 +130,8 @@ $allGameTypes = %w{
   MetalHead
   MetalHeadExtream
   MetallicGuadian
-  MonotoneMuseum
-  MonotoneMuseum:Korean
+  MonotoneMusium
+  MonotoneMusium:Korean
   NJSLYRBATTLE
   Nechronica
   Nechronica:Korean

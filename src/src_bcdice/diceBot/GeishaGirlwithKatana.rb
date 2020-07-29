@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class GeishaGirlwithKatana < DiceBot
-  # ゲームシステムの識別子
-  ID = 'GeishaGirlwithKatana'
+  setPrefixes(['GK(#\d+)?', 'GL'])
 
-  # ゲームシステム名
-  NAME = 'ゲイシャ・ガール・ウィズ・カタナ'
+  def gameName
+    'ゲイシャ・ガール・ウィズ・カタナ'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'けいしやかあるういすかたな'
+  def gameType
+    "GeishaGirlwithKatana"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・判定 (GK#n)
   役やチョムバを含めて1回分の骰子ロールを判定します。
 　役は　（通常判定）／（戦闘時）　の順で両方出力されます。
@@ -24,8 +24,7 @@ class GeishaGirlwithKatana < DiceBot
   GKコマンドを打ち間違えてチョムバするを想定してます。
 　例）GL
 MESSAGETEXT
-
-  setPrefixes(['GK(#\d+)?', 'GL'])
+  end
 
   def rollDiceCommand(command)
     output = nil

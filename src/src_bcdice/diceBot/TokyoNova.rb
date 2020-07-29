@@ -1,16 +1,21 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class TokyoNova < DiceBot
-  # ゲームシステムの識別子
-  ID = 'TokyoNova'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名
-  NAME = 'トーキョーＮ◎ＶＡ'
+  def gameName
+    'トーキョーＮ◎ＶＡ'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'とおきよおのは'
+  def gameType
+    "TokyoNova"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = "※このダイスボットは部屋のシステム名表示用となります。\n"
+  def getHelpMessage
+    return <<MESSAGETEXT
+※この骰子ボットは部屋のシステム名表示用となります。
+MESSAGETEXT
+  end
 end

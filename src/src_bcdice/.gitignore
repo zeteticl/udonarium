@@ -1,0 +1,7 @@
+*.rb~
+*.bak
+*.txt~
+Gemfile.lock
+/coverage
+.yardoc/
+doc/

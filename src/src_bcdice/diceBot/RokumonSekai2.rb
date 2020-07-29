@@ -1,26 +1,6 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class RokumonSekai2 < DiceBot
-  # ゲームシステムの識別子
-  ID = 'RokumonSekai2'
-
-  # ゲームシステム名
-  NAME = '六門世界2nd'
-
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ろくもんせかい2'
-
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
-・判定
-aRSm<=t
-能力値a,修正値m,目標値tで判定ロールを行います。
-Rコマンド(3R6m<=t[a])に読み替えます。
-成功度、評価、ボーナス骰子を自動表示します。
-　例) 3RS+1<=9　3R6+1<=9[3]
-INFO_MESSAGE_TEXT
-
   setPrefixes(['\d+RS'])
 
   def initialize
@@ -28,6 +8,25 @@ INFO_MESSAGE_TEXT
 
     @sendMode = 2
     @sortType = 1
+  end
+
+  def gameName
+    '六門世界2nd'
+  end
+
+  def gameType
+    "RokumonSekai2"
+  end
+
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
+・判定
+aRSm<=t
+能力値a,修正値m,目標値tで判定ロールを行います。
+Rコマンド(3R6m<=t[a])に読み替えます。
+成功度、評価、ボーナス骰子を自動表示します。
+　例) 3RS+1<=9　3R6+1<=9[3]
+INFO_MESSAGE_TEXT
   end
 
   def changeText(string)

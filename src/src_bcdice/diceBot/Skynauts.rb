@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Skynauts < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Skynauts'
+  setPrefixes(['D.*', '2[Dd]6<=.*', 'SN.*', 'NV.*', 'AVO.*', 'BOM.*'])
 
-  # ゲームシステム名
-  NAME = '歯車の塔の探空士'
+  def initialize
+    super
+    @fractionType = "omit"; # 端数の処理 ("omit"=切り捨て, "roundUp"=切り上げ, "roundOff"=四捨五入)
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'すかいのおつ'
+  def gameName
+    '歯車の塔の探空士'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Skynauts"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ◆判定　(SNn)、(2D6<=n)　n:目標値（省略時:7）
 　例）SN5　SN5　SN(3+2)
 ◆航行チェック　(NV+n)　n:修正値（省略時:0）
@@ -30,12 +35,6 @@ class Skynauts < DiceBot
 　例）
 　AVO9@8[縦1,横4],[縦2,横6],[縦3,横8]　AVO@2[縦6,横4],[縦2,横6]
 MESSAGETEXT
-
-  setPrefixes(['D.*', '2[Dd]6<=.*', 'SN.*', 'NV.*', 'AVO.*', 'BOM.*'])
-
-  def initialize
-    super
-    @fractionType = "omit"; # 端数の処理 ("omit"=切り捨て, "roundUp"=切り上げ, "roundOff"=四捨五入)
   end
 
   def rollDiceCommand(command)
@@ -109,7 +108,7 @@ MESSAGETEXT
     return text
   end
 
-  DIRECTION_INFOS = {
+  @@directionInfos = {
     1 => {:name => "左下", :position_diff => {:x => -1, :y => +1}},
     2 => {:name => "下", :position_diff => {:x => 0, :y => +1}},
     3 => {:name => "右下", :position_diff => {:x => +1, :y => +1}},
@@ -119,10 +118,10 @@ MESSAGETEXT
     7 => {:name => "左上", :position_diff => {:x => -1, :y => -1}},
     8 => {:name => "上", :position_diff => {:x => 0, :y => -1}},
     9 => {:name => "右上", :position_diff => {:x => +1, :y => -1}},
-  }.freeze
+  }
 
   def getDirectionInfo(direction, key, defaultValue = nil)
-    info = DIRECTION_INFOS[direction.to_i]
+    info = @@directionInfos[direction.to_i]
     return defaultValue if info.nil?
 
     return info[key]

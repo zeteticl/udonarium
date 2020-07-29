@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 require 'diceBot/DiceBotLoader'
 
@@ -109,8 +108,8 @@ class DiceBotLoaderList
     DiceBotLoader.new(/\A(?:Barna\s*Kronika|BK)\z/i,
                       :filenames => %w(BarnaKronika)),
     DiceBotLoader.new(%w(RokumonSekai2 RS2)),
-    DiceBotLoader.new(/\A(?:Monotone\s*Museum|MM)\z/i,
-                      :filenames => %w(MonotoneMuseum)),
+    DiceBotLoader.new(/\A(?:Monotone\s*Musium|MM)\z/i,
+                      :filenames => %w(MonotoneMusium)),
     DiceBotLoader.new(/\AZettai\s*Reido\z/i, :filenames => %w(ZettaiReido)),
     DiceBotLoader.new(/\AEclipse\s*Phase\z/i,
                       :filenames => %w(EclipsePhase)),

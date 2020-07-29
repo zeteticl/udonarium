@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Utakaze < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Utakaze'
+  setPrefixes(['\d*UK[@\d]*.*'])
 
-  # ゲームシステム名
-  NAME = 'ウタカゼ'
+  def initialize
+    super
+    @arrayDragonDiceName = ['', '風', '雨', '雲', '影', '月', '歌']
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'うたかせ'
+  def gameName
+    'ウタカゼ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Utakaze"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・行為判定ロール（nUK）
   n個のサイコロで行為判定ロール。ゾロ目の最大個数を成功レベルとして表示。nを省略すると2UK扱い。
   例）3UK ：サイコロ3個で行為判定
@@ -23,12 +28,6 @@ class Utakaze < DiceBot
   ゾロ目ではなく、cと同じ値の出目数x2が成功レベルとなります。
   例）3UK@5 ：龍の骰子「月」でクリティカルコール宣言したサイコロ3個の行為判定
 MESSAGETEXT
-
-  setPrefixes(['\d*UK[@\d]*.*'])
-
-  def initialize
-    super
-    @arrayDragonDiceName = ['', '風', '雨', '雲', '影', '月', '歌']
   end
 
   def isGetOriginalMessage

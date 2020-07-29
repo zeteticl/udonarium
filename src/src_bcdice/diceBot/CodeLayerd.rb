@@ -1,34 +1,24 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
-
-require 'utils/modifier_formatter'
 
 class CodeLayerd < DiceBot
-  include ModifierFormatter
-  # ゲームシステムの識別子
-  ID = 'CodeLayerd'
+  setPrefixes(['\d*CL[@\d]*.*'])
 
-  # ゲームシステム名
-  NAME = 'コード：レイヤード'
+  def gameName
+    'コード：レイヤード'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'こおとれいやあと'
+  def gameType
+    "CodeLayerd"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
-・行為判定（nCL@m[c]+x または nCL+x@m[c]） クリティカル・ファンブル判定あり
-  (ダイス数)CL+(修正値)@(判定値)[(クリティカル値)]+(修正値2)
-
-  @m,[c],+xは省略可能。(@6[1]として処理)
-  n個のD10でmを判定値、cをクリティカル値とした行為判定を行う。
-  例）
-  7CL>=5 ：サイコロ7個で判定値6のロールを行い、目標値5に対して判定
-  4CL@7  ：サイコロ4個で判定値7のロールを行い達成値を出す
-  4CL+2@7 または 4CL@7+2  ：サイコロ4個で判定値7のロールを行い達成値を出し、修正値2を足す。
-  4CL[2] ：サイコロ4個でクリティカル値2のロールを行う。
+  def getHelpMessage
+    return <<MESSAGETEXT
+・行為判定（nCL@m） クリティカル・ファンブル判定あり
+  n個のD10でmを判定値とした行為判定を行う。mは省略可能。（@6扱い）
+  例）7CL>=5 ：サイコロ7個で判定値6のロールを行い、目標値5に対して判定
+  例）4CL@7  ：サイコロ4個で判定値7のロールを行い達成値を出す
 MESSAGETEXT
-
-  setPrefixes(['\d*CL([+-]\d+)?[@\d]*.*'])
+  end
 
   def isGetOriginalMessage
     true
@@ -40,15 +30,11 @@ MESSAGETEXT
     result = ''
 
     case command
-    when /(\d+)?CL([+-]\d+)?(\@(\d))?(\[(\d+)\])?([+-]\d+)?(>=(\d+))?/i
-      m = Regexp.last_match
-      base = (m[1] || 1).to_i
-      modifier1 = m[2].to_i
-      target = (m[4] || 6).to_i
-      criticalTarget = (m[6] || 1).to_i
-      modifier2 = m[7].to_i
-      diff = m[9].to_i
-      result = checkRoll(base, target, criticalTarget, diff, modifier1 + modifier2)
+    when /(\d+)?CL(\@?(\d))?(>=(\d+))?/i
+      base = (Regexp.last_match(1) || 1).to_i
+      target = (Regexp.last_match(3) || 6).to_i
+      diff = Regexp.last_match(5).to_i
+      result = checkRoll(base, target, diff)
     end
 
     return nil if result.empty?
@@ -56,41 +42,36 @@ MESSAGETEXT
     return "#{command} ＞ #{result}"
   end
 
-  def checkRoll(base, target, criticalTarget, diff, modifier)
+  def checkRoll(base, target, diff)
     result = ""
 
     base = getValue(base)
     target = getValue(target)
-    criticalTarget = getValue(criticalTarget)
 
     return result if base < 1
 
     target = 10 if target > 10
 
-    result += "(#{base}d10#{format_modifier(modifier)})"
+    result += "(#{base}d10)"
 
     _, diceText = roll(base, 10)
 
     diceList = diceText.split(/,/).collect { |i| i.to_i }.sort
 
-    result += " ＞ [#{diceList.join(',')}]#{format_modifier(modifier)} ＞ "
-    result += getRollResultString(diceList, target, criticalTarget, diff, modifier)
+    result += " ＞ [#{diceList.join(',')}] ＞ "
+    result += getRollResultString(diceList, target, diff)
 
     return result
   end
 
-  def getRollResultString(diceList, target, criticalTarget, diff, modifier)
-    successCount, criticalCount = getSuccessInfo(diceList, target, criticalTarget)
+  def getRollResultString(diceList, target, diff)
+    successCount, criticalCount = getSuccessInfo(diceList, target)
 
-    successTotal = successCount + criticalCount + modifier
+    successTotal = successCount + criticalCount
     result = ""
 
-    result += "判定値[#{target}] "
-    result += "クリティカル値[#{criticalTarget}] " unless criticalTarget == 1
-    result += "達成値[#{successCount}]"
-    result += "+クリティカル[#{criticalCount}]" if criticalCount > 0
-    result += format_modifier(modifier)
-    result += "=[#{successTotal}]" if criticalCount > 0 || modifier != 0
+    result += "判定値[#{target}] 達成値[#{successCount}]"
+    result += "+クリティカル[#{criticalCount}]=[#{successTotal}]" if criticalCount > 0
 
     successText = getSuccessResultText(successTotal, diff)
     result += " ＞ #{successText}"
@@ -99,22 +80,22 @@ MESSAGETEXT
   end
 
   def getSuccessResultText(successTotal, diff)
-    return "ファンブル！" if successTotal <= 0
+    return "ファンブル！" if successTotal == 0
     return successTotal.to_s if diff == 0
     return "成功" if successTotal >= diff
 
     return "失敗"
   end
 
-  def getSuccessInfo(diceList, target, criticalTarget)
-    debug("checkSuccess diceList, target, criticalTarget", diceList, target, criticalTarget)
+  def getSuccessInfo(diceList, target)
+    debug("checkSuccess diceList, target", diceList, target)
 
     successCount  = 0
     criticalCount = 0
 
     diceList.each do |dice|
       successCount += 1 if dice <= target
-      criticalCount += 1 if dice <= criticalTarget
+      criticalCount += 1 if dice == 1
     end
 
     return successCount, criticalCount

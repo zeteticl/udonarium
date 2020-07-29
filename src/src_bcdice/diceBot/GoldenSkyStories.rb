@@ -1,26 +1,29 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class GoldenSkyStories < DiceBot
-  # ゲームシステムの識別子
-  ID = 'GoldenSkyStories'
+  setPrefixes(['geta'])
 
-  # ゲームシステム名
-  NAME = 'ゆうやけこやけ'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ゆうやけこやけ'
+  def gameName
+    'ゆうやけこやけ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
-※「ゆうやけこやけ」はダイスロールを使用しないシステムです。
-※このダイスボットは部屋のシステム名表示用となります。
+  def gameType
+    "GoldenSkyStories"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
+※「ゆうやけこやけ」は骰子ロールを使用しないシステムです。
+※この骰子ボットは部屋のシステム名表示用となります。
 
 ・下駄占い (GETA)
   あーしたてんきになーれ
 MESSAGETEXT
-
-  setPrefixes(['geta'])
+  end
 
   def isGetOriginalMessage
     true

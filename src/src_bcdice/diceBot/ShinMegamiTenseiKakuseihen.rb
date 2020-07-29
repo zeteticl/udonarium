@@ -1,28 +1,33 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class ShinMegamiTenseiKakuseihen < DiceBot
-  # ゲームシステムの識別子
-  ID = 'SMTKakuseihen'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名
-  NAME = '真・女神転生TRPG　覚醒篇'
+  def gameName
+    '真・女神転生TRPG　覚醒篇'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'しんめかみてんせいTRPGかくせいへん'
+  def gameType
+    "SMTKakuseihen"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ・判定
 1D100<=(目標値) でスワップ・通常・逆スワップ判定を判定。
 威力骰子は nU6[6] (nは骰子個数)でロール可能です。
 INFO_MESSAGE_TEXT
+  end
 
   # ゲーム別成功度判定(1d100)
-  def check_1D100(total, dice_total, cmp_op, target)
-    return '' unless cmp_op == :<=
+  def check_1D100(total_n, _dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max)
+    return '' unless signOfInequality == "<="
 
-    dice1, dice2 = split_tens(dice_total)
+    total_n = total_n % 100
+
+    dice1, dice2 = getTwoDice
 
     total1 = dice1 * 10 + dice2
     total2 = dice2 * 10 + dice1
@@ -31,27 +36,31 @@ INFO_MESSAGE_TEXT
     isRepdigit = (dice1 == dice2)
 
     result = " ＞ スワップ"
-    result += getCheckResultText(target, [total1, total2].min, isRepdigit)
+    result += getCheckResultText(diff, [total1, total2].min, isRepdigit)
     result += "／通常"
-    result += getCheckResultText(target, total % 100, isRepdigit)
+    result += getCheckResultText(diff, total_n, isRepdigit)
     result += "／逆スワップ"
-    result += getCheckResultText(target, [total1, total2].max, isRepdigit)
+    result += getCheckResultText(diff, [total1, total2].max, isRepdigit)
 
     return result
   end
 
-  def split_tens(value)
+  def getTwoDice
+    value = getDiceList.first
+    value ||= 0
+
     value %= 100
 
-    ones = (value / 10).floor # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
-    tens = value % 10
+    #dice1 = value / 10
+    dice1 = (value / 10).floor # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
+    dice2 = value % 10
 
-    return [ones, tens]
+    return [dice1, dice2]
   end
 
   def getCheckResultText(diff, total, isRepdigit)
     checkResult = getCheckResult(diff, total, isRepdigit)
-    text = format("(%02d)", total) + checkResult
+    text = format("(%02d)%s", total, checkResult)
     return text
   end
 

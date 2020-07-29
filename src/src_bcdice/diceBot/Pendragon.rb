@@ -1,35 +1,36 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Pendragon < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Pendragon'
+  def gameName
+    'ペンドラゴン'
+  end
 
-  # ゲームシステム名
-  NAME = 'ペンドラゴン'
+  def gameType
+    "Pendragon"
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'へんとらこん'
-
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 クリティカル、成功、失敗、ファンブルの自動判定を行います。
 INFO_MESSAGE_TEXT
+  end
 
   # ゲーム別成功度判定(1d20)
-  def check_1D20(total, _dice_total, cmp_op, target)
-    return '' unless cmp_op == :<=
+  def check_1D20(total_n, _dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max)
+    return '' unless signOfInequality == "<="
 
-    if total <= target
-      if (total >= (40 - target)) || (total == target)
-        " ＞ クリティカル"
-      else
-        " ＞ 成功"
+    if total_n <= diff
+      if (total_n >= (40 - diff)) || (total_n == diff)
+        return " ＞ クリティカル"
       end
-    elsif total == 20
-      " ＞ ファンブル"
+
+      return " ＞ 成功"
     else
-      " ＞ 失敗"
+      if total_n == 20
+        return " ＞ ファンブル"
+      end
+
+      return " ＞ 失敗"
     end
   end
 end

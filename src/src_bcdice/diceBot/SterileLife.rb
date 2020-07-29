@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class SterileLife < DiceBot
-  # ゲームシステムの識別子
-  ID = 'SterileLife'
+  setPrefixes(['(\d+)*DA.*\[(\d+),(\d+)(,(\d+))?\]', 'VPFT', 'VNFT', 'VNRT', 'AAFT', 'AST', 'RNST', 'RET', 'TRST', 'TRAT', 'TRMT', 'TROT', 'TET', 'ENT', 'CUT', 'NAT', 'INT']) # '(\d+)*DA.*\[.*\]'
 
-  # ゲームシステム名
-  NAME = 'ステラーライフ'
+  def gameName
+    'ステラーライフ'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'すてらあらいふ'
+  def gameType
+    "SterileLife"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def getHelpMessage
+    return <<MESSAGETEXT
 ◆判定　nDAc[s,d,t]　n:ダイス数　c:各種修正　s:1成功（省略不可）　d:2成功（省略不可）　t:3成功（ダイス目一致時のみ　省略時:無し）
 　例）2DA-3[7,10]
 ◆船名ランダム表
@@ -35,8 +35,7 @@ class SterileLife < DiceBot
 　・超未来の自然　NAT
 　・超未来の宇宙船内　INT
 MESSAGETEXT
-
-  setPrefixes(['(\d+)*DA.*\[(\d+),(\d+)(,(\d+))?\]', 'VPFT', 'VNFT', 'VNRT', 'AAFT', 'AST', 'RNST', 'RET', 'TRST', 'TRAT', 'TRMT', 'TROT', 'TET', 'ENT', 'CUT', 'NAT', 'INT']) # '(\d+)*DA.*\[.*\]'
+  end
 
   def rollDiceCommand(command) # ダイスロールコマンド
     # 通常判定部分をgetJudgeResultコマンドに切り分け

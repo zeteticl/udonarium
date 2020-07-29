@@ -1,24 +1,29 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class KurayamiCrying < DiceBot
-  # ゲームシステムの識別子
-  ID = 'KurayamiCrying'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名
-  NAME = 'クラヤミクライン'
+  def gameName
+    'クラヤミクライン'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'くらやみくらいん'
+  def gameType
+    "KurayamiCrying"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = "・アクシデント表（ACT）\n"
+  def getHelpMessage
+    return <<MESSAGETEXT
+・アクシデント表（ACT）
+MESSAGETEXT
+  end
 
   def rollDiceCommand(command)
     case command
     when /^ACT(\d+)$/i
       number = Regexp.last_match(1).to_i
-      info = TABLES["ACT"]
+      info = @@tables["ACT"]
       name = info[:name]
       table = getTableInfoFromExtraTableText(info[:table])
 
@@ -27,11 +32,11 @@ class KurayamiCrying < DiceBot
       result = "#{name}(#{number}) ＞ #{text}"
       return text
     end
-    result = getTableCommandResult(command, TABLES)
+    result = getTableCommandResult(command, @@tables)
     return result unless result.nil?
   end
 
-  TABLES =
+  @@tables =
     {
 
       'ACT' => {
@@ -51,7 +56,7 @@ class KurayamiCrying < DiceBot
 TABLE_TEXT_END
       },
 
-    }.freeze
+    }
 
-  setPrefixes(["ACT.*"] + TABLES.keys)
+  setPrefixes(["ACT.*"] + @@tables.keys)
 end

@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 require 'diceBot/GardenOrder'
 
 class AceKillerGene < GardenOrder
-  # ゲームシステムの識別子
-  ID = 'AceKillerGene'
+  setPrefixes([
+    '(AK|AKG)(\-?\d+)(\/\d+)?(@\d+)?',
+    'DC(SL|BL|IM|BR|RF|EL).+'
+  ])
 
-  # ゲームシステム名
-  NAME = 'エースキラージーン'
+  def gameName
+    'エースキラージーン'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ええすきらあしいん'
+  def gameType
+    "AceKillerGene"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ・基本判定
 　AKx/y@z　x：成功率、y：連続攻撃回数（省略可）、z：クリティカル値（省略可）
 　（連続攻撃では1回の判定のみが実施されます）
@@ -25,11 +28,7 @@ class AceKillerGene < GardenOrder
 　y：ダメージ
 　例）DCSL7　DCEL22
 INFO_MESSAGE_TEXT
-
-  setPrefixes([
-    '(AK|AKG)(\-?\d+)(\/\d+)?(@\d+)?',
-    'DC(SL|BL|IM|BR|RF|EL).+'
-  ])
+  end
 
   def rollDiceCommand(command)
     case command

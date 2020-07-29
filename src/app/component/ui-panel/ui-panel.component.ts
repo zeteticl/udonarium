@@ -120,3 +120,4 @@ export class UIPanelComponent implements OnInit {
     if (this.panelService) this.panelService.close();
   }
 }
+

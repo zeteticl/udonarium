@@ -1,18 +1,30 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class BladeOfArcana < DiceBot
-  # ゲームシステムの識別子
-  ID = 'BladeOfArcana'
+  setPrefixes([
+    '\d+A\d*[CF]?\d*[CF]?\d*',
+    'CT3[\+\-]?',
+    'CTR[\+\-]?',
+    'DJV\-?',
+    'AKST[\+\-]?'
+  ])
 
-  # ゲームシステム名
-  NAME = 'ブレイド・オブ・アルカナ'
+  def initialize
+    super
+    @sendMode = 2
+    @sortType = 1
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ふれいとおふあるかな'
+  def gameName
+    'ブレイド・オブ・アルカナ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def gameType
+    "BladeOfArcana"
+  end
+
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ■行為判定　nA[m][Cx][Fy]
 　n：骰子数　　m：判定値(省略時はクリティカル値と同じ)
 　x：クリティカル値(省略時は1)　　y：ファンブル値(省略時は20)
@@ -30,19 +42,6 @@ class BladeOfArcana < DiceBot
 　　例）CTR→因縁表（R版）を出目1～20でロールする。
 　　例）CTR+→因縁表（R版）を出目2～21でロールする。
 INFO_MESSAGE_TEXT
-
-  setPrefixes([
-    '\d+A\d*[CF]?\d*[CF]?\d*',
-    'CT3[\+\-]?',
-    'CTR[\+\-]?',
-    'DJV\-?',
-    'AKST[\+\-]?'
-  ])
-
-  def initialize
-    super
-    @sendMode = 2
-    @sortType = 1
   end
 
   def rollDiceCommand(command)

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 # 骰子ボットの読み込みを担当するクラス
 class DiceBotLoader
@@ -231,11 +230,11 @@ class DiceBotLoader
   # 骰子ボットを読み込む
   # @return [DiceBot]
   def loadDiceBot
-    # TKfix dynamic requireは不可
-    #@filenames.each do |filename|
-    #  require_path = File.expand_path(filename, File.dirname(__FILE__))
-    #  require(require_path)
-    #end
+    @filenames.each do |filename|
+      # TKfix dynamic requireは不可
+      #require_path = File.expand_path(filename, File.dirname(__FILE__))
+      #require(require_path)
+    end
 
     Object.const_get(@diceBotClass).new
   end

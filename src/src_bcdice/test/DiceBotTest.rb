@@ -20,7 +20,7 @@ class DiceBotTest
     @testDataSet = []
     @errorLog = []
 
-    $isDebug = !@dataIndex.nil?
+    $isDebug = !!@dataIndex
   end
 
   # テストを実行する

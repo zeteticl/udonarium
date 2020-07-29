@@ -1,26 +1,6 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Nechronica < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Nechronica'
-
-  # ゲームシステム名
-  NAME = 'ネクロニカ'
-
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ねくろにか'
-
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
-・判定　(nNC+m)
-　骰子数n、修正値mで判定ロールを行います。
-　骰子数が2以上の時のパーツ破損数も表示します。
-・攻撃判定　(nNA+m)
-　骰子数n、修正値mで攻撃判定ロールを行います。
-　命中部位と骰子数が2以上の時のパーツ破損数も表示します。
-INFO_MESSAGE_TEXT
-
   setPrefixes(['(\d+NC|\d+NA)'])
 
   def initialize
@@ -28,6 +8,25 @@ INFO_MESSAGE_TEXT
     @sendMode = 2
     @sortType = 3
     @defaultSuccessTarget = "6" # 目標値が空欄の時の目標値
+  end
+
+  def gameName
+    'ネクロニカ'
+  end
+
+  def gameType
+    "Nechronica"
+  end
+
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
+・判定　(nNC+m)
+　骰子数n、修正値mで判定ロールを行います。
+　骰子数が2以上の時のパーツ破損数も表示します。
+・攻撃判定　(nNA+m)
+　骰子数n、修正値mで攻撃判定ロールを行います。
+　命中部位と骰子数が2以上の時のパーツ破損数も表示します。
+INFO_MESSAGE_TEXT
   end
 
   def changeText(string)
@@ -44,20 +43,29 @@ INFO_MESSAGE_TEXT
     return nechronica_check(string)
   end
 
-  def check_nD10(total, _dice_total, dice_list, cmp_op, target) # ゲーム別成功度判定(nD10)
-    return '' unless cmp_op == :>=
+  def check_nD10(total_n, _dice_n, signOfInequality, diff, dice_cnt, _dice_max, n1, _n_max) # ゲーム別成功度判定(nD10)
+    return '' unless signOfInequality == ">="
 
-    if total >= 11
-      " ＞ 大成功"
-    elsif total >= target
-      " ＞ 成功"
-    elsif dice_list.count { |i| i <= 1 } == 0
-      " ＞ 失敗"
-    elsif dice_list.size > 1
-      " ＞ 大失敗 ＞ 使用パーツ全損"
-    else
-      " ＞ 大失敗"
+    if total_n >= 11
+      return " ＞ 大成功"
     end
+
+    if total_n >= diff
+      return " ＞ 成功"
+    end
+
+    # 失敗パターン
+
+    if n1 <= 0
+      return " ＞ 失敗"
+    end
+
+    result = " ＞ 大失敗"
+    if dice_cnt > 1
+      result += " ＞ 使用パーツ全損"
+    end
+
+    return result
   end
 
   def nechronica_check(string)
@@ -71,6 +79,7 @@ INFO_MESSAGE_TEXT
     end
 
     string = Regexp.last_match(2)
+    signOfInequality = ">="
 
     dice_n = 1
     dice_n = Regexp.last_match(3).to_i if Regexp.last_match(3)
@@ -88,7 +97,7 @@ INFO_MESSAGE_TEXT
     diff = 6
     total_n = 0
 
-    _, dice_str, _n1, _cnt_max, n_max = roll(dice_n, 10, 1)
+    _, dice_str, n1, cnt_max, n_max = roll(dice_n, 10, 1)
 
     total_n = n_max + mod
 
@@ -99,13 +108,28 @@ INFO_MESSAGE_TEXT
       output += "+#{mod}"
     end
 
-    dice = dice_str.split(',').map(&:to_i)
-    dice.map! { |i| i + mod }
+    n1 = 0
+    cnt_max = 0
+
+    dice = dice_str.split(/,/).collect { |i| i.to_i }
+    dice.length.times do |i|
+      dice[i] += mod
+      n1 += 1 if dice[i] <= 1
+      cnt_max += 1 if dice[i] >= 10
+    end
 
     dice_str = dice.join(",")
     output += "  ＞ #{total_n}[#{dice_str}]"
 
-    output += check_nD10(total_n, dice_n, dice, :>=, diff)
+    diceMax = 10
+    output += check_suc(total_n, n_max, signOfInequality, diff, dice_n, diceMax, n1, n_max)
+
+    debug("dice_n, n1, total_n diff", dice_n, n1, total_n, diff)
+
+    # β版の実装
+    #    if( (dice_n > 1) and (n1 >= 1) and (total_n <= diff) )
+    #      output += " ＞ 損傷#{n1}"
+    #    end
 
     if isBattleMode
       hit_loc = getHitLocation(total_n)

@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Alsetto < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Alsetto'
+  setPrefixes(['\d+AL(C|G)?(\d+)?(x|\*)\d+', '\d+ALC?(\d+)?'])
 
-  # ゲームシステム名
-  NAME = '詩片のアルセット'
+  def initialize
+    super
+    @sortType = 1 # 骰子のソート有
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'うたかたのあるせつと'
+  def gameName
+    '詩片のアルセット'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Alsetto"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・成功判定：nAL[m]　　　　・トライアンフ無し：nALC[m]
 ・命中判定：nAL[m]*p　　　・トライアンフ無し：nALC[m]*p
 ・命中判定（ガンスリンガーの根源詩）：nALG[m]*p
@@ -35,12 +40,6 @@ ALGコマンドは「2以下」でトライアンフ処理を行います。
 ・7AL2x10 → 7d6で目標値2、攻撃力10の命中判定。
 ・8ALC4x5 → 8d6で目標値4、攻撃力5、トライアンフ無しの命中判定。
 MESSAGETEXT
-
-  setPrefixes(['\d+AL(C|G)?(\d+)?(x|\*)\d+', '\d+ALC?(\d+)?'])
-
-  def initialize
-    super
-    @sortType = 1 # ダイスのソート有
   end
 
   def rollDiceCommand(command)
@@ -108,12 +107,10 @@ MESSAGETEXT
       totalDamage = totalSuccessCount * damage
 
       result = "(#{rapid}D6\<\=#{target}) ＞ #{text} ＞ Hits：#{totalSuccessCount}*#{damage} ＞ #{totalDamage}ダメージ"
+      result += " / #{totalCriticalCount}トライアンフ" if isCritical
     else
       result = "(#{rapid}D6\<\=#{target}) ＞ #{text} ＞ 成功数：#{totalSuccessCount}"
-    end
-
-    if isCritical
-      result += " / #{totalCriticalCount}トライアンフ"
+      result += " / #{totalCriticalCount}トライアンフ" if isCritical
     end
 
     return result

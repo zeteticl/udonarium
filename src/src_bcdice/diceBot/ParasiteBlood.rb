@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 require 'diceBot/DemonParasite'
 
 class ParasiteBlood < DemonParasite
-  # ゲームシステムの識別子
-  ID = 'ParasiteBlood'
+  setPrefixes(['(N|A|M|U|C|)?URGE\d+'])
 
-  # ゲームシステム名
-  NAME = 'パラサイトブラッド'
+  def gameName
+    'パラサイトブラッド'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'はらさいとふらつと'
+  def gameType
+    "ParasiteBlood"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ・衝動表　(URGEx)
 　"URGE衝動レベル"の形で指定します。
 　衝動表に従って自動でダイスロールを行い、結果を表示します。
@@ -24,8 +24,7 @@ class ParasiteBlood < DemonParasite
 例）URGE1　　　urge5　　　Aurge2
 ・D66ダイスあり
 INFO_MESSAGE_TEXT
-
-  setPrefixes(['(N|A|M|U|C|)?URGE\d+'])
+  end
 
   def get_urge(string) # パラサイトブラッドの衝動表
     urge = []

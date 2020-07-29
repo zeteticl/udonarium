@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Alter_raise < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Alter_raise'
+  setPrefixes([
+    'EMA(\d+)?', 'PER(\d+)?', 'LOC(\d+)?', 'QUI(\d+)?', 'DEL(\d+)?',
+    'TRA(\d+)?', 'SCE(\d+)?', 'STA(\d+)?', 'EMO(\d+)?'
+  ])
 
-  # ゲームシステム名
-  NAME = '心衝想機TRPGアルトレイズ'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'あるとれいす'
+  def gameName
+    '心衝想機TRPGアルトレイズ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Alter_raise"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ◆解放判定：EMA[x]
 
 [x]で達成値を指定してください。省略時は骰子ロールします。
@@ -32,11 +39,7 @@ PER3：性格傾向表の「3」をROC
 LOC52：場所表の「52」をROC
 QUI：平穏・経験表を骰子ロール
 MESSAGETEXT
-
-  setPrefixes([
-    'EMA(\d+)?', 'PER(\d+)?', 'LOC(\d+)?', 'QUI(\d+)?', 'DEL(\d+)?',
-    'TRA(\d+)?', 'SCE(\d+)?', 'STA(\d+)?', 'EMO(\d+)?'
-  ])
+  end
 
   def rollDiceCommand(command)
     output =

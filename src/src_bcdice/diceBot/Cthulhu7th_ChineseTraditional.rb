@@ -1,18 +1,26 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Cthulhu7th_ChineseTraditional < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Cthulhu7th:ChineseTraditional'
+  setPrefixes(['CC\(\d+\)', 'CC.*', 'CBR\(\d+,\d+\)', 'FAR\(\d+\)', 'FAR.*'])
 
-  # ゲームシステム名
-  NAME = '克蘇魯神話第7版'
+  def initialize
+    # $isDebug = true
+    super
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = '国際化:Chinese Traditional:克蘇魯神話'
+    @bonus_dice_range = (-2..2)
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def gameName
+    '克蘇魯神話第7版'
+  end
+
+  def gameType
+    "Cthulhu7th:ChineseTraditional"
+  end
+
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
+
 ・判定　CC(x)<=（目標値）
 　x：獎勵骰/懲罰骰：Bonus/Penalty Dice (2～－2)。沒有的話可以省略。
 　致命的失敗：Fumble／失敗：Failure／通常成功：Regular success／
@@ -33,14 +41,6 @@ class Cthulhu7th_ChineseTraditional < DiceBot
 ・瘋狂表
 ・實時型　Short／總結型　Longer
 INFO_MESSAGE_TEXT
-
-  setPrefixes(['CC\(\d+\)', 'CC.*', 'CBR\(\d+,\d+\)', 'FAR\(\d+\)', 'FAR.*'])
-
-  def initialize
-    # $isDebug = true
-    super
-
-    @bonus_dice_range = (-2..2)
   end
 
   def rollDiceCommand(command)

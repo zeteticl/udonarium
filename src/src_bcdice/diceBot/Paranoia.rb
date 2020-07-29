@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Paranoia < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Paranoia'
-
-  # ゲームシステム名
-  NAME = 'パラノイア'
-
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'はらのいあ'
-
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
-※「パラノイア」は完璧なゲームであるため特殊なダイスコマンドを必要としません。
-※このダイスボットは部屋のシステム名表示用となります。
-MESSAGETEXT
-
   setPrefixes(['geta'])
+
+  def initialize
+    super
+  end
+
+  def gameName
+    'パラノイア'
+  end
+
+  def gameType
+    "Paranoia"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
+※「パラノイア」は完璧なゲームであるため特殊な骰子コマンドを必要としません。
+※この骰子ボットは部屋のシステム名表示用となります。
+MESSAGETEXT
+  end
 
   def isGetOriginalMessage
     true

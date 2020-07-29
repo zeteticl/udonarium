@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Warhammer < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Warhammer'
+  setPrefixes(['WH.*'])
 
-  # ゲームシステム名
-  NAME = 'ウォーハンマー'
+  def initialize
+    super
+    @sendMode = 2
+    @fractionType = "roundUp" # 端数切り上げに設定
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'うおおはんまあ'
+  def gameName
+    'ウォーハンマー'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def gameType
+    "Warhammer"
+  end
+
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ・クリティカル表(whHxx/whAxx/whBxx/whLxx)
 　"WH部位 クリティカル値"の形で指定します。部位は「H(頭部)」「A(腕)」「B(胴体)」「L(足)」の４カ所です。
 　例）whH10 whA5 WHL4
@@ -24,13 +30,6 @@ class Warhammer < DiceBot
 　なお、種別指定を省略すると「二足」、「@」だけにすると全種別の命中部位を表示します。(コマンドを忘れた時の対応です)
 　例）wh60　　wh43@4W　　WH65@
 INFO_MESSAGE_TEXT
-
-  setPrefixes(['WH.*'])
-
-  def initialize
-    super
-    @sendMode = 2
-    @fractionType = "roundUp" # 端数切り上げに設定
   end
 
   def rollDiceCommand(command)
@@ -50,14 +49,16 @@ INFO_MESSAGE_TEXT
     return output_msg
   end
 
-  def check_1D100(total, _dice_total, cmp_op, target)
-    return '' unless cmp_op == :<=
+  def check_1D100(total_n, _dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max) # ゲーム別成功度判定(1d100)
+    return '' unless signOfInequality == "<="
 
-    if total <= target
-      " ＞ 成功(成功度#{((target - total) / 10).floor})" # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
-    else
-      " ＞ 失敗(失敗度#{((total - target) / 10).floor})" # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
+    if total_n <= diff
+      # return " ＞ 成功(成功度#{((diff - total_n) / 10)})"
+      return " ＞ 成功(成功度#{((diff - total_n) / 10).floor})" # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
     end
+
+    # return " ＞ 失敗(失敗度#{((total_n - diff) / 10)})"
+    return " ＞ 失敗(失敗度#{((total_n - diff) / 10).floor})" # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
   end
 
   ####################            WHFRP関連          ########################
@@ -322,7 +323,7 @@ INFO_MESSAGE_TEXT
     total_n, = roll(1, 100)
 
     output = "(#{string}) ＞ #{total_n}"
-    output += check_1D100(total_n, total_n, :<=, diff)
+    output += check_suc(total_n, 0, "<=", diff, 1, 100, 0, total_n)
 
     pos_num = (total_n % 10) * 10 + (total_n / 10).to_i
     pos_num = 100 if total_n >= 100

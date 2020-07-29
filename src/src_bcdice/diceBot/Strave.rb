@@ -1,18 +1,26 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Strave < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Strave'
+  setPrefixes([
+    'MP\d+', '\d+ST\d+(x|\*)\d+',
+    'AFF', 'IDT', 'AFV', 'IDV'
+  ])
 
-  # ゲームシステム名
-  NAME = '碧空のストレイヴ'
+  def initialize
+    super
+    @sortType = 1 # 骰子のソート有
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'へきくうのすとれいふ'
+  def gameName
+    '碧空のストレイヴ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Strave"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・モラトリアムフェイズ用判定：MPm
 ・命中判定：nSTm*p
 
@@ -30,15 +38,6 @@ class Strave < DiceBot
 
 ※アイデンティティ表はエラッタ適用済です。
 MESSAGETEXT
-
-  setPrefixes([
-    'MP\d+', '\d+ST\d+(x|\*)\d+',
-    'AFF', 'IDT', 'AFV', 'IDV'
-  ])
-
-  def initialize
-    super
-    @sortType = 1 # ダイスのソート有
   end
 
   def rollDiceCommand(command)

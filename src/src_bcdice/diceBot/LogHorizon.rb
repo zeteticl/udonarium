@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class LogHorizon < DiceBot
-  # ゲームシステムの識別子
-  ID = 'LogHorizon'
+  setPrefixes(['\d+LH.*', 'PC.*', 'EC.*', 'GC.*', 'CC.*', 'CTR.*', 'MTR.*', 'ITR.*', 'OTR.*', 'HTR.*', 'GTR.*', 'PTAG', 'KOYU', 'MGR.', 'HLOC', 'PCNM', 'IAT.*', 'TIAS', 'ABDC', 'MII.*', 'ESCT.*', 'CSCT.*', 'ESTL.*'])
 
-  # ゲームシステム名
-  NAME = 'ログ・ホライズン'
+  def initialize
+    super
+    @d66Type = 1
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ろくほらいすん'
+  def gameName
+    'ログ・ホライズン'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "LogHorizon"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・判定(xLH±y>=z)
 　xD6の判定。クリティカル、ファンブルの自動判定を行います。
 　x：xに振る骰子数を入力。
@@ -56,12 +61,6 @@ class LogHorizon < DiceBot
 ※印は「実録・七面体工房スタッフ座談会(夏の陣)」より。利用法などはそちら参照。
 ・D66骰子あり
 MESSAGETEXT
-
-  setPrefixes(['\d+LH.*', 'PC.*', 'EC.*', 'GC.*', 'CC.*', 'CTR.*', 'MTR.*', 'ITR.*', 'OTR.*', 'HTR.*', 'GTR.*', 'PTAG', 'KOYU', 'MGR.', 'HLOC', 'PCNM', 'IAT.*', 'TIAS', 'ABDC', 'MII.*', 'ESCT.*', 'CSCT.*', 'ESTL.*'])
-
-  def initialize
-    super
-    @d66Type = 1
   end
 
   def rollDiceCommand(command)

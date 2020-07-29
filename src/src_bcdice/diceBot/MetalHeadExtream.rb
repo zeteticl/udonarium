@@ -1,18 +1,28 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class MetalHeadExtream < DiceBot
-  # ゲームシステムの識別子
-  ID = 'MetalHeadExtream'
+  setPrefixes([
+    '[AS]R\d+.*',
+    '(HU|BK|WA|SC|BG|IN|PT|HT|TA|AC|HE|TR|VT|BO|CS|TH|AM|GD|HC|BI|BT|AI)HIT\d*',
+    'SUV[A-Z]\d+', '[HTALMEBPD]DMG[LMHO]',
+    'CRT\d*', '[GSME]AC\d*', '[ASL]MA\d*(\+\d+)?',
+    'SEC', 'NAC', 'LDC', '[W]ENC\d*'
+  ])
 
-  # ゲームシステム名
-  NAME = 'メタルヘッドエクストリーム'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'めたるへつとえくすとりいむ'
+  def gameName
+    'メタルヘッドエクストリーム'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "MetalHeadExtream"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ◆判定：ARn or SRn[*/a][@b][Ac][Ld][!M]　　[]内省略可。
 「n」で判定値、「*/a」でロール修正を指定。複数回指定可。
 「@b」でアクシデント値、省略時は「96」。
@@ -48,14 +58,7 @@ NPC攻撃処理チャート：NAC　　敗者運命チャート：LDC
 【各種表】
 荒野ランダムエンカウント表：WENC[n]
 MESSAGETEXT
-
-  setPrefixes([
-    '[AS]R\d+.*',
-    '(HU|BK|WA|SC|BG|IN|PT|HT|TA|AC|HE|TR|VT|BO|CS|TH|AM|GD|HC|BI|BT|AI)HIT\d*',
-    'SUV[A-Z]\d+', '[HTALMEBPD]DMG[LMHO]',
-    'CRT\d*', '[GSME]AC\d*', '[ASL]MA\d*(\+\d+)?',
-    'SEC', 'NAC', 'LDC', '[W]ENC\d*'
-  ])
+  end
 
   def rollDiceCommand(command)
     text =

@@ -1,34 +1,51 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class IthaWenUa < DiceBot
-  # ゲームシステムの識別子
-  ID = 'IthaWenUa'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名
-  NAME = 'イサー・ウェン＝アー'
+  def gameName
+    'イサー・ウェン＝アー'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'いさあうえんああ'
+  def gameType
+    "IthaWenUa"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = "1D100<=m 方式の判定で成否、クリティカル(01)・ファンブル(00)を自動判定します。\n"
+  def getHelpMessage
+    return <<MESSAGETEXT
+1D100<=m 方式の判定で成否、クリティカル(01)・ファンブル(00)を自動判定します。
+MESSAGETEXT
+  end
 
-  def check_1D100(total, _dice_total, cmp_op, target)
-    return '' unless cmp_op == :<=
+  def check_1D100(total_n, _dice_n, signOfInequality, diff, _dice_cnt, _dice_max, _n1, _n_max) # ゲーム別成功度判定(1d100)
+    return '' unless signOfInequality == '<='
 
-    diceValue = total % 100
-    dice0 = (diceValue / 10).floor # 10の位を代入 # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある 
+    diceValue = total_n % 100
+    #dice0 = diceValue / 10 # 10の位を代入
+    dice0 = (diceValue / 10).floor # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
     dice1 = diceValue % 10 # 1の位を代入
 
+    debug("total_n", total_n)
+    debug("dice0, dice1", dice0, dice1)
+
     if (dice0 == 0) && (dice1 == 1)
-      ' ＞ 01 ＞ クリティカル'
+
+      return ' ＞ 01 ＞ クリティカル'
+
     elsif (dice0 == 0) && (dice1 == 0)
-      ' ＞ 00 ＞ ファンブル'
-    elsif total <= target
-      ' ＞ 成功'
+
+      return ' ＞ 00 ＞ ファンブル'
+
     else
-      ' ＞ 失敗'
+
+      if total_n <= diff
+        return ' ＞ 成功'
+      else
+        return ' ＞ 失敗'
+      end
+
     end
   end
 end

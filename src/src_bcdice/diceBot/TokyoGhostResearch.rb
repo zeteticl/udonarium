@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class TokyoGhostResearch < DiceBot
-  # ゲームシステムの識別子
-  ID = 'TokyoGhostResearch'
+  # 骰子ボットで使用するコマンドを配列で列挙する
+  setPrefixes([
+    'OP', 'TB', 'TK?\(\d+\)'
+  ])
 
-  # ゲームシステム名
-  NAME = '東京ゴーストリサーチ'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'とうきようこおすとりさあち'
+  def gameName
+    '東京ゴーストリサーチ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "TokyoGhostResearch"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 判定
 ・タスク処理は目標値以上の値で成功となります。
   1d10>={目標値}
@@ -21,11 +28,7 @@ class TokyoGhostResearch < DiceBot
   ・導入表  OP
   ・一般トラブル表  TB
 MESSAGETEXT
-
-  # ダイスボットで使用するコマンドを配列で列挙する
-  setPrefixes([
-    'OP', 'TB', 'TK?\(\d+\)'
-  ])
+  end
 
   def rollDiceCommand(command)
     output =

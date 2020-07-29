@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class BadLife < DiceBot
-  # ゲームシステムの識別子
-  ID = 'BadLife'
+  setPrefixes(['\d?(BAD|BL|GL).*', '[TDGKSB]RN', 'SKL'])
 
-  # ゲームシステム名
-  NAME = '犯罪活劇RPGバッドライフ'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'はつとらいふ'
+  def gameName
+    '犯罪活劇RPGバッドライフ'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "BadLife"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・判定：nBADm[±a][Cb±c][Fd±e][@X±f][!OP]　　[]内のコマンドは省略可。
 ・BADコマンドは「BL」コマンドで代用可。
 ・博徒は「GL」コマンドで〈波乱万丈〉の効果を適用。
@@ -39,8 +43,7 @@ GL6@20!HA → 上記に加えて〈先見の明〉［重撃］の効果。
 
 ・スキル表：SKL
 MESSAGETEXT
-
-  setPrefixes(['\d?(BAD|BL|GL).*', '[TDGKSB]RN', 'SKL'])
+  end
 
   def rollDiceCommand(command)
     command = command.upcase

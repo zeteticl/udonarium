@@ -12,9 +12,8 @@
   box-sizing: border-box;
   padding: 5px 5px;
   width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  word-wrap : break-word;
+  overflow-wrap:break-word;
   border-bottom:1px dotted #999;
 }
 

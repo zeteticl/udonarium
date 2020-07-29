@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Kamigakari < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Kamigakari'
+  def initialize
+    super
+    @sendMode = 2
+    @sortType = 1
+    @d66Type = 1
+  end
 
-  # ゲームシステム名
-  NAME = '神我狩'
+  def gameName
+    '神我狩'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'かみかかり'
+  def gameType
+    "Kamigakari"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ・各種表
  ・感情表(ET)
  ・霊紋消費の代償表(RT)
@@ -22,12 +27,6 @@ class Kamigakari < DiceBot
 　　例） MT　MT3　MT9
 ・D66ダイスあり
 INFO_MESSAGE_TEXT
-
-  def initialize
-    super
-    @sendMode = 2
-    @sortType = 1
-    @d66Type = 1
   end
 
   def rollDiceCommand(command)
@@ -48,7 +47,7 @@ INFO_MESSAGE_TEXT
       tableName, result, number = getGetMaterialTableResult(rank)
 
     else
-      return getTableCommandResult(command, TABLES)
+      return getTableCommandResult(command, @@tables)
     end
 
     if result.empty?
@@ -259,7 +258,7 @@ INFO_MESSAGE_TEXT
     return price
   end
 
-  TABLES =
+  @@tables =
     {
 
       'ET' => {
@@ -390,7 +389,7 @@ TABLE_TEXT_END
 66:草壁（くさかべ）　大悟/文
 TABLE_TEXT_END
       },
-    }.freeze
+    }
 
-  setPrefixes(['RT', 'MT(\d*)'] + TABLES.keys)
+  setPrefixes(['RT', 'MT(\d*)'] + @@tables.keys)
 end

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class WitchQuest < DiceBot
-  # ゲームシステムの識別子
-  ID = 'WitchQuest'
+  setPrefixes(['WQ\d+', 'SET\d+'])
 
-  # ゲームシステム名
-  NAME = 'ウィッチクエスト'
+  def gameName
+    'ウィッチクエスト'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'ういつちくえすと'
+  def gameType
+    "WitchQuest"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・チャレンジ(成功判定)(WQn)
 　n回2d6骰子を振って判定を行います。
 　例）WQ3
@@ -20,8 +20,11 @@ class WitchQuest < DiceBot
 　ストラクチャー卡牌の番号(n)の遭遇表結果を得ます。
 　例）SET1　SET48
 MESSAGETEXT
+  end
 
-  setPrefixes(['WQ\d+', 'SET\d+'])
+  def changeText(string)
+    string
+  end
 
   def rollDiceCommand(command)
     case command
@@ -270,4 +273,14 @@ MESSAGETEXT
 
     " ＞ #{number}:" + get_table_by_number(number, table)
   end
+
+  # 以下のメソッドは桌面の参照用に便利
+  # get_table_by_2d6(table)
+  # get_table_by_1d6(table)
+  # get_table_by_nD6(table, 1)
+  # get_table_by_nD6(table, count)
+  # get_table_by_1d3(table)
+  # get_table_by_number(index, table)
+
+  # 骰子目が知りたくなったら getDiceList を呼び出すこと(DiceBot.rbにて定義)
 end

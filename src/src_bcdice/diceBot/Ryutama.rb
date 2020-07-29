@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Ryutama < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Ryutama'
+  setPrefixes(['R\d+.*'])
 
-  # ゲームシステム名
-  NAME = 'りゅうたま'
+  def initialize
+    super
+    @validDiceTypes = [20, 12, 10, 8, 6, 4, 2]
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'りゆうたま'
+  def gameName
+    'りゅうたま'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<INFO_MESSAGE_TEXT
+  def gameType
+    "Ryutama"
+  end
+
+  def getHelpMessage
+    return <<INFO_MESSAGE_TEXT
 ・判定
 　Rx,y>=t（x,y：使用する能力値、t：目標値）
 　1ゾロ、クリティカルも含めて判定結果を表示します
 　能力値１つでの判定は Rx>=t で行えます
 例）R8,6>=13
 INFO_MESSAGE_TEXT
-
-  setPrefixes(['R\d+.*'])
-
-  def initialize
-    super
-    @validDiceTypes = [20, 12, 10, 8, 6, 4, 2]
   end
 
   def rollDiceCommand(command)

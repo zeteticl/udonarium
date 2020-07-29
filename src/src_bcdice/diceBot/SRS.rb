@@ -11,15 +11,6 @@ require 'utils/modifier_formatter'
 # また、各ゲームシステムに合わせた2D6成功判定のエイリアスコマンドを
 # 登録するクラスメソッド set_aliases_for_srs_roll を持つ。
 class SRS < DiceBot
-  # ゲームシステムの識別子
-  ID = 'SRS'
-
-  # ゲームシステム名
-  NAME = 'Standard RPG System'
-
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'すたんたあとRPGしすてむ'
-
   include ModifierFormatter
 
   HELP_MESSAGE_1 = <<HELP_MESSAGE
@@ -189,9 +180,21 @@ HELP_MESSAGE
     @d66Type = 1
   end
 
+  # ゲームシステム名を返す
+  # @return [String]
+  def gameName
+    'Standard RPG System'
+  end
+
+  # ゲームシステム識別子を返す
+  # @return [String]
+  def gameType
+    'SRS'
+  end
+
   # ダイスボットの説明文を返す
   # @return [String]
-  def help_message
+  def getHelpMessage
     self.class.help_message
   end
 

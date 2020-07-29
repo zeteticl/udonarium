@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class OneWayHeroics < DiceBot
-  # ゲームシステムの識別子
-  ID = 'OneWayHeroics'
+  def initialize
+    super
+    @d66Type = 2 # d66の差し替え(0=D66無し, 1=順番そのまま([5,3]->53), 2=升序入れ替え([5,3]->35)
+  end
 
-  # ゲームシステム名
-  NAME = '片道勇者'
+  def gameName
+    '片道勇者'
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'かたみちゆうしや'
+  def gameType
+    "OneWayHeroics"
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・判定　aJDx+y,z
 　a:骰子数（省略時2個)、x:能力値、
 　y:修正値（省略可。「＋」のみなら＋１）、z:目標値（省略可）
@@ -37,10 +40,6 @@ class OneWayHeroics < DiceBot
 ・ダンジョン表 DNGNx（x：現在の日数）、ダンジョン表プラス DNGNPx
 　例）DNGN3、DNGNP4
 MESSAGETEXT
-
-  def initialize
-    super
-    @d66Type = 2 # d66の差し替え(0=D66無し, 1=順番そのまま([5,3]->53), 2=昇順入れ替え([5,3]->35)
   end
 
   def rollDiceCommand(command)
@@ -117,7 +116,7 @@ MESSAGETEXT
       return dice, diceText
     end
 
-    diceList = diceText.split(",").map(&:to_i)
+    diceList = getDiceListFromDiceText(diceText)
     diceList.sort!
     diceList.reverse!
 

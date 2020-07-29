@@ -47,3 +47,5 @@ export class ModalComponent {
     this.modalService.reject();
   }
 }
+
+

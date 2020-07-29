@@ -1,18 +1,27 @@
 # -*- coding: utf-8 -*-
-# frozen_string_literal: true
 
 class Garako < DiceBot
-  # ゲームシステムの識別子
-  ID = 'Garako'
+  setPrefixes([
+    'PNM', 'PNF', 'ENM', 'ENF', 'NNM', 'NNF',
+    'RNM', 'RNF', 'BN1', 'BN2', 'TN1', 'TN2',
+    'IDI', 'MTV', 'HIT', '(C|E|F|A|L)DC\d+', 'GR.*',
+    'GCC', 'WCC', 'EVC', 'BSD'
+  ])
 
-  # ゲームシステム名
-  NAME = 'ガラコと破界の塔'
+  def initialize
+    super
+  end
 
-  # ゲームシステム名の読みがな
-  SORT_KEY = 'からことはかいのとう'
+  def gameName
+    'ガラコと破界の塔'
+  end
 
-  # ダイスボットの使い方
-  HELP_MESSAGE = <<MESSAGETEXT
+  def gameType
+    "Garako"
+  end
+
+  def getHelpMessage
+    return <<MESSAGETEXT
 ・判定
 GR+n>=X：「+n」で判定値を指定、「X」で目標値を指定。
 ・部位決定チャート：HIT
@@ -29,13 +38,7 @@ GR+n>=X：「+n」で判定値を指定、「X」で目標値を指定。
 ・イベントチャート表：EVC
 ・戦闘開始距離：BSD
 MESSAGETEXT
-
-  setPrefixes([
-    'PNM', 'PNF', 'ENM', 'ENF', 'NNM', 'NNF',
-    'RNM', 'RNF', 'BN1', 'BN2', 'TN1', 'TN2',
-    'IDI', 'MTV', 'HIT', '(C|E|F|A|L)DC\d+', 'GR.*',
-    'GCC', 'WCC', 'EVC', 'BSD'
-  ])
+  end
 
   def rollDiceCommand(command)
     output =
