@@ -113,7 +113,7 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
-
+    if (Network.isGuest()) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
       { name: '詳細を表示', action: () => { this.showDetail(this.gameCharacter); } },

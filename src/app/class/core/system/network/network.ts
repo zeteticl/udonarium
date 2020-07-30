@@ -35,8 +35,14 @@ export class Network {
     console.log('Network ready...');
   }
 
+  //GUEST FUNCTION 
+
+
+
   open(peerId?: string)
-  open(peerId: string, roomId: string, roomName: string, password: string)
+  open(peerId: string, roomId: string, roomName: string, password: string, PCpassword: string, isPC: boolean, allowGuest?: boolean, isGuest?: boolean)
+
+
   open(...args: any[]) {
     if (this.connection && this.connection.peerContext) {
       console.warn('It is already opened.');
@@ -137,5 +143,13 @@ export class Network {
     if (0 < this.queue.length && this.sendInterval === null) this.sendInterval = setZeroTimeout(this.sendCallback);
 
     return store;
+  }
+  isGuest(): boolean {
+    console.log('isGuest')
+    return this.peerContext && this.peerContext.isGuest;
+  }
+  isPC(): boolean {
+    console.log('isPC')
+    return this.peerContext && this.peerContext.isPC;
   }
 }

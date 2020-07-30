@@ -224,6 +224,7 @@ export class CardStackComponent implements OnInit, AfterViewInit, OnDestroy {
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isGuest()) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
       {

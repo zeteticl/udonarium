@@ -7,6 +7,11 @@ export interface IPeerContext {
   readonly roomName: string;
   readonly password: string;
   readonly isOpen: boolean;
+  readonly PCpassword: string;
+  readonly isPC: boolean;
+  readonly allowGuest: boolean;
+  readonly isGuest: boolean;
+
 }
 
 export class PeerContext implements IPeerContext {
@@ -16,14 +21,18 @@ export class PeerContext implements IPeerContext {
   roomName: string = '';
   password: string = '';
   isOpen: boolean = false;
+  PCpassword: string = '';
+  isPC: boolean = false;
+  allowGuest: boolean = false;
+  isGuest: boolean = false;
 
   get isRoom(): boolean { return 0 < this.room.length ? true : false; }
 
-  constructor(fullstring: string) {
-    this.parse(fullstring);
+  constructor(fullstring: string, PCpassword: string, isPC: boolean, allowGuest: boolean, isGuest: boolean) {
+    this.parse(fullstring, PCpassword, isPC, allowGuest, isGuest);
   }
 
-  private parse(fullstring) {
+  private parse(fullstring, PCpassword, isPC, allowGuest, isGuest) {
     try {
       this.fullstring = fullstring;
       let array = /^(\w{6})((\w{3})(\w*)-(\w*))?/ig.exec(fullstring);
@@ -32,6 +41,11 @@ export class PeerContext implements IPeerContext {
       this.room = array[3];
       this.roomName = lzbase62.decompress(array[4]);
       this.password = lzbase62.decompress(array[5]);
+      this.PCpassword = lzbase62.decompress(PCpassword);
+      this.isPC = isPC;
+      this.allowGuest = allowGuest;
+      this.isGuest = isGuest;
+
     } catch (e) {
       this.id = fullstring;
       console.warn(e);
@@ -39,7 +53,7 @@ export class PeerContext implements IPeerContext {
   }
 
   static create(peerId: string): PeerContext
-  static create(peerId: string, roomId: string, roomName: string, password: string): PeerContext
+  static create(peerId: string, roomId: string, roomName: string, password: string, PCpassword: string, allowGuest: boolean): PeerContext
   static create(...args: any[]): PeerContext {
     console.log('create', args);
     if (args.length <= 1) {
@@ -49,19 +63,20 @@ export class PeerContext implements IPeerContext {
     }
   }
 
-  private static _create(peerId: string = '') {
-    return new PeerContext(peerId);
+  private static _create(peerId: string = '', PCpassword: string = '', isPC: boolean = false, allowGuest: boolean = false, isGuest: boolean = false) {
+    return new PeerContext(peerId, PCpassword, isPC, allowGuest, isGuest);
   }
 
-  private static _createRoom(peerId: string = '', roomId: string = '', roomName: string = '', password: string = ''): PeerContext {
+  private static _createRoom(peerId: string = '', roomId: string = '', roomName: string = '', password: string = '', PCpassword: string = '', allowGuest: boolean = false): PeerContext {
     let fullstring: string = peerId + roomId + lzbase62.compress(roomName) + '-' + lzbase62.compress(password);
+    PCpassword = lzbase62.compress(PCpassword);
     try {
       console.log(fullstring);
     } catch (e) {
       console.error(e);
       return null;
     }
-    return new PeerContext(fullstring);
+    return new PeerContext(fullstring, PCpassword, isPC, allowGuest, isGuest);
   }
 
   static generateId(format: string = '******'): string {

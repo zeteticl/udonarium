@@ -121,6 +121,7 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
     e.preventDefault();
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isGuest()) return;
 
     this.selectGameObject(gameObject);
 

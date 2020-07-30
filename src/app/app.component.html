@@ -10,37 +10,37 @@
           <div>接続</div>
         </a>
       </li>
-      <li (click)="open('ChatWindowComponent')">
+      <li (click)="open('ChatWindowComponent')" *ngIf="!networkService.isGuset()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">speaker_notes</i></div>
           <div>チャット画面</div>
         </a>
       </li>
-      <li (click)="open('GameTableSettingComponent')">
+      <li (click)="open('GameTableSettingComponent')" *ngIf="!networkService.isGuset()||!networkService.isPC()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">layers</i></div>
           <div>テーブル設定</div>
         </a>
       </li>
-      <li (click)="open('FileStorageComponent')">
+      <li (click)="open('FileStorageComponent')" *ngIf="!networkService.isGuset()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">photo_library</i></div>
           <div>画像</div>
         </a>
       </li>
-      <li (click)="open('JukeboxComponent')">
+      <li (click)="open('JukeboxComponent')" *ngIf="!networkService.isGuset()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">queue_music</i></div>
           <div>音楽</div>
         </a>
       </li>
-      <li (click)="open('GameObjectInventoryComponent')">
+      <li (click)="open('GameObjectInventoryComponent')" *ngIf="!networkService.isGuset()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">folder_shared</i></div>
           <div>インベントリ</div>
         </a>
       </li>
-      <li>
+      <li *ngIf="!networkService.isGuset()||!networkService.isPC()">
         <a routerLink="/" routerLinkActive="active">
           <label>
             <div><i class="material-icons">open_in_browser</i></div>
@@ -50,7 +50,7 @@
           </label>
         </a>
       </li>
-      <li (click)="save()">
+      <li (click)="save()" *ngIf="!networkService.isGuset()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">sd_storage</i></div>
           <div>保存</div>

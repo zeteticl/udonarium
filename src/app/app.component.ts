@@ -50,7 +50,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private immediateUpdateTimer: NodeJS.Timer = null;
   private lazyUpdateTimer: NodeJS.Timer = null;
   private openPanelCount: number = 0;
-
+  networkService = Network;
   constructor(
     private modalService: ModalService,
     private panelService: PanelService,

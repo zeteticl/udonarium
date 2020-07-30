@@ -16,7 +16,7 @@ import { PanelService } from 'service/panel.service';
   styleUrls: ['./lobby.component.css'],
 })
 export class LobbyComponent implements OnInit, OnDestroy {
-  rooms: { alias: string, roomName: string, peers: PeerContext[] }[] = [];
+  rooms: { alias: string, roomName: string, peers: PeerContext[], allowGuest: boolean }[] = [];
 
   isReloading: boolean = false;
 
@@ -62,7 +62,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
     let peersOfroom: { [room: string]: PeerContext[] } = {};
     let peerIds = await Network.listAllPeers();
     for (let id of peerIds) {
-      let context = new PeerContext(id);
+      ///GUEST FUNCTION
+      let context = new PeerContext(id, '', false, false, false);
       if (context.isRoom) {
         let alias = context.room + context.roomName;
         if (!(alias in peersOfroom)) {
@@ -72,7 +73,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
       }
     }
     for (let alias in peersOfroom) {
-      this.rooms.push({ alias: alias, roomName: peersOfroom[alias][0].roomName, peers: peersOfroom[alias] });
+      this.rooms.push({ alias: alias, roomName: peersOfroom[alias][0].roomName, peers: peersOfroom[alias], allowGuest: peersOfroom[alias][0].allowGuest });
     }
     this.rooms.sort((a, b) => {
       if (a.alias < b.alias) return -1;
@@ -83,7 +84,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.isReloading = false;
   }
 
-  async connect(peerContexts: PeerContext[]) {
+  async connect(peerContexts: PeerContext[], PCpassword: string, isGuest: boolean) {
     let context = peerContexts[0];
 
     if (context.password.length) {
@@ -92,7 +93,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     }
 
     let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    Network.open(peerId, context.room, context.roomName, context.password);
+    Network.open(peerId, context.room, context.roomName, context.password, context.PCpassword, context.allowGuest);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     let triedPeer: string[] = [];

@@ -1,7 +1,7 @@
 <div *ngIf="!isConnected;else other_content">
   <button (click)="reload()" [disabled]="isReloading">一覧を更新</button>
   <button (click)="showRoomSetting()">新しいルームを作成する</button>
-  <hr/>
+  <hr />
   <ng-container *ngIf="rooms.length">
     <table class="room-list">
       <tr>
@@ -21,7 +21,13 @@
           <td *ngIf="room.peers[0].password.length < 1">-</td>
           <td>{{room.peers.length}}人</td>
           <td>
-            <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit" (click)="connect(room.peers)">接続</button>
+            <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit"
+              (click)="connect(room.peers)">GM權限</button>
+            <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit"
+              (click)="connect(room.peers, 1)">玩家權限</button>
+            <button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit"
+              (click)="connect(room.peers, 2)">客人權限</button>
+
           </td>
         </tr>
       </ng-container>
@@ -29,4 +35,5 @@
   </ng-container>
   <span *ngIf="rooms.length < 1" style="font-size: 12px;">{{help}}</span>
 </div>
-<ng-template #other_content><span style="font-size: 12px;">別のルームに接続したい場合は、他の参加者との接続を切ってください。<br>（※ページリロードで切断できます。）</span></ng-template>
+<ng-template #other_content><span
+    style="font-size: 12px;">別のルームに接続したい場合は、他の参加者との接続を切ってください。<br>（※ページリロードで切断できます。）</span></ng-template>

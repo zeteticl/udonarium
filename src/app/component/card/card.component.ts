@@ -190,6 +190,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     e.stopPropagation();
     e.preventDefault();
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
+    if (Network.isGuest()) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
       (!this.isVisible || this.isHand
