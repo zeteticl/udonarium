@@ -51,7 +51,7 @@ export class SkyWayConnection implements Connection {
     } else if (args.length === 1) {
       this.peerContext = PeerContext.create(args[0]);
     } else {
-      this.peerContext = PeerContext.create(args[0], args[1], args[2], args[3], args[4], args[5]);
+      this.peerContext = PeerContext.create(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
     }
     this.openPeer();
   }
@@ -179,9 +179,10 @@ export class SkyWayConnection implements Connection {
     }
     let peer = new Peer(this.peerContext.fullstring, { key: this.key });// SkyWay
     peer.on('open', id => {
+      //GUEST
       console.log('My peer ID is: ' + id);
       if (!this.peerContext || this.peerContext.fullstring !== id) {
-        this.peerContext = new PeerContext(id);
+        this.peerContext = new PeerContext(id, '', false, false, false);
       }
       this.peerContext.isOpen = true;
       console.log('My peer Context', this.peerContext);
@@ -285,7 +286,8 @@ export class SkyWayConnection implements Connection {
       return false;
     }
     this.connections.push(conn);
-    this.peerContexts.push(new PeerContext(conn.remoteId));
+    //GUEST
+    this.peerContexts.push(new PeerContext(conn.remoteId, '', false, false, false));
     console.log('<add()> Peer:' + conn.remoteId + ' length:' + this.connections.length);
     return true;
   }

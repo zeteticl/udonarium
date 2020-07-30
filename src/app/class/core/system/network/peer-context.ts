@@ -28,7 +28,7 @@ export class PeerContext implements IPeerContext {
 
   get isRoom(): boolean { return 0 < this.room.length ? true : false; }
 
-  constructor(fullstring: string, PCpassword: string, isPC: boolean, allowGuest: boolean, isGuest: boolean) {
+  constructor(fullstring: string, PCpassword?: string, isPC?: boolean, allowGuest?: boolean, isGuest?: boolean) {
     this.parse(fullstring, PCpassword, isPC, allowGuest, isGuest);
   }
 
@@ -53,7 +53,7 @@ export class PeerContext implements IPeerContext {
   }
 
   static create(peerId: string): PeerContext
-  static create(peerId: string, roomId: string, roomName: string, password: string, PCpassword: string, allowGuest: boolean): PeerContext
+  static create(peerId: string, roomId: string, roomName: string, password: string, PCpassword: string, isPC: boolean, allowGuest: boolean, isGuest: boolean): PeerContext
   static create(...args: any[]): PeerContext {
     console.log('create', args);
     if (args.length <= 1) {
@@ -67,7 +67,7 @@ export class PeerContext implements IPeerContext {
     return new PeerContext(peerId, PCpassword, isPC, allowGuest, isGuest);
   }
 
-  private static _createRoom(peerId: string = '', roomId: string = '', roomName: string = '', password: string = '', PCpassword: string = '', allowGuest: boolean = false): PeerContext {
+  private static _createRoom(peerId: string = '', roomId: string = '', roomName: string = '', password: string = '', PCpassword: string = '', isPC: boolean = false, allowGuest: boolean = false, isGuest: boolean = false): PeerContext {
     let fullstring: string = peerId + roomId + lzbase62.compress(roomName) + '-' + lzbase62.compress(password);
     PCpassword = lzbase62.compress(PCpassword);
     try {

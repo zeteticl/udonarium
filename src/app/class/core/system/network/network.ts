@@ -40,7 +40,7 @@ export class Network {
 
 
   open(peerId?: string)
-  open(peerId: string, roomId: string, roomName: string, password: string, PCpassword: string, isPC: boolean, allowGuest?: boolean, isGuest?: boolean)
+  open(peerId: string, roomId: string, roomName: string, password: string, PCpassword?: string, isPC?: boolean, allowGuest?: boolean, isGuest?: boolean)
 
 
   open(...args: any[]) {

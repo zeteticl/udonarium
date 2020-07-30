@@ -73,7 +73,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         return;
       }
 
-      Network.open(Network.peerContext.id, context.room, context.roomName, context.password);
+      Network.open(Network.peerContext.id, context.room, context.roomName, context.password, context.PCpassword, context.isPC, context.allowGuest, context.isGuest);
       PeerCursor.myCursor.peerId = Network.peerId;
 
       let dummy = {};
