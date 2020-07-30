@@ -304,7 +304,13 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
         return true;
     }
   }
+  clearTab() {
+    if (this.chatTab && this.chatTab.chatMessages.length > 0 && confirm("將會刪除本分頁紀錄")) {
+      this.chatTab.clearTab();
+      EventSystem.trigger('MESSAGE_CLEARTAB', { tabIdentifier: this.chatTab.identifier });
 
+    }
+  }
   trackByChatTab(index: number, chatTab: ChatTab) {
     return chatTab.identifier;
   }
