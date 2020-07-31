@@ -33,8 +33,14 @@ export class GameObject {
     ObjectStore.instance.add(this);
   }
 
+
   destroy() {
     ObjectStore.instance.delete(this);
+  }
+
+  destroyChat() {
+    ObjectStore.instance.delete(this);
+
   }
 
   // GameObject Lifecycle

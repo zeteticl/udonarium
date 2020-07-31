@@ -64,9 +64,4 @@ export class ChatTab extends ObjectNode implements InnerXml {
     return super.parseInnerXml(element);
   };
 
-  clearTab() {
-    for (let child of this.children) {
-      this.removeChild(child);
-    }
-  }
 }
