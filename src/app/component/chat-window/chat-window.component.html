@@ -20,6 +20,8 @@
           <i *ngIf="SoundEffectSwitch2()" class="material-icons icon-size">toggle_off</i>
           效果音
         </button>
+        <button class="tab-setting small-font" (click)="clearTab()">
+          <i class="material-icons small-font">delete</i>刪除對話</button>
       </div>
     </form>
     <div class="table" [ngClass]="{'direct-message': isDirect}">
