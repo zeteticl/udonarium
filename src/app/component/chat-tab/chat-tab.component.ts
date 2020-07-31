@@ -212,6 +212,13 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
           this.onMessageInit();
         }
       })
+      .on('MESSAGE_CLEARTAB', event => {
+        if (event.data.tabIdentifier == this.chatTab.identifier) {
+          this.changeDetector.markForCheck();
+          this.needUpdate = true;
+          this.onMessageInit();
+        }
+      })
       .on('UPDATE_GAME_OBJECT', event => {
         let message = ObjectStore.instance.get(event.data.identifier);
         if (message && message instanceof ChatMessage

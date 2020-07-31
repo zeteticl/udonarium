@@ -20,6 +20,8 @@
           <i *ngIf="SoundEffectSwitch2()" class="material-icons icon-size">toggle_off</i>
           效果音
         </button>
+     <button class="tab-setting small-font" (click)="clearTab()">
+          <i class="material-icons small-font">delete</i>刪除對話</button>
       </div>
     </form>
     <div class="table" [ngClass]="{'direct-message': isDirect}">
@@ -28,6 +30,7 @@
           *ngIf="gameCharacter && gameCharacter.imageFile != null && 0 < gameCharacter.imageFile?.url?.length"
           [src]="gameCharacter.imageFile?.url | safe: 'resourceUrl'" />
         <img class="image" *ngIf="!gameCharacter && myPeer && myPeer?.image != null"
+
           [src]="myPeer?.image?.url | safe: 'resourceUrl'" (click)="changeIcon()" />
         <img class="image" *ngIf="!gameCharacter && myPeer && myPeer?.image == null"
           [src]="'./assets/images/ic_account_circle_black_24dp_2x.png'| safe: 'resourceUrl'" (click)="changeIcon()" />
