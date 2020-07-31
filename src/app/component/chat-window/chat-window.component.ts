@@ -15,7 +15,7 @@ import { TextViewComponent } from 'component/text-view/text-view.component';
 import { ChatMessageService } from 'service/chat-message.service';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
-import { GameObjectInventoryService} from 'service/game-object-inventory.service';
+import { GameObjectInventoryService } from 'service/game-object-inventory.service';
 import { FileSelecterComponent } from 'component/file-selecter/file-selecter.component';
 
 import { ModalService } from 'service/modal.service';
@@ -100,7 +100,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sender = this.myPeer.identifier;
     this._chatTabidentifier = 0 < this.chatMessageService.chatTabs.length ? this.chatMessageService.chatTabs[0].identifier : '';
     this.gameType = this.inventoryService.gameType;
-    
+
     EventSystem.register(this)
       .on('MESSAGE_ADDED', event => {
         if (event.data.tabIdentifier !== this.chatTabidentifier) return;
@@ -337,5 +337,13 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
   trackByChatTab(index: number, chatTab: ChatTab) {
     return chatTab.identifier;
+  }
+  clearTab() {
+    if (this.chatTab && this.chatTab.chatMessages.length > 0 && confirm("將會刪除本分頁紀錄")) {
+      this.chatTab.destroyChat();
+      EventSystem.trigger('MESSAGE_CLEARTAB', { tabIdentifier: this.chatTab.identifier });
+
+
+    }
   }
 }
