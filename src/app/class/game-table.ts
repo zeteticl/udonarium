@@ -9,6 +9,7 @@ export enum GridType {
   SQUARE = 0,
   HEX_VERTICAL = 1,
   HEX_HORIZONTAL = 2,
+  HEX_ZETETIC = 3,
 }
 
 export enum FilterType {
@@ -19,7 +20,7 @@ export enum FilterType {
 
 @SyncObject('game-table')
 export class GameTable extends ObjectNode {
-  @SyncVar() name: string = 'テーブル';
+  @SyncVar() name: string = '桌面';
   @SyncVar() width: number = 20;
   @SyncVar() height: number = 20;
   @SyncVar() gridSize: number = 50;
