@@ -36,7 +36,9 @@ export class GameObject {
   destroy() {
     ObjectStore.instance.delete(this);
   }
-
+  destroyChat() {
+    ObjectStore.instance.delete(this);
+  }
   // GameObject Lifecycle
   onStoreAdded() { }
 
