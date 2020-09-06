@@ -31,11 +31,23 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('textArea', { static: true }) textAreaElementRef: ElementRef;
   public static SoundEffectSwitch: boolean = true;
   public onSoundEffectSwitchChanged() {
-    if (ChatWindowComponent.SoundEffectSwitch)
+    if (ChatWindowComponent.SoundEffectSwitch) {
       ChatWindowComponent.SoundEffectSwitch = false
-    else ChatWindowComponent.SoundEffectSwitch = true
+      localStorage.setItem('SoundEffectSwitch', 'false')
+    }
+    else {
+      ChatWindowComponent.SoundEffectSwitch = true
+      localStorage.setItem('SoundEffectSwitch', 'true')
+    }
   }
   public SoundEffectSwitch2() {
+    if (window.localStorage.getItem('SoundEffectSwitch') == 'true') {
+      ChatWindowComponent.SoundEffectSwitch = true;
+    }
+    if (window.localStorage.getItem('SoundEffectSwitch') == 'false') {
+      ChatWindowComponent.SoundEffectSwitch = false;
+    }
+
     return ChatWindowComponent.SoundEffectSwitch;
   }
 
