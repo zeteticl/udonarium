@@ -228,6 +228,7 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   public showDetail(gameObject: GameCharacter) {
+    if (this.GuestMode()) return;
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '角色卡';
     if (gameObject.name.length) title += ' - ' + gameObject.name;

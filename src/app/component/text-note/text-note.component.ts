@@ -143,14 +143,16 @@ export class TextNoteComponent implements OnInit, OnDestroy, AfterViewInit {
     e.stopPropagation();
     e.preventDefault();
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   @HostListener('contextmenu', ['$event'])
   onContextMenu(e: Event) {
     this.removeMouseEventListeners();
     if (this.isSelected) return;
     e.stopPropagation();
     e.preventDefault();
-
+    if (this.GuestMode()) return;
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
     let position = this.pointerDeviceService.pointers[0];
     this.contextMenuService.open(position, [
@@ -237,6 +239,7 @@ export class TextNoteComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public showDetail(gameObject: TextNote) {
+    if (this.GuestMode()) return;
     EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '設定共用筆記';

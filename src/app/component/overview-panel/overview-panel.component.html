@@ -72,7 +72,7 @@
   </div>
 </ng-template>
 
-<ng-template #overviewCharacter let-character="character"*ngIf="!GuestMode()">
+<ng-template #overviewCharacter let-character="character" *ngIf="!GuestMode()">
   <div class="component-content character-grid-container is-middle-size">
     <div class="title-bg-area title-background"
       [ngClass]="{ 'is-pointer-events-auto': !this.isPointerDragging, 'pointer-events-none': this.isPointerDragging }">
@@ -92,7 +92,7 @@
         <div><button type="submit" (click)="movetocommon()">共有</button>
           <button type="submit" (click)="movetoid()">個人</button>
           <button type="submit" (click)="movetograveyard()">墓場</button>
-          <input type="text" class="PosZ"pInputText (change)="changePosZ($event.target.value)" placeholder="高度" />
+          <input type="text" class="PosZ" pInputText (change)="changePosZ($event.target.value)" placeholder="高度" />
           <button type="submit" (click)="PosZplus100()">+100</button>
           <button type="submit" (click)="PosZ0()">地面</button>
 
