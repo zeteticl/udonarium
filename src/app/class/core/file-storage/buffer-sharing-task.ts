@@ -1,7 +1,8 @@
 import * as MessagePack from 'msgpack-lite';
 
 import { EventSystem } from '../system';
-import { setZeroTimeout } from '../system/util/zero-timeout';
+import { ResettableTimeout } from '../system/util/resettable-timeout';
+import { clearZeroTimeout, setZeroTimeout } from '../system/util/zero-timeout';
 import { FileReaderUtil } from './file-reader-util';
 
 interface ChankData {
@@ -27,13 +28,14 @@ export class BufferSharingTask<T> {
   private completedChankIndex = 0;
 
   private startTime = 0;
+  private isCanceled = false;
 
   onprogress: (task: BufferSharingTask<T>, loded: number, total: number) => void;
   onfinish: (task: BufferSharingTask<T>, data: T) => void;
   ontimeout: (task: BufferSharingTask<T>) => void;
   oncancel: (task: BufferSharingTask<T>) => void;
 
-  private timeoutTimer: NodeJS.Timer;
+  private timeoutTimer: ResettableTimeout;
 
   private constructor(data?: T, sendTo?: string) {
     this.data = data;
@@ -55,15 +57,45 @@ export class BufferSharingTask<T> {
     return task;
   }
 
-  cancel() {
+  private progress(loded: number, total: number) {
+    if (this.onprogress) this.onprogress(this, loded, total);
+  }
+
+  private finish() {
+    if (this.isCanceled) return;
+    this.isCanceled = true;
+    if (this.onfinish) this.onfinish(this, this.data);
     this.dispose();
+  }
+
+  private timeout() {
+    if (this.isCanceled) return;
+    this.isCanceled = true;
+    if (this.ontimeout) this.ontimeout(this);
+    if (this.onfinish) this.onfinish(this, this.data);
+    this.dispose();
+  }
+
+  cancel() {
+    if (this.isCanceled) return;
+    if (this.sendTo != null) EventSystem.call('CANCEL_TASK_' + this.identifier, null, this.sendTo);
+    this._cancel();
+  }
+
+  private _cancel() {
+    if (this.isCanceled) return;
+    this.isCanceled = true;
     if (this.oncancel) this.oncancel(this);
+    if (this.onfinish) this.onfinish(this, this.data);
+    this.dispose();
   }
 
   private dispose() {
     EventSystem.unregister(this);
-    clearTimeout(this.sendChankTimer);
-    clearTimeout(this.timeoutTimer);
+    if (this.sendChankTimer) clearZeroTimeout(this.sendChankTimer);
+    if (this.timeoutTimer) this.timeoutTimer.clear();
+    this.sendChankTimer = null;
+    this.timeoutTimer = null;
     this.onprogress = this.onfinish = this.ontimeout = this.oncancel = null;
   }
 
@@ -78,16 +110,18 @@ export class BufferSharingTask<T> {
         if (this.sendTo !== event.sendFrom) return;
         this.completedChankIndex = event.data;
         if (this.sendChankTimer == null) {
-          clearTimeout(this.timeoutTimer);
+          this.resetTimeout();
           this.sendChank(this.sentChankIndex + 1);
         }
       })
       .on('DISCONNECT_PEER', event => {
         if (event.data.peer !== this.sendTo) return;
-        console.warn('送信キャンセル', this, event.data.peer);
-        if (this.ontimeout) this.ontimeout(this);
-        if (this.onfinish) this.onfinish(this, this.data);
-        this.dispose();
+        console.warn('送信キャンセル（Peer切断）', this, event.data.peer);
+        this._cancel();
+      })
+      .on('CANCEL_TASK_' + this.identifier, event => {
+        console.warn('送信キャンセル', this, event.sendFrom);
+        this._cancel();
       });
     this.sentChankIndex = this.completedChankIndex = 0;
     setZeroTimeout(() => this.sendChank(0));
@@ -98,13 +132,11 @@ export class BufferSharingTask<T> {
     let data = { index: index, length: this.chanks.length, chank: chank };
     EventSystem.call('FILE_SEND_CHANK_' + this.identifier, data, this.sendTo);
     this.sentChankIndex = index;
+    this.sendChankTimer = null;
     if (this.chanks.length <= index + 1) {
-      EventSystem.call('FILE_SEND_END_' + this.identifier, null, this.sendTo);
       console.log('バッファ送信完了', this.identifier);
-      if (this.onfinish) this.onfinish(this, this.data);
-      this.dispose();
+      setZeroTimeout(() => this.finish());
     } else if (this.completedChankIndex + 4 <= index) {
-      this.sendChankTimer = null;
       this.resetTimeout();
     } else {
       this.sendChankTimer = setZeroTimeout(() => { this.sendChank(this.sentChankIndex + 1); });
@@ -125,22 +157,27 @@ export class BufferSharingTask<T> {
         }
         this.chankReceiveCount++;
         this.chanks[event.data.index] = event.data.chank;
-        if (this.onprogress) this.onprogress(this, event.data.index, event.data.length);
+        this.progress(event.data.index, event.data.length);
         if (this.chanks.length <= this.chankReceiveCount) {
           this.finishReceive();
         } else {
           this.resetTimeout();
-          if ((event.data.index + 1) % 1 === 0) {
-            EventSystem.call('FILE_MORE_CHANK_' + this.identifier, event.data.index, event.sendFrom);
-          }
+          EventSystem.call('FILE_MORE_CHANK_' + this.identifier, event.data.index, event.sendFrom);
         }
+      })
+      .on('DISCONNECT_PEER', event => {
+        if (event.data.peer !== this.sendTo) return;
+        console.warn('受信キャンセル（Peer切断）', this, event.data.peer);
+        this._cancel();
+      })
+      .on('CANCEL_TASK_' + this.identifier, event => {
+        console.warn('受信キャンセル', this, event.sendFrom);
+        this._cancel();
       });
   }
 
   private finishReceive() {
     console.log('バッファ受信完了', this.identifier);
-    if (this.timeoutTimer) clearTimeout(this.timeoutTimer);
-    EventSystem.unregister(this);
 
     let sumLength = 0;
     for (let chank of this.chanks) { sumLength += chank.byteLength; }
@@ -158,16 +195,11 @@ export class BufferSharingTask<T> {
     }
 
     this.data = MessagePack.decode(uint8Array);
-    if (this.onfinish) this.onfinish(this, this.data);
-    this.dispose();
+    this.finish();
   }
 
   private resetTimeout() {
-    clearTimeout(this.timeoutTimer);
-    this.timeoutTimer = setTimeout(() => {
-      if (this.ontimeout) this.ontimeout(this);
-      if (this.onfinish) this.onfinish(this, this.data);
-      this.dispose();
-    }, 15 * 1000);
+    if (this.timeoutTimer == null) this.timeoutTimer = new ResettableTimeout(() => this.timeout(), 15 * 1000);
+    this.timeoutTimer.reset();
   }
 }

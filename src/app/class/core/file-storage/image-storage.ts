@@ -1,7 +1,7 @@
 import { EventSystem } from '../system';
 import { ImageContext, ImageFile, ImageState } from './image-file';
 
-export type CatalogItem = { identifier: string, state: number };
+export type CatalogItem = { readonly identifier: string, readonly state: number };
 
 export class ImageStorage {
   private static _instance: ImageStorage
@@ -44,7 +44,7 @@ export class ImageStorage {
   add(image: ImageFile): ImageFile
   add(context: ImageContext): ImageFile
   add(arg: any): ImageFile {
-    let image: ImageFile
+    let image: ImageFile;
     if (typeof arg === 'string') {
       image = ImageFile.create(arg);
     } else if (arg instanceof ImageFile) {
@@ -57,7 +57,7 @@ export class ImageStorage {
   }
 
   private _add(image: ImageFile): ImageFile {
-    this.lazySynchronize(100);
+    if (ImageState.COMPLETE <= image.state) this.lazySynchronize(100);
     if (this.update(image)) return this.imageHash[image.identifier];
     this.imageHash[image.identifier] = image;
     console.log('add Image: ' + image.identifier);
@@ -98,14 +98,15 @@ export class ImageStorage {
   }
 
   synchronize(peer?: string) {
-    clearTimeout(this.lazyTimer);
+    if (this.lazyTimer) clearTimeout(this.lazyTimer);
     this.lazyTimer = null;
     EventSystem.call('SYNCHRONIZE_FILE_LIST', this.getCatalog(), peer);
   }
 
   lazySynchronize(ms: number, peer?: string) {
-    clearTimeout(this.lazyTimer);
+    if (this.lazyTimer) clearTimeout(this.lazyTimer);
     this.lazyTimer = setTimeout(() => {
+      this.lazyTimer = null;
       this.synchronize(peer);
     }, ms);
   }

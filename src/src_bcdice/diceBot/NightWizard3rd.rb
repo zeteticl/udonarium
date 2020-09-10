@@ -5,7 +5,7 @@ require 'diceBot/NightWizard'
 
 class NightWizard3rd < NightWizard
   # ゲームシステム名
-  NAME = 'ナイトウィザード3版'
+  NAME = 'ナイトウィザード The 3rd Edition'
 
   # ゲームシステム名の読みがな
   SORT_KEY = 'ないとういさあと3'
@@ -13,10 +13,9 @@ class NightWizard3rd < NightWizard
   # ゲームシステムの識別子
   ID = 'NightWizard3rd'
 
-  def getFumbleTextAndTotal(base, modify, dice_str)
-    total = base + modify
-    total += -10
-    text = "#{base + modify}-10[#{dice_str}]"
-    return text, total
+  setPrefixes(['([-+]?\d+)?NW.*', '2R6.*'])
+
+  def fumble_base_number(parsed)
+    parsed.passive_modify_number + parsed.active_modify_number
   end
 end

@@ -95,6 +95,7 @@ INFO_MESSAGE_TEXT
   end
 
   def check_nD6(total, dice_total, dice_list, cmp_op, target)
+    return '' if target == '?'
     return "" unless dice_list.size == 3 && cmp_op == :<=
 
     success = target - total # 成功度
@@ -340,7 +341,7 @@ INFO_MESSAGE_TEXT
       diff = Regexp.last_match(1)
       depth = Regexp.last_match(2).to_i
       # num = depth / 10
-      num = (depth/10).floor # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
+      num = (depth / 10).floor # TKfix Rubyでは常に整数が返るが、JSだと実数になる可能性がある
       if num >= 6
         num = 5
       end

@@ -5,7 +5,7 @@ import { AudioSharingSystem } from '@udonarium/core/file-storage/audio-sharing-s
 import { AudioStorage } from '@udonarium/core/file-storage/audio-storage';
 import { FileArchiver } from '@udonarium/core/file-storage/file-archiver';
 import { ImageFile } from '@udonarium/core/file-storage/image-file';
-import { FileSharingSystem } from '@udonarium/core/file-storage/image-sharing-system';
+import { ImageSharingSystem } from '@udonarium/core/file-storage/image-sharing-system';
 import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectFactory } from '@udonarium/core/synchronize-object/object-factory';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
@@ -69,7 +69,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       EventSystem;
       Network;
       FileArchiver.instance.initialize();
-      FileSharingSystem.instance.initialize();
+      ImageSharingSystem.instance.initialize();
       ImageStorage.instance;
       AudioSharingSystem.instance.initialize();
       AudioStorage.instance;
@@ -250,6 +250,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   handleFileSelect(event: Event) {
     let files = (<HTMLInputElement>event.target).files;
     if (files.length) FileArchiver.instance.load(files);
+  }
+
+  GuestMode() {
+    return Network.GuestMode();
   }
 
   private lazyNgZoneUpdate(isImmediate: boolean) {
