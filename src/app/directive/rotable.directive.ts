@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output } from '@angular/core';
-import { EventSystem } from '@udonarium/core/system';
+import { EventSystem, Network } from '@udonarium/core/system';
 import { TabletopObject } from '@udonarium/tabletop-object';
 import { PointerCoordinate, PointerDeviceService } from 'service/pointer-device.service';
 import { TabletopService } from 'service/tabletop.service';
@@ -109,7 +109,7 @@ export class RotableDirective implements AfterViewInit, OnDestroy {
 
   onInputStart(e: MouseEvent | TouchEvent) {
     this.grabbingElement = e.target as HTMLElement;
-    if (this.isDisable || !this.isAllowedToRotate || (e as MouseEvent).button === 1 || (e as MouseEvent).button === 2) return this.cancel();
+    if (Network.GuestMode() || this.isDisable || !this.isAllowedToRotate || (e as MouseEvent).button === 1 || (e as MouseEvent).button === 2) return this.cancel();
     if (e.cancelable) e.preventDefault();
     e.stopPropagation();
     this.onstart.emit(e as PointerEvent);

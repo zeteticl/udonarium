@@ -234,6 +234,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (files.length) FileArchiver.instance.load(files);
   }
 
+  GuestMode() {
+    return Network.GuestMode();
+  }
+
   private lazyNgZoneUpdate(isImmediate: boolean) {
     if (isImmediate) {
       if (this.immediateUpdateTimer !== null) return;
