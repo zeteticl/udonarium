@@ -46,8 +46,11 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     EventSystem.unregister(this);
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   changeIcon() {
+    if (this.GuestMode()) return;
     this.modalService.open<string>(FileSelecterComponent).then(value => {
       if (!this.myPeer || !value) return;
       this.myPeer.imageIdentifier = value;
@@ -166,7 +169,7 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onBlurNickname(): void {
     //if (this.isChangedNickname) {
-      //EventSystem.call('CHANGE_NICKNAME', this.myPeer.name, this.myPeer.peerId);
-   // }
+    //EventSystem.call('CHANGE_NICKNAME', this.myPeer.name, this.myPeer.peerId);
+    // }
   }
 }

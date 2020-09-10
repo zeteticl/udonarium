@@ -14,14 +14,14 @@
           </div>
         </label>
 
-        <button class="tab-setting small-font" (click)="showTabSetting()"><i
+        <button class="tab-setting small-font" (click)="showTabSetting()" *ngIf="!GuestMode()"><i
             class="material-icons small-font">settings</i>分頁設定</button>
         <button class="tab-setting small-font" (click)="onSoundEffectSwitchChanged()">
           <i *ngIf="!SoundEffectSwitch2()" class="material-icons icon-size">toggle_on</i>
           <i *ngIf="SoundEffectSwitch2()" class="material-icons icon-size">toggle_off</i>
           效果音
         </button>
-        <button class="tab-setting small-font" (click)="clearTab()">
+        <button class="tab-setting small-font" (click)="clearTab()" *ngIf="!GuestMode()">
           <i class="material-icons small-font">delete</i>刪除對話</button>
       </div>
     </form>

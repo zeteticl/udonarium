@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ChatMessage } from '@udonarium/chat-message';
 import { ChatTab } from '@udonarium/chat-tab';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { EventSystem, Network } from '@udonarium/core/system';
 import { PeerCursor } from '@udonarium/peer-cursor';
 import { ChatTabSettingComponent } from 'component/chat-tab-setting/chat-tab-setting.component';
 import { ChatMessageService } from 'service/chat-message.service';
@@ -43,7 +43,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
     return ChatWindowComponent.SoundEffectSwitch;
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
 
   get gameType(): string { return this.chatMessageService.gameType; }
   set gameType(gameType: string) { this.chatMessageService.gameType = gameType; }
@@ -140,6 +142,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
     this._color = color;
   }
   showTabSetting() {
+    if (this.GuestMode()) return;
     let coordinate = this.pointerDeviceService.pointers[0];
     let option: PanelOption = { left: coordinate.x - 250, top: coordinate.y - 175, width: 500, height: 350 };
     let component = this.panelService.open<ChatTabSettingComponent>(ChatTabSettingComponent, option);
@@ -152,6 +155,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   clearTab() {
+    if (this.GuestMode()) return;
     if (this.chatTab && this.chatTab.chatMessages.length > 0 && confirm("你將會刪除本分頁紀錄")) {
       this.chatTab.destroyChat();
       EventSystem.trigger('MESSAGE_CLEARTAB', { tabIdentifier: this.chatTab.identifier });

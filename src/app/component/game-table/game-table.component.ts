@@ -259,7 +259,9 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.setTransform(transformX, transformY, transformZ, rotateX, rotateY, rotateZ);
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   @HostListener('document:keydown', ['$event'])
   onKeydown(e: KeyboardEvent) {
     if (document.body !== document.activeElement) return;
@@ -311,7 +313,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     document.addEventListener('contextmenu', event => event.preventDefault());
     if (!document.activeElement.contains(this.gameObjects.nativeElement)) return;
     e.preventDefault();
-
+    if (this.GuestMode()) return;
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
