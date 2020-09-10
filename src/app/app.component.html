@@ -46,7 +46,7 @@
           <div>筆記倉庫</div>
         </a>
       </li>
-      <li (click)="createGameCharacter()">
+      <li (click)="createGameCharacter()" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">accessibility</i></div>
           <div>角色生成</div>
@@ -68,10 +68,9 @@
           <div>保存房間</div>
         </a>
       </li>
-      
+
     </ul>
   </nav>
 </ui-panel>
 <div #modalLayer></div>
 <network-indicator class="networkIndicator"></network-indicator>
-

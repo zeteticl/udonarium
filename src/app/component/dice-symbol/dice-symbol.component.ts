@@ -101,7 +101,9 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   private doubleClickPoint = { x: 0, y: 0 };
 
   private input: InputHandler = null;
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   constructor(
     private ngZone: NgZone,
     private panelService: PanelService,
@@ -110,7 +112,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private pointerDeviceService: PointerDeviceService,
     private chatMessageService: ChatMessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     EventSystem.register(this)
@@ -210,7 +212,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   onContextMenu(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-
+    if (this.GuestMode()) return;
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
     let position = this.pointerDeviceService.pointers[0];
 
@@ -223,7 +225,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     }
-    
+
     actions.push(ContextMenuSeparator);
     if (this.isMine || this.hasOwner) {
       actions.push({

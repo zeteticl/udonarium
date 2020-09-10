@@ -66,7 +66,9 @@ export class OverviewPanelComponent implements AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private pointerDeviceService: PointerDeviceService
   ) { }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   ngAfterViewInit() {
     this.initPanelPosition();
     setTimeout(() => {
