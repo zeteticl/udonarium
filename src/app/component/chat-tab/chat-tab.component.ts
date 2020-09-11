@@ -109,7 +109,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       imageIdentifier: "",
       tag: "",
       name: "教學Zzzzzz",
-      text: "更新日誌：2020/06/05 \n  加上最小化視窗功能, 方便手機端使用\n2020/06/09 更新package的版本。點擊聊天視窗的角色圖可以更改圖示。更改背景GIF圖為月亮，雲動的太快，好暈。\n2020/06/17 更新直到今天的官方修正，版本號沒有改變。\n2020/07/08 更新1.11.0\n2020/07/17 刪除圖片功能, 圖片直接使用LINK功能, 修正LOG輸出不換行的BUG\n2020/07/31 增加六角型格子, 快速刪除對話功能\n 2020/0906 效果音關關增加儲存功能，棋子底盤改變大小，"
+      text: "更新日誌：2020/06/05 \n  加上最小化視窗功能, 方便手機端使用\n2020/06/09 更新package的版本。點擊聊天視窗的角色圖可以更改圖示。更改背景GIF圖為月亮，雲動的太快，好暈。\n2020/06/17 更新直到今天的官方修正，版本號沒有改變。\n2020/07/08 更新1.11.0\n2020/07/17 刪除圖片功能, 圖片直接使用LINK功能, 修正LOG輸出不換行的BUG\n2020/07/31 增加六角型格子, 快速刪除對話功能\n 2020/0906 效果音關關增加儲存功能，棋子底盤改變大小\n2020/09/11 更新v1.11.3版本及訪客功能"
     }
     , {
       from: "System",
@@ -369,7 +369,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   }
 
   private markForReadIfNeeded() {
-    if (!this.chatTab||!this.chatTab.hasUnread) return;
+    if (!this.chatTab || !this.chatTab.hasUnread) return;
 
     let scrollPosition = this.getScrollPosition();
     if (scrollPosition.scrollHeight <= scrollPosition.bottom + 100) {
