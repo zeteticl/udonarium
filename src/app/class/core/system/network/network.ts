@@ -139,6 +139,7 @@ export class Network {
     return store;
   }
   GuestMode(): boolean {
+    return true;
     return this.peerContext && this.peerContext.isGuest;
   }
 }

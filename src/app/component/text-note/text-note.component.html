@@ -10,7 +10,7 @@
         [style.min-height.px]="height * gridSize">
         <div *ngIf="title.length" class="title is-black-background is-pointer-events-none">{{title}}</div>
         <textarea (input)="calcFitHeight();" #textArea class="textarea"
-          [ngClass]="{'is-pointer-events-none': !isSelected, 'is-pointer-events-auto': isSelected, 'is-outline-text': !isSelected}"
+          [ngClass]="{'is-pointer-events-none': !isSelected, 'is-pointer-events-auto': isSelected, 'is-outline-text': !isSelected}" *ngIf="!GuestMode()"
           [style.font-size.px]="fontSize + 9" [(ngModel)]="text" spellcheck="false"></textarea>
       </div>
       <div class="rotate-grab of-left-top">
