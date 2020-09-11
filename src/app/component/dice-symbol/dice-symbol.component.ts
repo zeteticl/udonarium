@@ -201,6 +201,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDoubleClick() {
+    if (this.GuestMode()) return;
     this.stopDoubleClickTimer();
     let distance = (this.doubleClickPoint.x - this.input.pointer.x) ** 2 + (this.doubleClickPoint.y - this.input.pointer.y) ** 2;
     if (distance < 10 ** 2) {
@@ -307,6 +308,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showDetail(gameObject: DiceSymbol) {
+    if (this.GuestMode()) return;
     EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '骰子內容設定';

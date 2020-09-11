@@ -193,6 +193,7 @@ export class CardStackComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDoubleClick() {
+    if (this.GuestMode()) return;
     this.stopDoubleClickTimer();
     let distance = (this.doubleClickPoint.x - this.input.pointer.x) ** 2 + (this.doubleClickPoint.y - this.input.pointer.y) ** 2;
     if (distance < 10 ** 2) {
