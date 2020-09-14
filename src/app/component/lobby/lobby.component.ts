@@ -84,6 +84,54 @@ export class LobbyComponent implements OnInit, OnDestroy {
   }
 
   async connect(peerContexts: PeerContext[]) {
+
+
+    /**
+     * 程序:
+
+A) 假如 src\app\component\room-setting\room-setting.component.ts  啓動了  createRoom()  
+->
+新增LINK 包含以下資料
+  /**
+     * PeerContext!!
+     * fullstring **
+     * id
+     * isOpen
+     * isRoom
+     * password   **
+     * room   **
+     * roomName  **
+     
+   
+   
+   顯示在
+   src\app\component\peer-menu\peer-menu.component.html
+   
+   
+   假如使用了這條LINK
+   就會在src\app\service\app-config.service.ts  ->
+    console.log('最終履歴: ', this.peerHistory);
+    中, 
+    啓動room-setting.component.ts 的  createRoom()  
+   
+   B)
+   開始時， src\app\component\peer-menu\peer-menu.component.html 會顯示一條有targetPeerId 的 LINK
+   networkService = Network
+   myLink = location.protocol + '://' + location.host + '?private=true&myId=' + Network.peerContext.id;
+   
+   
+    假如使用了這條LINK
+    就會在src\app\service\app-config.service.ts  ->
+    console.log('最終履歴: ', this.peerHistory);
+    中, 
+    
+    
+    啓動src\app\component\peer-menu\peer-menu.component.html  的 connectPeer()
+    使用targetPeerId
+	
+   
+     */
+    console.log('peerContexts:', peerContexts)
     let context = peerContexts[0];
 
     if (context.password.length) {
