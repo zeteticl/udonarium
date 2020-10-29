@@ -1,6 +1,8 @@
 # ユドナリウム
 
-[烏冬（Udonarium） DIY VERSION (ZH-HK) (WITH GUEST FUNCTION)][1]はWebブラウザで動作するボードゲームオンラインセッション支援ツールです。
+[烏冬（Udonarium） DIY VERSION (ZH-HK) (WITH GUEST FUNCTION)][1]
+
+はWebブラウザで動作するボードゲームオンラインセッション支援ツールです。
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/TK11235/udonarium/blob/master/LICENSE)
 
