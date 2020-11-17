@@ -25,11 +25,12 @@
           <button (click)="save_log()">輸出聊天紀錄(.html)</button>
           <button (click)="upTabIndex()">↑</button>
           <button (click)="downTabIndex()">↓</button>
-          <button (click)="save()">保存</button>
-          <!--
-          <button (click)="moveLast()">移動到最後</button>
-          -->
-
+          <button [disabled]="isSaveing" (click)="save()">
+            <div style="position: relative;">
+              <div [ngClass]="{'is-hidden': isSaveing}">保存</div>
+              <div *ngIf="isSaveing" class="progress">{{progresPercent}}%</div>
+            </div>
+          </button>
           <button class="danger" (click)="delete()" [attr.disabled]="chatTabs.length <= 1 ? '' : null">刪除</button>
           <br>
           <button class="danger" (click)="delete2()" [attr.disabled]="chatTabs.length <= 1 ? '' : null">清除聊天紀錄</button>

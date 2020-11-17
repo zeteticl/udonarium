@@ -54,6 +54,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private immediateUpdateTimer: NodeJS.Timer = null;
   private lazyUpdateTimer: NodeJS.Timer = null;
   private openPanelCount: number = 0;
+  isSaveing: boolean = false;
+  progresPercent: number = 0;
 
   constructor(
     private modalService: ModalService,
@@ -237,14 +239,23 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.panelService.open(component, option);
     }
   }
-  createGameCharacter() {
-    GameCharacter.create("遊戲角色", 1, 'null');
-  }
-  save() {
+
+  async save() {
+    if (this.isSaveing) return;
+    this.isSaveing = true;
+    this.progresPercent = 0;
+
     let roomName = Network.peerContext && 0 < Network.peerContext.roomName.length
       ? Network.peerContext.roomName
       : 'UdoZ房間的數據';
-    this.saveDataService.saveRoom(roomName);
+    await this.saveDataService.saveRoomAsync(roomName, percent => {
+      this.progresPercent = percent;
+    });
+
+    setTimeout(() => {
+      this.isSaveing = false;
+      this.progresPercent = 0;
+    }, 500);
   }
 
   handleFileSelect(event: Event) {
