@@ -39,6 +39,7 @@
   <div>
     <span *ngIf="!conn.isOpen">[連線中]</span>
     <span>其他参加者：{{conn.id}} [{{findPeerName(conn.fullstring)}}]</span>
+    <span *ngIf="GuestMode()">(訪客)</span>
   </div>
 </div>
 <div>

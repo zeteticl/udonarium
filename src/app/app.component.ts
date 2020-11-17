@@ -195,7 +195,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     EventSystem.unregister(this);
   }
-
+  createGameCharacter() {
+    GameCharacter.create("遊戲角色", 1, 'null');
+  }
   open(componentName: string) {
     let component: { new(...args: any[]): any } = null;
     let option: PanelOption = { width: 450, height: 600, left: 100 }

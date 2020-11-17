@@ -242,7 +242,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     let roomName = Network.peerContext && 0 < Network.peerContext.roomName.length
       ? Network.peerContext.roomName
       : 'UdoZ房間的數據';
-    this.saveDataService.saveRoom(roomName);
+    this.saveDataService.saveRoomAsync(roomName);
     event.preventDefault();
   }
   @HostListener('wheel', ['$event'])

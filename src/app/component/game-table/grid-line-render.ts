@@ -27,6 +27,12 @@ export class GridLineRender {
 
     if (gridType < 0) return;
 
+    if (gridType == 3) {
+      let hexGrid = initGrid(width, height);
+      //console.log(hexGrid)
+      drawGrid(hexGrid, this.canvasElement.width, this.canvasElement.height);
+      return;
+    }
     let calcGridPosition: StrokeGridFunc = this.generateCalcGridPositionFunc(gridType);
     this.makeBrush(context, gridSize, gridColor);
     for (let h = 0; h <= height; h++) {
@@ -34,6 +40,63 @@ export class GridLineRender {
         let { gx, gy } = calcGridPosition(w, h, gridSize);
         this.strokeSquare(context, gx, gy, gridSize);
         context.fillText((w + 1).toString() + '-' + (h + 1).toString(), gx + (gridSize / 2), gy + (gridSize / 2));
+      }
+    }
+
+    function HexCell(x, y, z) {
+      this._x = x;
+      this._y = y;
+      this._z = z;
+    }
+
+    function initGrid(mapSizeWidth, mapSizeHeight) {
+      mapSizeWidth = Math.max(1, Math.floor(mapSizeWidth / 2));
+      mapSizeHeight = Math.max(1, Math.floor(mapSizeHeight / 2));
+      let mapSizeZ = 10;
+      mapSizeZ = Math.max(1, Math.max(mapSizeHeight, mapSizeWidth));
+      //console.log('mapSizeWidth, mapSizeHeight', mapSizeWidth, mapSizeHeight, mapSizeZ)
+      let gridArray = [];
+      let cnt = 0;
+
+      for (let i = -mapSizeWidth; i < mapSizeWidth + 1; i += 1) {
+        for (let j = -mapSizeHeight; j < mapSizeHeight + 1; j += 1) {
+          for (let k = -mapSizeZ; k < mapSizeZ + 1; k += 1) {
+            if (i + j + k == 0) {
+              gridArray.push(new HexCell(i, j, k));
+              cnt += 1;
+            }
+          }
+        }
+      }
+
+      return gridArray;
+    }
+
+    function drawGrid(gridArray, CEW, CEH) {
+      let edgeLength = gridSize;
+      let edgeW = edgeLength * 3 / 2;
+      let edgeH = edgeLength * Math.sqrt(3) / 2;
+      context.strokeStyle = gridColor;
+      context.fillStyle = "rgba(255, 255, 255, 0.0)";
+      context.lineWidth = 3;
+      let x, y, z;
+      let posX, posY;
+      let centerX = CEW / 2;
+      let centerY = CEH / 2;
+
+      for (let i = 0; i < gridArray.length; i++) {
+        [x, y, z] = [gridArray[i]._x, gridArray[i]._y, gridArray[i]._z];
+        posX = x * edgeW + centerX;
+        posY = (-y + z) * edgeH + centerY;
+
+        context.moveTo(posX + Math.cos(0) * edgeLength,
+          posY + Math.sin(0) * edgeLength);
+        for (let j = 1; j <= 6; j++) {
+          context.lineTo(posX + Math.cos(j / 6 * (Math.PI * 2)) * edgeLength,
+            posY + Math.sin(j / 6 * (Math.PI * 2)) * edgeLength);
+        }
+        context.fill();
+        context.stroke();
       }
     }
   }
