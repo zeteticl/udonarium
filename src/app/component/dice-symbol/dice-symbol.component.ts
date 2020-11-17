@@ -154,8 +154,10 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.input = new InputHandler(this.elementRef.nativeElement);
-    this.input.onStart = this.onInputStart.bind(this);
+    this.ngZone.runOutsideAngular(() => {
+      this.input = new InputHandler(this.elementRef.nativeElement);
+    });
+    this.input.onStart = e => this.ngZone.run(() => this.onInputStart(e));
   }
 
   ngOnDestroy() {
@@ -176,7 +178,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onInputStart(e: MouseEvent | TouchEvent) {
     this.startDoubleClickTimer(e);
-    if (e instanceof MouseEvent) this.startIconHiddenTimer();
+    this.startIconHiddenTimer();
   }
 
   startDoubleClickTimer(e) {
