@@ -71,7 +71,7 @@ export class ChatMessageService {
         console.warn('There has been a problem with your fetch operation: ', error.message);
         this.setIntervalTimer();
       });
-      this.setIntervalTimer();
+    this.setIntervalTimer();
   }
 
   private setIntervalTimer() {
@@ -86,7 +86,7 @@ export class ChatMessageService {
   }
 
   sendMessage(chatTab: ChatTab, text: string, gameType: string, sendFrom: string, sendTo?: string, color?: string): ChatMessage {
-    if(color==null) color="#000000";
+    if (color == null) color = "#000000";
     let chatMessage: ChatMessageContext = {
       from: Network.peerContext.id,
       to: this.findId(sendTo),

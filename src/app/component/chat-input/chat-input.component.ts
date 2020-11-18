@@ -13,6 +13,7 @@ import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { FileSelecterComponent } from 'component/file-selecter/file-selecter.component';
 import { ModalService } from 'service/modal.service';
+import { ChatTab } from '@udonarium/chat-tab';
 import { PeerCursorComponent } from 'component/peer-cursor/peer-cursor.component';
 @Component({
   selector: 'chat-input',
@@ -21,7 +22,7 @@ import { PeerCursorComponent } from 'component/peer-cursor/peer-cursor.component
 })
 export class ChatInputComponent implements OnInit, OnDestroy {
   @ViewChild('textArea', { static: true }) textAreaElementRef: ElementRef;
-
+  @Input() character: GameCharacter = null;
   @Input() onlyCharacters: boolean = false;
   @Input() chatTabidentifier: string = '';
 
@@ -44,7 +45,7 @@ export class ChatInputComponent implements OnInit, OnDestroy {
   @Output() textChange = new EventEmitter<string>();
   get text(): string { return this._text };
   set text(text: string) { this._text = text; this.textChange.emit(text); }
-
+  get chatTab(): ChatTab { return ObjectStore.instance.get<ChatTab>(this.chatTabidentifier); }
   @Output() chat = new EventEmitter<{ text: string, gameType: string, sendFrom: string, sendTo: string }>();
 
   get isDirect(): boolean { return this.sendTo != null && this.sendTo.length ? true : false }
@@ -90,7 +91,19 @@ export class ChatInputComponent implements OnInit, OnDestroy {
     private modalService: ModalService
   ) { }
 
+  private _color: string = "#000000";
+  get color(): string { return this._color };
+  set color(color: string) {
+    this._color = color;
+    // if (this.character.chatPalette) this.character.chatPalette.color = color;
+  };
+  onChangeColor(new_color: string) {
+    this._color = new_color;
+    // if (this.character.chatPalette) this.character.chatPalette.color = new_color;
+  }
+
   ngOnInit(): void {
+    this.color = this.character.chatPalette ? this.character.chatPalette.color : '#000000';
     EventSystem.register(this)
       .on('MESSAGE_ADDED', event => {
         if (event.data.tabIdentifier !== this.chatTabidentifier) return;
@@ -186,18 +199,20 @@ export class ChatInputComponent implements OnInit, OnDestroy {
 
   sendChat(event: KeyboardEvent) {
     if (event) event.preventDefault();
-
     if (!this.text.length) return;
     if (event && event.keyCode !== 13) return;
 
     if (!this.sendFrom.length) this.sendFrom = this.myPeer.identifier;
-    this.chat.emit({ text: this.text, gameType: this.gameType, sendFrom: this.sendFrom, sendTo: this.sendTo });
+    this.chatMessageService.sendMessage(this.chatTab, this.text, this.gameType, this.sendFrom, this.sendTo, this._color);
+    //  this.chat.emit({ text: this.text, gameType: this.gameType, sendFrom: this.sendFrom, sendTo: this.sendTo });
 
     this.text = '';
     this.previousWritingLength = this.text.length;
     let textArea: HTMLTextAreaElement = this.textAreaElementRef.nativeElement;
     textArea.value = '';
     this.calcFitHeight();
+
+
   }
 
   calcFitHeight() {

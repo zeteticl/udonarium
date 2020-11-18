@@ -2,6 +2,7 @@
   -webkit-animation: anime1 1.3s infinite ease-in-out;
   animation: anime1 1.3s infinite ease-in-out;
 }
+
 .component {
   min-height: 100%;
   display: flex;
@@ -10,17 +11,36 @@
   align-content: space-between;
 }
 
+.color-picker-container {
+  position: relative;
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
+  float: left;
+  margin: 5px;
+}
+
+.color-picker-container>.color-picker {
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+}
+
 .sticky-bottom {
   position: sticky;
-  bottom : 0;
+  bottom: 0;
   width: 100%;
-  background-color: rgba(240,218,189, 0.8);
-  border-top:1px dotted #666;
+  background-color: rgba(240, 218, 189, 0.8);
+  border-top: 1px dotted #666;
   margin-bottom: 0;
 }
 
 .chat-tab {
-  padding : 5px;
+  padding: 5px;
   user-select: none;
 }
 
@@ -33,13 +53,13 @@
   display: none;
 }
 
-.chat-tab input[type="radio"] + div {
+.chat-tab input[type="radio"]+div {
   display: inline-block;
   vertical-align: middle;
   outline: 0;
   font-size: 12px;
   background-color: transparent;
-  color: #444; 
+  color: #444;
   border: solid 1px #555;
   padding: 2px 8px;
   margin: 2px;
@@ -47,13 +67,13 @@
   cursor: pointer;
 }
 
-.chat-tab input[type="radio"] + div:hover {
+.chat-tab input[type="radio"]+div:hover {
   background-color: #888;
   color: #eee;
   border: solid 1px #555;
 }
 
-.chat-tab input[type="radio"]:checked + div {
+.chat-tab input[type="radio"]:checked+div {
   background: #555;
   color: #CCC;
 }
@@ -66,7 +86,7 @@
 
 .tab-setting {
   background-color: transparent;
-  color: #444; 
+  color: #444;
   border: solid 1px #555;
   padding: 2px 4px;
   border-radius: 5px;
@@ -92,14 +112,14 @@
 .color-picker-container {
   position: relative;
   overflow: hidden;
-  width:16px;
-  height:16px;
+  width: 16px;
+  height: 16px;
   border-radius: 16px;
-  float:left;
+  float: left;
   margin: 5px;
 }
 
-.color-picker-container > .color-picker {
+.color-picker-container>.color-picker {
   position: absolute;
   right: -8px;
   top: -8px;
