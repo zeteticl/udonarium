@@ -29,7 +29,7 @@
     </div>
     <div>
       <form>
-        <textarea class="chat-input" placeholder="Enter輸入 Shift+Enter換行" [(ngModel)]="text"
+        <textarea class="chat-input" placeholder="Enter輸入 Shift+Enter換行 點擊頭像更換圖片 點顏色圈更換顏色" [(ngModel)]="text"
           [ngModelOptions]="{standalone: true}" (input)="onInput()" (keydown.enter)="sendChat($event)"
           #textArea></textarea>
         <button type="submit" (click)="sendChat(null)">SEND</button>
