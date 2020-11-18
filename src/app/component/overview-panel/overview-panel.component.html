@@ -72,8 +72,8 @@
   </div>
 </ng-template>
 
-<ng-template #overviewCharacter let-character="character" *ngIf="!GuestMode()">
-  <div class="component-content character-grid-container is-middle-size">
+<ng-template #overviewCharacter let-character="character">
+  <div class="component-content character-grid-container is-middle-size" *ngIf="!GuestMode()">
     <div class="title-bg-area title-background"
       [ngClass]="{ 'is-pointer-events-auto': !this.isPointerDragging, 'pointer-events-none': this.isPointerDragging }">
     </div>
