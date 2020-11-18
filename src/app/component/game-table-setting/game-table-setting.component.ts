@@ -73,7 +73,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
     return ObjectStore.instance.get<GameTable>(this.selectedTable.identifier) == null;
   }
   get isEditable(): boolean {
-    return !this.isEmpty && !this.isDeleted;
+    return !this.isEmpty && !this.isDeleted && !this.GuestMode();
   }
 
   isSaveing: boolean = false;
