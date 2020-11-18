@@ -45,7 +45,7 @@ export class SkyWayConnection implements Connection {
   open(peerId: string)
   open(peerId: string, roomId: string, roomName: string, password: string)
   open(...args: any[]) {
-    console.log('open', args);
+    //  console.log('open', args);
     if (args.length === 0) {
       this.peerContext = PeerContext.create(PeerContext.generateId());
     } else if (args.length === 1) {

@@ -47,7 +47,6 @@ export class PeerContext implements IPeerContext {
   static create(peerId: string): PeerContext
   static create(peerId: string, roomId: string, roomName: string, password: string, isAllowGuest?: boolean, isGuest?: boolean): PeerContext
   static create(...args: any[]): PeerContext {
-    console.log('create', args);
     if (args.length <= 1) {
       return PeerContext._create.apply(this, args);
     } else {

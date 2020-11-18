@@ -29,7 +29,7 @@
     <span>房間名稱：<span *ngIf="networkService.isOpen"
         style="font-weight: bold;">{{networkService.peerContext.roomName}}/{{networkService.peerContext.room}}</span></span>
   </div>
-  <div>
+  <div *nfIf="!GuestMode()">
     <span>密碼：<span *ngIf="networkService.isOpen"
         style="font-weight: bold;">{{networkService.peerContext.password}}</span></span>
   </div>
