@@ -62,9 +62,6 @@ export class ChatInputComponent implements OnInit, OnDestroy {
     return image ? image : ImageFile.Empty;
   }
 
-  GuestMode() {
-    return Network.GuestMode();
-  }
   private shouldUpdateCharacterList: boolean = true;
   private _gameCharacters: GameCharacter[] = [];
   get gameCharacters(): GameCharacter[] {
@@ -206,13 +203,9 @@ export class ChatInputComponent implements OnInit, OnDestroy {
     if (event && event.keyCode !== 13) return;
 
     if (!this.sendFrom.length) this.sendFrom = this.myPeer.identifier;
-    if (!this.GuestMode()) {
-      this.chatMessageService.sendMessage(this.chatTab, this.text, this.gameType, this.sendFrom, this.sendTo, this._color);
-    } //  this.chat.emit({ text: this.text, gameType: this.gameType, sendFrom: this.sendFrom, sendTo: this.sendTo });
-    else {
-      this.chatMessageService.sendMessage(this.chatTab, this.text, this.gameType, this.sendFrom + '(訪客)', this.sendTo, this._color);
+    this.chatMessageService.sendMessage(this.chatTab, this.text, this.gameType, this.sendFrom, this.sendTo, this._color);
+    //  this.chat.emit({ text: this.text, gameType: this.gameType, sendFrom: this.sendFrom, sendTo: this.sendTo });
 
-    }
     this.text = '';
     this.previousWritingLength = this.text.length;
     let textArea: HTMLTextAreaElement = this.textAreaElementRef.nativeElement;

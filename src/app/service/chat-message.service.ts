@@ -23,7 +23,9 @@ export class ChatMessageService {
   ];
 
   gameType: string = '';
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   constructor() { }
 
   get chatTabs(): ChatTab[] {
@@ -87,6 +89,7 @@ export class ChatMessageService {
 
   sendMessage(chatTab: ChatTab, text: string, gameType: string, sendFrom: string, sendTo?: string, color?: string): ChatMessage {
     if (color == null) color = "#000000";
+
     let chatMessage: ChatMessageContext = {
       from: Network.peerContext.id,
       to: this.findId(sendTo),
@@ -97,7 +100,9 @@ export class ChatMessageService {
       text: text,
       color: color,
     };
-
+    if (this.GuestMode()) {
+      chatMessage.name += '(訪客)'
+    }
     return chatTab.addMessage(chatMessage);
   }
 
