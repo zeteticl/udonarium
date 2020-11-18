@@ -1,6 +1,7 @@
 <div class="table" [ngClass]="{ 'direct-message': isDirect }">
   <div class="table-cell imagebox">
-    <img *ngIf="0 < imageFile.url.length" class="image" [src]="imageFile.url | safe: 'resourceUrl'" />
+    <img (click)="openCharacterImageChange()" *ngIf="0 < imageFile.url.length" class="image"
+      [src]="imageFile.url | safe: 'resourceUrl'" />
   </div>
   <div class="table-cell">
     <div>
