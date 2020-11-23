@@ -64,7 +64,7 @@
     <div class="component-background text-note-container">
       <div style="position: relative;">
         <div class="is-fill">
-          <textarea class="textarea" [(ngModel)]="note.text" spellcheck="false"></textarea>
+          <textarea class="textarea" [(ngModel)]="note.text" [disabled]="GuestMode()" spellcheck="false"></textarea>
         </div>
         <div class="textarea-spacer">{{note.text}}</div>
       </div>
@@ -73,7 +73,7 @@
 </ng-template>
 
 <ng-template #overviewCharacter let-character="character">
-  <div class="component-content character-grid-container is-middle-size" *ngIf="!GuestMode()">
+  <div class="component-content character-grid-container is-middle-size">
     <div class="title-bg-area title-background"
       [ngClass]="{ 'is-pointer-events-auto': !this.isPointerDragging, 'pointer-events-none': this.isPointerDragging }">
     </div>
@@ -89,12 +89,13 @@
       [ngClass]="{ 'is-pointer-events-auto': !this.isPointerDragging, 'pointer-events-none': this.isPointerDragging }">
       <div class="grid-container-root" *ngIf="hasDataElms">
         <!--<ng-container *ngFor="let dataElm of dataElms">-->
-        <div><button type="submit" (click)="movetocommon()">共有</button>
-          <button type="submit" (click)="movetoid()">個人</button>
-          <button type="submit" (click)="movetograveyard()">墓場</button>
-          <input type="text" class="PosZ" pInputText (change)="changePosZ($event.target.value)" placeholder="高度" />
-          <button type="submit" (click)="PosZplus100()">+100</button>
-          <button type="submit" (click)="PosZ0()">地面</button>
+        <div><button type="submit" (click)="movetocommon()" *ngIf="!GuestMode()">共有</button>
+          <button type="submit" (click)="movetoid()" *ngIf="!GuestMode()">個人</button>
+          <button type="submit" (click)="movetograveyard()" *ngIf="!GuestMode()">墓場</button>
+          <input type="text" class="PosZ" pInputText (change)="changePosZ($event.target.value)" placeholder="高度"
+            *ngIf="!GuestMode()" />
+          <button type="submit" (click)="PosZplus100()" *ngIf="!GuestMode()">+100</button>
+          <button type="submit" (click)="PosZ0()" *ngIf="!GuestMode()">地面</button>
 
         </div>
 
@@ -167,7 +168,8 @@
           <div>{{dataElm.name}}</div>
           <div class="note" style="position: relative;">
             <div class="is-fill">
-              <textarea class="textarea" [(ngModel)]="dataElm.value" spellcheck="false"></textarea>
+              <textarea class="textarea" [(ngModel)]="dataElm.value" spellcheck="false"
+                [disabled]="GuestMode()"></textarea>
             </div>
             <div class="textarea-spacer">{{dataElm.value}}</div>
           </div>
@@ -177,22 +179,22 @@
         <div class="tag">{{dataElm.name}}</div>
         <div class="value">
           <div style="display: inline-block; width: min-content;">
-            <div class="hidden-spacer" style="margin-right: 2em;">{{dataElm.currentValue}}</div>
-            <input class="input" type="number" size="1" [(ngModel)]="dataElm.currentValue" />
+            <div class="hidden-spacer" style="margin-right: 2em;" [disabled]="GuestMode()">{{dataElm.currentValue}}</div>
+            <input class="input" type="number" size="1" [(ngModel)]="dataElm.currentValue" [disabled]="GuestMode()" />
           </div>
           <div style="display: inline;"> / {{dataElm.value}}</div>
         </div>
         <div class="section" style="line-height: 1em;">
           <input type="range"
             [style]="'font-size: 0.8em; width: 100%; --min: 0; --max:' + dataElm.value + '; --val:' + dataElm.currentValue +';' | safe: 'style'"
-            min="0" max="{{dataElm.value}}" [(ngModel)]="dataElm.currentValue" />
+            min="0" max="{{dataElm.value}}" [(ngModel)]="dataElm.currentValue" [disabled]="GuestMode()" />
         </div>
       </ng-container>
       <ng-container *ngSwitchDefault>
         <div class="tag">{{dataElm.name}}</div>
         <div class="value">
           <div class="hidden-spacer">{{dataElm.value}}</div>
-          <input class="input" size="1" [(ngModel)]="dataElm.value" />
+          <input class="input" size="1" [(ngModel)]="dataElm.value" [disabled]="GuestMode()" />
         </div>
       </ng-container>
     </ng-container>
