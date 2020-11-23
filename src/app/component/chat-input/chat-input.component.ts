@@ -103,7 +103,6 @@ export class ChatInputComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.color = this.character.chatPalette ? this.character.chatPalette.color : '#000000';
     EventSystem.register(this)
       .on('MESSAGE_ADDED', event => {
         if (event.data.tabIdentifier !== this.chatTabidentifier) return;
