@@ -9,6 +9,7 @@ import { PasswordCheckComponent } from 'component/password-check/password-check.
 import { RoomSettingComponent } from 'component/room-setting/room-setting.component';
 import { ModalService } from 'service/modal.service';
 import { PanelService } from 'service/panel.service';
+import { connect } from 'http2';
 
 @Component({
   selector: 'lobby',
@@ -16,6 +17,11 @@ import { PanelService } from 'service/panel.service';
   styleUrls: ['./lobby.component.css'],
 })
 export class LobbyComponent implements OnInit, OnDestroy {
+  static connect2(a, b, c) {
+    console.log('connect!!!!!!!!!!!!!!!!!!!!!');
+
+    //  connect('dd');
+  }
   rooms: { alias: string, roomName: string, peers: PeerContext[], isAllowGuest: boolean }[] = [];
 
   isReloading: boolean = false;
@@ -84,6 +90,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   }
 
   async connect(peerContexts: PeerContext[], isGuest?: boolean) {
+    console.log(peerContexts);
     let context = peerContexts[0];
 
     if (context.password.length && !isGuest) {

@@ -1,3 +1,4 @@
+import { LobbyComponent } from 'component/lobby/lobby.component';
 import { PromiseQueue } from '../core/system/util/promise-queue';
 
 interface PeerHistory {
@@ -64,16 +65,16 @@ export class Database {
     // データを追加する前に objectStore の作成を完了させるため、
 
     // transaction oncomplete を使用します。
- //   objectStore.transaction.oncomplete = (event) => {
-  //    console.log('createStores oncomplete');
-      // 新たに作成した objectStore に値を保存します。
-      /*
-      var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
-      for (var i in customerData) {
-        customerObjectStore.add(customerData[i]);
-      }
-      */
-   // };
+    //   objectStore.transaction.oncomplete = (event) => {
+    //    console.log('createStores oncomplete');
+    // 新たに作成した objectStore に値を保存します。
+    /*
+    var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
+    for (var i in customerData) {
+      customerObjectStore.add(customerData[i]);
+    }
+    */
+    // };
   }
 
   private initializeDB(db: IDBDatabase) {
@@ -139,7 +140,13 @@ export class Database {
       store.delete(peerId);
     });
   }
-
+  parsing() {
+    var loginId = new URLSearchParams(window.location.search).get('id');
+    var loginPassword = new URLSearchParams(window.location.search).get('pw');
+    var loginAsGuest = new URLSearchParams(window.location.search).get('guest');
+    LobbyComponent.connect2(loginId, loginPassword, loginAsGuest);
+    console.log('PARSING parsingparsingparsingparsingparsingparsing', LobbyComponent)
+  }
   getPeerHistory(): Promise<PeerHistory[]> {
     return this.queue.add((resolve, reject) => {
       console.log('getPeerHistory');
@@ -150,6 +157,7 @@ export class Database {
 
       transaction.oncomplete = (event) => {
         console.log('getPeerHistory done.');
+        this.parsing();
         resolve(history);
       };
 

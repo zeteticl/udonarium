@@ -17,11 +17,11 @@ import { PanelService } from 'service/panel.service';
   styleUrls: ['./peer-menu.component.css']
 })
 export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
-
   targetPeerId: string = '';
   networkService = Network
   gameRoomService = ObjectStore.instance;
   help: string = '';
+  ID = this.parsing();
 
   get myPeer(): PeerCursor { return PeerCursor.myCursor; }
 
@@ -34,8 +34,8 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     Promise.resolve().then(() => this.panelService.title = '連線情報');
-  }
 
+  }
   ngAfterViewInit() {
     EventSystem.register(this)
       .on('OPEN_NETWORK', event => {
@@ -62,6 +62,10 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       Network.open();
       PeerCursor.myCursor.peerId = Network.peerId;
     }
+  }
+
+  parsing() {
+
   }
 
   connectPeer() {

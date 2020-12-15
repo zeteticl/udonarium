@@ -11,7 +11,7 @@ export class Network {
     if (!Network._instance) Network._instance = new Network();
     return Network._instance;
   }
-
+ 
   get peerId(): string { return this.connection ? this.connection.peerId : '???'; }
   get peerIds(): string[] { return this.connection ? this.connection.peerIds.concat() : []; }
 
