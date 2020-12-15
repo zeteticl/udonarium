@@ -1,7 +1,7 @@
 <div *ngIf="!isConnected;else other_content">
   <button (click)="reload()" [disabled]="isReloading">列表更新</button>
   <button (click)="showRoomSetting()">新增一個房間</button>
-  <hr/>
+  <hr />
   <ng-container *ngIf="rooms.length">
     <table class="room-list">
       <tr>
@@ -24,14 +24,20 @@
         <tr>
           <td style="font-size:0.5rem; text-align: center; padding: 0 1em;">{{room.peers[0]?.room}}</td>
           <td style="text-align: center; padding: 0 1em;">{{room.roomName}}</td>
-          <td *ngIf="0 < room.peers[0].password.length" style="text-align: center; padding: 0 1em;"><i class="material-icons" style="vertical-align: middle; font-size:0.9rem;">lock</i></td>
+          <td *ngIf="0 < room.peers[0].password.length" style="text-align: center; padding: 0 1em;"><i
+              class="material-icons" style="vertical-align: middle; font-size:0.9rem;">lock</i></td>
           <td *ngIf="room.peers[0].password.length < 1" style="text-align: center; padding: 0 1em;">-</td>
           <td style="text-align: center; padding: 0 1em;">{{room.peers.length}}人</td>
-          <td><button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit" (click)="connect(room.peers)">連線</button></td>
+          <td><button [disabled]="room.peers[0]?.room === currentRoom" *ngIf="0 < room.alias.length" type="submit"
+              (click)="connect(room.peers)">連線</button></td>
+          <td> <button [disabled]="room.peers[0]?.room === currentRoom"
+              *ngIf="0 < room.alias.length && room.isAllowGuest" type="submit"
+              (click)="connect(room.peers, true)">訪客</button></td>
         </tr>
       </ng-container>
     </table>
   </ng-container>
   <span *ngIf="rooms.length < 1" style="font-size: 12px;">{{help}}</span>
 </div>
-<ng-template #other_content><span style="font-size: 12px;">如果要連接到另一個房間，請斷開與其他與會者的連線。 <br>※*可以通過重新加載頁面來斷開連接。）</span></ng-template>
+<ng-template #other_content><span style="font-size: 12px;">如果要連接到另一個房間，請斷開與其他與會者的連線。 <br>※*可以通過重新加載頁面來斷開連接。）</span>
+</ng-template>

@@ -101,7 +101,9 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   private doubleClickPoint = { x: 0, y: 0 };
 
   private input: InputHandler = null;
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   constructor(
     private ngZone: NgZone,
     private panelService: PanelService,
@@ -110,7 +112,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private pointerDeviceService: PointerDeviceService,
     private chatMessageService: ChatMessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     EventSystem.register(this)
@@ -152,8 +154,10 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.input = new InputHandler(this.elementRef.nativeElement);
-    this.input.onStart = this.onInputStart.bind(this);
+    this.ngZone.runOutsideAngular(() => {
+      this.input = new InputHandler(this.elementRef.nativeElement);
+    });
+    this.input.onStart = e => this.ngZone.run(() => this.onInputStart(e));
   }
 
   ngOnDestroy() {
@@ -174,7 +178,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onInputStart(e: MouseEvent | TouchEvent) {
     this.startDoubleClickTimer(e);
-    if (e instanceof MouseEvent) this.startIconHiddenTimer();
+    this.startIconHiddenTimer();
   }
 
   startDoubleClickTimer(e) {
@@ -199,6 +203,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDoubleClick() {
+    if (this.GuestMode()) return;
     this.stopDoubleClickTimer();
     let distance = (this.doubleClickPoint.x - this.input.pointer.x) ** 2 + (this.doubleClickPoint.y - this.input.pointer.y) ** 2;
     if (distance < 10 ** 2) {
@@ -210,7 +215,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   onContextMenu(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-
+    if (this.GuestMode()) return;
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
     let position = this.pointerDeviceService.pointers[0];
 
@@ -223,7 +228,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     }
-    
+
     actions.push(ContextMenuSeparator);
     if (this.isMine || this.hasOwner) {
       actions.push({
@@ -305,6 +310,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showDetail(gameObject: DiceSymbol) {
+    if (this.GuestMode()) return;
     EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '骰子內容設定';

@@ -22,6 +22,9 @@ import { ModalService } from 'service/modal.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { TabletopService } from 'service/tabletop.service';
 
+import { GridLineRender } from './grid-line-render';
+import { TableTouchGesture, TableTouchGestureEvent } from './table-touch-gesture';
+
 @Component({
   selector: 'game-table',
   templateUrl: './game-table.component.html',
@@ -70,20 +73,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private buttonCode: number = 0;
   private input: InputHandler = null;
-
-  private hammer: HammerManager = null;
-  private deltaHammerDeltaX: number = 0;
-  private deltaHammerDeltaY = 1.0;
-  private deltaHammerScale = 1.0;
-  private deltaHammerRotation = 0;
-
-  private prevHammerDeltaX: number = 0;
-  private prevHammerDeltaY: number = 0;
-  private prevHammerScale: number = 0;
-  private prevHammerRotation: number = 0;
-
-  private tappedPanTimer: NodeJS.Timer = null;
-  private tappedPanCenter: HammerPoint = { x: 0, y: 0 };
+  private gesture: TableTouchGesture = null;
 
   get characters(): GameCharacter[] { return this.tabletopService.characters; }
   get tableMasks(): GameTableMask[] { return this.tabletopService.tableMasks; }
@@ -125,7 +115,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
       this.input = new InputHandler(this.elementRef.nativeElement, { capture: true });
-      this.initializeHammer();
+      this.initializeTableTouchGesture();
     });
     this.input.onStart = this.onInputStart.bind(this);
     this.input.onMove = this.onInputMove.bind(this);
@@ -139,156 +129,37 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     EventSystem.unregister(this);
     this.input.destroy();
-    this.hammer.destroy();
+    this.gesture.destroy();
   }
 
-  initializeHammer() {
-    this.hammer = new Hammer.Manager(this.rootElementRef.nativeElement, { inputClass: Hammer.TouchInput });
-
-    let tap = new Hammer.Tap();
-    let pan1p = new Hammer.Pan({ event: 'pan1p', pointers: 1, threshold: 0 });
-    let pan2p = new Hammer.Pan({ event: 'pan2p', pointers: 2, threshold: 0 });
-    let pinch = new Hammer.Pinch();
-    let rotate = new Hammer.Rotate();
-
-    pan1p.recognizeWith(pan2p);
-    pan1p.recognizeWith(rotate);
-    pan1p.recognizeWith(pinch);
-
-    pan2p.recognizeWith(pinch);
-    pan2p.recognizeWith(rotate);
-    pinch.recognizeWith(rotate);
-
-    this.hammer.add([tap, pan1p, pan2p, pinch, rotate]);
-
-    this.hammer.on('hammer.input', this.onHammer.bind(this));
-    this.hammer.on('tap', this.onTap.bind(this));
-    this.hammer.on('pan1pstart', this.onTappedPanStart.bind(this));
-    this.hammer.on('pan1pmove', this.onTappedPanMove.bind(this));
-    this.hammer.on('pan1pend', this.onTappedPanEnd.bind(this));
-    this.hammer.on('pan1pcancel', this.onTappedPanEnd.bind(this));
-    this.hammer.on('pan2pmove', this.onPanMove.bind(this));
-    this.hammer.on('pinchmove', this.onPinchMove.bind(this));
-    this.hammer.on('rotatemove', this.onRotateMove.bind(this));
-
-    // iOS で contextmenu が発火しない問題へのworkaround.
-    let ua = window.navigator.userAgent.toLowerCase();
-    let isiOS = ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('macintosh') > -1 && 'ontouchend' in document;
-    if (!isiOS) return;
-    this.hammer.add(new Hammer.Press({ time: 251 }));
-    this.hammer.on('press', ev => {
-      let event = new MouseEvent('contextmenu', {
-        bubbles: true,
-        cancelable: true,
-        clientX: ev.center.x,
-        clientY: ev.center.y,
-      });
-      this.ngZone.run(() => ev.srcEvent.target.dispatchEvent(event));
-    });
+  initializeTableTouchGesture() {
+    this.gesture = new TableTouchGesture(this.rootElementRef.nativeElement, this.ngZone);
+    this.gesture.ongesture = this.onTableTouchGesture.bind(this);
+    this.gesture.ontransform = this.onTableTouchTransform.bind(this);
   }
 
-  onHammer(ev: HammerInput) {
-    if (ev.isFirst) {
-      this.deltaHammerScale = ev.scale;
-      this.deltaHammerRotation = ev.rotation;
-      this.deltaHammerDeltaX = ev.deltaX;
-      this.deltaHammerDeltaY = ev.deltaY;
-    } else {
-      this.deltaHammerScale = ev.scale - this.prevHammerScale;
-      this.deltaHammerRotation = ev.rotation - this.prevHammerRotation;
-      this.deltaHammerDeltaX = ev.deltaX - this.prevHammerDeltaX;
-      this.deltaHammerDeltaY = ev.deltaY - this.prevHammerDeltaY;
-    }
-    this.prevHammerScale = ev.scale;
-    this.prevHammerRotation = ev.rotation;
-    this.prevHammerDeltaX = ev.deltaX;
-    this.prevHammerDeltaY = ev.deltaY;
-
-    if (this.tappedPanTimer == null || ev.eventType != Hammer.INPUT_START) return;
-    let distance = (this.tappedPanCenter.x - ev.center.x) ** 2 + (this.tappedPanCenter.y - ev.center.y) ** 2;
-    if (50 ** 2 < distance) {
-      clearTimeout(this.tappedPanTimer);
-      this.tappedPanTimer = null;
-    }
-  }
-
-  onTap(ev: HammerInput) {
-    this.cancelInput();
-    this.tappedPanCenter = ev.center;
-    this.tappedPanTimer = setTimeout(() => { this.tappedPanTimer = null; }, 400);
-  }
-
-  onTappedPanStart(ev: HammerInput) {
-    if (this.tappedPanTimer == null) return;
-    clearTimeout(this.tappedPanTimer);
+  onTableTouchGesture() {
     this.cancelInput();
   }
 
-  onTappedPanEnd(ev: HammerInput) {
-    clearTimeout(this.tappedPanTimer);
-    this.tappedPanTimer = null;
-  }
+  onTableTouchTransform(transformX: number, transformY: number, transformZ: number, rotateX: number, rotateY: number, rotateZ: number, event: string, srcEvent: TouchEvent | MouseEvent | PointerEvent) {
+    if (event === TableTouchGestureEvent.PAN && (!this.isTransformMode || this.input.isGrabbing)) return;
 
-  onTappedPanMove(ev: HammerInput) {
-    if (this.tappedPanTimer == null) {
-      if (!this.isTransformMode || this.input.isGrabbing) return;
-
-      let transformX = 0;
-      let transformY = 0;
-      let transformZ = 0;
-
-      let scale = (1000 + Math.abs(this.viewPotisonZ)) / 1000;
-      transformX = this.deltaHammerDeltaX * scale;
-      transformY = this.deltaHammerDeltaY * scale;
-
-      if (!this.pointerDeviceService.isAllowedToOpenContextMenu && this.contextMenuService.isShow) {
-        this.ngZone.run(() => { this.contextMenuService.close(); });
-      }
-
-      this.setTransform(transformX, transformY, transformZ, 0, 0, 0);
-
-    } else {
-      clearTimeout(this.tappedPanTimer);
-      this.cancelInput();
-
-      let scale = this.deltaHammerDeltaY;
-      let transformZ = scale * 7.5;
-
-      if (750 < transformZ + this.viewPotisonZ) transformZ += 750 - (transformZ + this.viewPotisonZ);
-
-      this.setTransform(0, 0, transformZ, 0, 0, 0);
+    if (!this.pointerDeviceService.isAllowedToOpenContextMenu && this.contextMenuService.isShow) {
+      this.ngZone.run(() => this.contextMenuService.close());
     }
-  }
 
-  onPanMove(ev: HammerInput) {
-    clearTimeout(this.tappedPanTimer);
-    this.tappedPanTimer = null;
-    this.cancelInput();
-    let rotateX = -this.deltaHammerDeltaY / window.innerHeight * 100;
+    if (srcEvent.cancelable) srcEvent.preventDefault();
 
+    //
+    let scale = (1000 + Math.abs(this.viewPotisonZ)) / 1000;
+    transformX *= scale;
+    transformY *= scale;
     if (80 < rotateX + this.viewRotateX) rotateX += 80 - (rotateX + this.viewRotateX);
     if (rotateX + this.viewRotateX < 0) rotateX += 0 - (rotateX + this.viewRotateX);
-
-    this.setTransform(0, 0, 0, rotateX, 0, 0);
-  }
-
-  onPinchMove(ev: HammerInput) {
-    clearTimeout(this.tappedPanTimer);
-    this.tappedPanTimer = null;
-    this.cancelInput();
-    let transformZ = this.deltaHammerScale * 500;
-
     if (750 < transformZ + this.viewPotisonZ) transformZ += 750 - (transformZ + this.viewPotisonZ);
 
-    this.setTransform(0, 0, transformZ, 0, 0, 0);
-  }
-
-  onRotateMove(ev: HammerInput) {
-    clearTimeout(this.tappedPanTimer);
-    this.tappedPanTimer = null;
-    this.cancelInput();
-    let rotateZ = this.deltaHammerRotation;
-    this.setTransform(0, 0, 0, 0, 0, rotateZ);
+    this.setTransform(transformX, transformY, transformZ, rotateX, rotateY, rotateZ);
   }
 
   onInputStart(e: any) {
@@ -316,7 +187,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onInputMove(e: any) {
-    if (!this.isTransformMode || this.tappedPanTimer != null) return;
+    if (!this.isTransformMode) return;
 
     let x = this.input.pointer.x;
     let y = this.input.pointer.y;
@@ -356,11 +227,13 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentPositionX = x;
     this.currentPositionY = y;
 
+    if (e.cancelable) e.preventDefault();
     this.setTransform(transformX, transformY, transformZ, rotateX, rotateY, rotateZ);
   }
 
   cancelInput() {
     this.input.cancel();
+    this.isTransformMode = true;
     this.pointerDeviceService.isDragging = false;
     let opacity: number = this.tableSelecter.gridShow ? 1.0 : 0.0;
     this.gridCanvas.nativeElement.style.opacity = opacity + '';
@@ -369,11 +242,26 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     let roomName = Network.peerContext && 0 < Network.peerContext.roomName.length
       ? Network.peerContext.roomName
       : 'UdoZ房間的數據';
-    this.saveDataService.saveRoom(roomName);
+    this.saveDataService.saveRoomAsync(roomName);
     event.preventDefault();
   }
   @HostListener('wheel', ['$event'])
   onWheel(e: WheelEvent) {
+    if (!this.isTransformMode) return;
+
+    let pixelDeltaY = 0;
+    switch (e.deltaMode) {
+      case WheelEvent.DOM_DELTA_LINE:
+        pixelDeltaY = e.deltaY * 16;
+        break;
+      case WheelEvent.DOM_DELTA_PAGE:
+        pixelDeltaY = e.deltaY * window.innerHeight;
+        break;
+      default:
+        pixelDeltaY = e.deltaY;
+        break;
+    }
+
     let transformX = 0;
     let transformY = 0;
     let transformZ = 0;
@@ -382,18 +270,17 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     let rotateY = 0;
     let rotateZ = 0;
 
-    if (e.deltaY < 0) {
-      transformZ = 150;
-    } else if (0 < e.deltaY) {
-      transformZ = -150;
-    }
+    transformZ = pixelDeltaY * -1.5;
+    if (300 ** 2 < transformZ ** 2) transformZ = Math.min(Math.max(transformZ, -300), 300);
 
     this.setTransform(transformX, transformY, transformZ, rotateX, rotateY, rotateZ);
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   @HostListener('document:keydown', ['$event'])
   onKeydown(e: KeyboardEvent) {
-    if (document.body !== document.activeElement) return;
+    if (!this.isTransformMode || document.body !== document.activeElement) return;
     let transformX = 0;
     let transformY = 0;
     let transformZ = 0;
@@ -442,7 +329,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     document.addEventListener('contextmenu', event => event.preventDefault());
     if (!document.activeElement.contains(this.gameObjects.nativeElement)) return;
     e.preventDefault();
-
+    if (this.GuestMode()) return;
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
@@ -495,7 +382,78 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     let calcGridPosition: { (w: number, h: number): void };
 
+
+
+    function HexCell(x, y, z) {
+      this._x = x;
+      this._y = y;
+      this._z = z;
+    }
+
+    function initGrid(mapSizeWidth, mapSizeHeight) {
+      mapSizeWidth = Math.max(1, Math.floor(mapSizeWidth / 2));
+      mapSizeHeight = Math.max(1, Math.floor(mapSizeHeight / 2));
+      let mapSizeZ = 10;
+      mapSizeZ = Math.max(1, Math.max(mapSizeHeight, mapSizeWidth));
+      console.log('mapSizeWidth, mapSizeHeight', mapSizeWidth, mapSizeHeight, mapSizeZ)
+      let gridArray = [];
+      let cnt = 0;
+
+      for (let i = -mapSizeWidth; i < mapSizeWidth + 1; i += 1) {
+        for (let j = -mapSizeHeight; j < mapSizeHeight + 1; j += 1) {
+          for (let k = -mapSizeZ; k < mapSizeZ + 1; k += 1) {
+            if (i + j + k == 0) {
+              gridArray.push(new HexCell(i, j, k));
+              cnt += 1;
+            }
+          }
+        }
+      }
+
+      return gridArray;
+    }
+
+    function drawGrid(gridArray) {
+      let edgeLength = gridSize;
+      let edgeW = edgeLength * 3 / 2;
+      let edgeH = edgeLength * Math.sqrt(3) / 2;
+
+      canvasElement.width = width * gridSize;
+      canvasElement.height = height * gridSize;
+      context = canvasElement.getContext('2d');
+      context.strokeStyle = gridColor;
+      context.fillStyle = "rgba(255, 255, 255, 0.0)";
+      context.lineWidth = 3;
+      let x, y, z;
+      let posX, posY;
+      let centerX = canvasElement.width / 2;
+      let centerY = canvasElement.height / 2;
+
+      for (let i = 0; i < gridArray.length; i++) {
+        [x, y, z] = [gridArray[i]._x, gridArray[i]._y, gridArray[i]._z];
+        posX = x * edgeW + centerX;
+        posY = (-y + z) * edgeH + centerY;
+
+        context.moveTo(posX + Math.cos(0) * edgeLength,
+          posY + Math.sin(0) * edgeLength);
+        for (let j = 1; j <= 6; j++) {
+          context.lineTo(posX + Math.cos(j / 6 * (Math.PI * 2)) * edgeLength,
+            posY + Math.sin(j / 6 * (Math.PI * 2)) * edgeLength);
+        }
+        context.fill();
+        context.stroke();
+      }
+    }
+
+
+
+
+
     switch (gridType) {
+      case GridType.HEX_ZETETIC:
+        let hexGrid = initGrid(width, height);
+        drawGrid(hexGrid);
+        break;
       case GridType.HEX_VERTICAL: // ヘクス縦揃え
         calcGridPosition = (w, h) => {
           if ((w % 2) === 1) {
@@ -526,7 +484,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
     }
 
-    if (0 <= gridType) {
+    if (0 <= gridType && gridType !== 3) {
       for (let h = 0; h <= height; h++) {
         for (let w = 0; w <= width; w++) {
           calcGridPosition(w, h);
@@ -536,6 +494,10 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+    let render = new GridLineRender(this.gridCanvas.nativeElement);
+    render.render(width, height, gridSize, gridType, gridColor);
+
+
 
     let opacity: number = this.tableSelecter.gridShow ? 1.0 : 0.0;
     this.gridCanvas.nativeElement.style.opacity = opacity + '';

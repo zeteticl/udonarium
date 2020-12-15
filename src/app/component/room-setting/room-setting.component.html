@@ -3,6 +3,7 @@
       placeholder="必須有房間名稱" /></div>
   <div>密碼: <input class="input" (input)="calcPeerId(roomName, $event.target.value)" [(ngModel)]="password" maxlength="12" #passwordValidation="ngModel" placeholder="留空即沒有密碼"
     /></div>
+    <div><input type="checkbox" [(ngModel)]="allowGuest" />允許訪客</div>
   <hr/>
   <div *ngIf="roomNameValidation.errors && (roomNameValidation.dirty || roomNameValidation.touched)">
     <div [hidden]="!roomNameValidation.errors.required">

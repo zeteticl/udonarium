@@ -6,6 +6,7 @@ import {
   ElementRef,
   HostListener,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -61,6 +62,7 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
   private input: InputHandler = null;
 
   constructor(
+    private ngZone: NgZone,
     private tabletopService: TabletopService,
     private contextMenuService: ContextMenuService,
     private elementRef: ElementRef<HTMLElement>,
@@ -96,7 +98,9 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngAfterViewInit() {
-    this.input = new InputHandler(this.elementRef.nativeElement);
+    this.ngZone.runOutsideAngular(() => {
+      this.input = new InputHandler(this.elementRef.nativeElement);
+    });
     this.input.onStart = this.onInputStart.bind(this);
   }
 
@@ -119,12 +123,14 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
       EventSystem.trigger('DRAG_LOCKED_OBJECT', {});
     }
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   @HostListener('contextmenu', ['$event'])
   onContextMenu(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-
+    if (this.GuestMode()) return;
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
     let menuPosition = this.pointerDeviceService.pointers[0];
     let objectPosition = this.tabletopService.calcTabletopLocalCoordinate();
@@ -195,6 +201,7 @@ export class GameTableMaskComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   public showDetail(gameObject: GameTableMask) {
+    if (this.GuestMode()) return;
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '地圖迷霧設定';
     if (gameObject.name.length) title += ' - ' + gameObject.name;

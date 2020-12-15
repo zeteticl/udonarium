@@ -7,7 +7,7 @@ import { ImageContext, ImageFile } from '@udonarium/core/file-storage/image-file
 import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { EventSystem, Network } from '@udonarium/core/system';
 import { DiceSymbol, DiceType } from '@udonarium/dice-symbol';
 import { GameCharacter } from '@udonarium/game-character';
 import { GameTable, FilterType } from '@udonarium/game-table';
@@ -441,6 +441,7 @@ export class TabletopService {
   }
 
   getContextMenuActionsForCreateObject(position: PointerCoordinate): ContextMenuAction[] {
+    if (this.GuestMode()) return;
     return [
       this.getCreateCharacterMenu(position),
       this.getCreateTableMaskMenu(position),
@@ -451,8 +452,11 @@ export class TabletopService {
       this.getCreateDiceSymbolMenu(position),
     ];
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   private getCreateCharacterMenu(position: PointerCoordinate): ContextMenuAction {
+    if (this.GuestMode()) return;
     return {
       name: '新增角色', action: () => {
         let character = this.createGameCharacter(position);

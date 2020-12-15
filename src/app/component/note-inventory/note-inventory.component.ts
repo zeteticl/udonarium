@@ -167,10 +167,15 @@ export class NoteInventoryComponent implements OnInit, AfterViewInit, OnDestroy 
   getInventoryTags(gameObject: TextNote): DataElement[] {
     return this.getInventory(gameObject.location.name).dataElementMap.get(gameObject.identifier);
   }
+  GuestMode() {
+    return Network.GuestMode();
+  }
   settotable(gameObject) {
+    if (this.GuestMode()) return;
     gameObject.setLocation('table');
   }
   settocommon(gameObject) {
+    if (this.GuestMode()) return;
     gameObject.setLocation('common');
   }
   showgameObject(GObject) {

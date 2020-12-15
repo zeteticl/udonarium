@@ -23,7 +23,9 @@ export class ChatMessageService {
   ];
 
   gameType: string = '';
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   constructor() { }
 
   get chatTabs(): ChatTab[] {
@@ -65,15 +67,16 @@ export class ChatMessageService {
         console.log('st: ' + st + '');
         console.log('timeOffset: ' + this.timeOffset);
         console.log('performanceOffset: ' + this.performanceOffset);
-        this.setRerequest();
+        this.setIntervalTimer();
       })
       .catch(error => {
         console.warn('There has been a problem with your fetch operation: ', error.message);
-        this.setRerequest();
+        this.setIntervalTimer();
       });
+    this.setIntervalTimer();
   }
 
-  private setRerequest() {
+  private setIntervalTimer() {
     this.intervalTimer = setTimeout(() => {
       this.intervalTimer = null;
       this.calibrateTimeOffset();
@@ -85,7 +88,8 @@ export class ChatMessageService {
   }
 
   sendMessage(chatTab: ChatTab, text: string, gameType: string, sendFrom: string, sendTo?: string, color?: string): ChatMessage {
-    if(color==null) color="#000000";
+    if (color == null) color = "#000000";
+
     let chatMessage: ChatMessageContext = {
       from: Network.peerContext.id,
       to: this.findId(sendTo),
@@ -96,7 +100,9 @@ export class ChatMessageService {
       text: text,
       color: color,
     };
-
+    if (this.GuestMode()) {
+      chatMessage.name += '(訪客)'
+    }
     return chatTab.addMessage(chatMessage);
   }
 

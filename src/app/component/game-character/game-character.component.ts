@@ -125,12 +125,14 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
     e.stopPropagation();
     e.preventDefault();
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   @HostListener('contextmenu', ['$event'])
   onContextMenu(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-
+    if (this.GuestMode()) return;
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
     let position = this.pointerDeviceService.pointers[0];
@@ -226,6 +228,7 @@ export class GameCharacterComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   public showDetail(gameObject: GameCharacter) {
+    if (this.GuestMode()) return;
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '角色卡';
     if (gameObject.name.length) title += ' - ' + gameObject.name;

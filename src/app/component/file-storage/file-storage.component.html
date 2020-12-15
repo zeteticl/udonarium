@@ -1,4 +1,4 @@
-<label>
+<label *ngIf="!GuestMode()">
   <div class="drop-zone">
     <div>
       <i class="material-icons large-font">add_photo_alternate</i>
@@ -10,11 +10,11 @@
       <br>每張圖片最大2MB</div>
   </div>
 </label>
-<div>
+<div *ngIf="!GuestMode()">
   使用圖片網址：<input type="text" [(ngModel)]="imgUrl" placeholder="圖片網址"> <button (click)="uploadByUrl()">上傳</button>
 </div>
 
-<div class="sticky-top">
+<div class="sticky-top" *ngIf="!GuestMode()">
   <div>
     検索: <input [(ngModel)]="searchWord" placeholder="部分匹配搜索 如指定多個標籤 加上空格" />
   </div>
@@ -22,7 +22,7 @@
     標籤: <input [(ngModel)]="selectedTag" placeholder="標籤名" [attr.disabled]="isSelected ? null : ''" />
   </div>
 </div>
-<div id="file-list">
+<div id="file-list" *ngIf="!GuestMode()">
   <div *ngFor="let file of images" [ngClass]="{ image: true, selected: selectedFile === file }">
     <img *ngIf="0 < file.url.length" [src]="file.url | safe: 'resourceUrl'" [alt]="file.name" height="120"
       (click)="onSelectedFile(file)" (error)="deleteFile(file)">>

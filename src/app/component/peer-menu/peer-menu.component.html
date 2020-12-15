@@ -30,7 +30,7 @@
         style="font-weight: bold;">{{networkService.peerContext.roomName}}/{{networkService.peerContext.room}}</span></span>
   </div>
   <div>
-    <span>密碼：<span *ngIf="networkService.isOpen"
+    <span>密碼：<span *ngIf="networkService.isOpen&&!GuestMode()"
         style="font-weight: bold;">{{networkService.peerContext.password}}</span></span>
   </div>
 </ng-container>
@@ -39,6 +39,7 @@
   <div>
     <span *ngIf="!conn.isOpen">[連線中]</span>
     <span>其他参加者：{{conn.id}} [{{findPeerName(conn.fullstring)}}]</span>
+    <span *ngIf="GuestMode()">(訪客)</span>
   </div>
 </div>
 <div>

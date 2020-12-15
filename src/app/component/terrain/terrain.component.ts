@@ -1,4 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ImageFile } from '@udonarium/core/file-storage/image-file';
 import { ObjectNode } from '@udonarium/core/synchronize-object/object-node';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
@@ -14,7 +25,7 @@ import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { TabletopService } from 'service/tabletop.service';
 import { PeerCursor } from '@udonarium/peer-cursor';
-import {  Network } from '@udonarium/core/system';
+import { Network } from '@udonarium/core/system';
 
 
 @Component({
@@ -51,6 +62,10 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
   get width(): number { return this.adjustMinBounds(this.terrain.width); }
   get depth(): number { return this.adjustMinBounds(this.terrain.depth); }
 
+  get isVisibleFloor(): boolean { return 0 < this.width * this.depth; }
+  get isVisibleWallTopBottom(): boolean { return 0 < this.width * this.height; }
+  get isVisibleWallLeftRight(): boolean { return 0 < this.depth * this.height; }
+
   gridSize: number = 50;
 
   movableOption: MovableOption = {};
@@ -59,6 +74,7 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
   private input: InputHandler = null;
 
   constructor(
+    private ngZone: NgZone,
     private tabletopService: TabletopService,
     private contextMenuService: ContextMenuService,
     private elementRef: ElementRef<HTMLElement>,
@@ -72,7 +88,7 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
       .on('UPDATE_GAME_OBJECT', -1000, event => {
         let object = ObjectStore.instance.get(event.data.identifier);
         if (!this.terrain || !object) return;
-        if (this.terrain === object || (object instanceof ObjectNode && this.terrain.contains(object))|| (object instanceof PeerCursor && object.peerId === this.terrain.GM)) {
+        if (this.terrain === object || (object instanceof ObjectNode && this.terrain.contains(object)) || (object instanceof PeerCursor && object.peerId === this.terrain.GM)) {
           this.changeDetector.markForCheck();
         }
       })
@@ -95,7 +111,9 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.input = new InputHandler(this.elementRef.nativeElement);
+    this.ngZone.runOutsideAngular(() => {
+      this.input = new InputHandler(this.elementRef.nativeElement);
+    });
     this.input.onStart = this.onInputStart.bind(this);
   }
 
@@ -118,12 +136,16 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
       EventSystem.trigger('DRAG_LOCKED_OBJECT', {});
     }
   }
+  GuestMode() {
+    return Network.GuestMode();
+  }
 
   @HostListener('contextmenu', ['$event'])
   onContextMenu(e: Event) {
+
     e.stopPropagation();
     e.preventDefault();
-
+    if (this.GuestMode()) return;
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu) return;
 
     let menuPosition = this.pointerDeviceService.pointers[0];
@@ -205,6 +227,7 @@ export class TerrainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public showDetail(gameObject: Terrain) {
+    if (this.GuestMode()) return;
     EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
     let coordinate = this.pointerDeviceService.pointers[0];
     let title = '設定地形';

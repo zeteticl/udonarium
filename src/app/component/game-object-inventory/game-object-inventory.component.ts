@@ -138,8 +138,11 @@ export class GameObjectInventoryComponent implements OnInit, AfterViewInit, OnDe
   getInventoryTags(gameObject: GameCharacter): DataElement[] {
     return this.getInventory(gameObject.location.name).dataElementMap.get(gameObject.identifier);
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   onContextMenu(e: Event, gameObject: GameCharacter) {
+    if (this.GuestMode()) return;
     if (document.activeElement instanceof HTMLInputElement && document.activeElement.getAttribute('type') !== 'range') return;
     e.stopPropagation();
     e.preventDefault();

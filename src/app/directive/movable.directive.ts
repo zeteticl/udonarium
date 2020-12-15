@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output } from '@angular/core';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
-import { EventSystem } from '@udonarium/core/system';
+import { EventSystem, Network } from '@udonarium/core/system';
 import { TableSelecter } from '@udonarium/table-selecter';
 import { TabletopObject } from '@udonarium/tabletop-object';
 import { PointerCoordinate, PointerDeviceService } from 'service/pointer-device.service';
@@ -116,7 +116,7 @@ export class MovableDirective implements AfterViewInit, OnDestroy {
     this.callSelectedEvent();
     if (this.collidableElements.length < 1) this.findCollidableElements(); // 稀にcollidableElementsの取得に失敗している
 
-    if (this.isDisable || (e as MouseEvent).button === 1 || (e as MouseEvent).button === 2) return this.cancel();
+    if (Network.GuestMode() || this.isDisable || (e as MouseEvent).button === 1 || (e as MouseEvent).button === 2) return this.cancel();
     this.onstart.emit(e as PointerEvent);
 
     this.setPointerEvents(false);
@@ -149,6 +149,7 @@ export class MovableDirective implements AfterViewInit, OnDestroy {
       return this.cancel(); // todo
     }
     if (this.isDisable || !this.input.isGrabbing) return this.cancel();
+    if (e.cancelable) e.preventDefault();
 
     if (!this.input.isDragging) this.setPointerEvents(false);
     let target = document.elementFromPoint(this.input.pointer.x, this.input.pointer.y) as HTMLElement;
@@ -183,7 +184,7 @@ export class MovableDirective implements AfterViewInit, OnDestroy {
 
   onContextMenu(e: MouseEvent | TouchEvent) {
     if (this.isDisable) return this.cancel();
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
 
     let tableSelecter = ObjectStore.instance.get<TableSelecter>('tableSelecter');
     if (tableSelecter.gridSnap) this.snapToGrid();

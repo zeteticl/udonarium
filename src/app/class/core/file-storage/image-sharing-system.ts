@@ -6,15 +6,17 @@ import { ImageContext, ImageFile, ImageState } from './image-file';
 import { CatalogItem, ImageStorage } from './image-storage';
 import { MimeType } from './mime-type';
 
-export class FileSharingSystem {
-  private static _instance: FileSharingSystem
-  static get instance(): FileSharingSystem {
-    if (!FileSharingSystem._instance) FileSharingSystem._instance = new FileSharingSystem();
-    return FileSharingSystem._instance;
+export class ImageSharingSystem {
+  private static _instance: ImageSharingSystem
+  static get instance(): ImageSharingSystem {
+    if (!ImageSharingSystem._instance) ImageSharingSystem._instance = new ImageSharingSystem();
+    return ImageSharingSystem._instance;
   }
 
-  private taskMap: Map<string, BufferSharingTask<ImageContext[]>> = new Map();
-  private maxTransmission: number = 1;
+  private sendTaskMap: Map<string, BufferSharingTask<ImageContext[]>> = new Map();
+  private receiveTaskMap: Map<string, BufferSharingTask<ImageContext[]>> = new Map();
+  private maxSendTask: number = 2;
+  private maxReceiveTask: number = 4;
 
   private constructor() {
     console.log('FileSharingSystem ready...');
@@ -43,16 +45,17 @@ export class FileSharingSystem {
             image = ImageFile.createEmpty(item.identifier);
             ImageStorage.instance.add(image);
           }
-          if (image.state < ImageState.COMPLETE) {
+          if (image.state < ImageState.COMPLETE && !this.receiveTaskMap.has(item.identifier)) {
             request.push({ identifier: item.identifier, state: image.state });
           }
         }
 
-        if (request.length < 1 && otherCatalog.length < ImageStorage.instance.getCatalog().length) {
+        // Peer切断時などのエッジケースに対応する
+        if (request.length < 1 && !this.hasActiveTask() && otherCatalog.length < ImageStorage.instance.getCatalog().length) {
           ImageStorage.instance.synchronize(event.sendFrom);
         }
 
-        if (request.length < 1 || this.isTransmission()) {
+        if (request.length < 1 || this.isLimitReceiveTask()) {
           return;
         }
         this.request(request, event.sendFrom);
@@ -65,15 +68,15 @@ export class FileSharingSystem {
 
         for (let item of request) {
           let image: ImageFile = ImageStorage.instance.get(item.identifier);
-          if (item.state < image.state)
+          if (image && item.state < image.state)
             randomRequest.push({ identifier: item.identifier, state: item.state });
         }
 
-        if (this.isTransmission() === false && 0 < randomRequest.length) {
+        if (this.isLimitSendTask() === false && 0 < randomRequest.length && !this.existsSendTask(event.data.receiver)) {
           // 送信
           let updateImages: ImageContext[] = this.makeSendUpdateImages(randomRequest);
           console.log('REQUEST_FILE_RESOURE ImageStorageService Send!!! ' + event.data.receiver + ' -> ' + updateImages.length);
-          this.startSendTransmission(updateImages, event.data.receiver);
+          this.startSendTask(updateImages, event.data.receiver);
         } else {
           // 中継
           let candidatePeers: string[] = event.data.candidatePeers;
@@ -85,7 +88,7 @@ export class FileSharingSystem {
             EventSystem.call(event, peer);
             return;
           }
-          console.log('REQUEST_FILE_RESOURE ImageStorageService あぶれた...' + event.data.receiver, randomRequest.length, this.taskMap);
+          console.log('REQUEST_FILE_RESOURE ImageStorageService あぶれた...' + event.data.receiver, randomRequest.length);
         }
       })
       .on('UPDATE_FILE_RESOURE', event => {
@@ -98,9 +101,15 @@ export class FileSharingSystem {
         }
       })
       .on('START_FILE_TRANSMISSION', event => {
-        let identifier = event.data.taskIdentifier
-        console.log('START_FILE_TRANSMISSION ' + identifier);
-        this.startReceiveTransmission(identifier);
+        console.log('START_FILE_TRANSMISSION ' + event.data.taskIdentifier);
+        let identifier = event.data.taskIdentifier;
+        let image: ImageFile = ImageStorage.instance.get(identifier);
+        if (this.receiveTaskMap.has(identifier) || (image && ImageState.COMPLETE <= image.state)) {
+          console.warn('CANCEL_TASK_ ' + identifier);
+          EventSystem.call('CANCEL_TASK_' + identifier, null, event.sendFrom);
+        } else {
+          this.startReceiveTask(identifier);
+        }
       });
   }
 
@@ -108,9 +117,10 @@ export class FileSharingSystem {
     EventSystem.unregister(this);
   }
 
-  private async startSendTransmission(updateImages: ImageContext[], sendTo: string) {
-    let identifier = UUID.generateUuid();
-    this.taskMap.set(identifier, null);
+  private async startSendTask(updateImages: ImageContext[], sendTo: string) {
+    let identifier = updateImages.length === 1 ? updateImages[0].identifier : UUID.generateUuid();
+    let task = BufferSharingTask.createSendTask<ImageContext[]>(identifier, sendTo);
+    this.sendTaskMap.set(task.identifier, task);
     EventSystem.call('START_FILE_TRANSMISSION', { taskIdentifier: identifier }, sendTo);
 
     /* hotfix issue #1 */
@@ -123,43 +133,41 @@ export class FileSharingSystem {
     }
     /* */
 
-    let task = await BufferSharingTask.createSendTask(updateImages, sendTo, identifier);
-    this.taskMap.set(task.identifier, task);
-
     task.onfinish = (task, data) => {
-      this.stopTransmission(task.identifier);
+      this.stopSendTask(task.identifier);
       ImageStorage.instance.synchronize();
     }
-    task.ontimeout = (task) => {
-      this.stopTransmission(task.identifier);
-      ImageStorage.instance.synchronize();
-    }
+
+    task.start(updateImages);
   }
 
-  private startReceiveTransmission(identifier: string) {
-    this.stopTransmission(identifier);
-    if (this.taskMap.has(identifier)) return;
-
+  private startReceiveTask(identifier: string) {
     let task = BufferSharingTask.createReceiveTask<ImageContext[]>(identifier);
-    this.taskMap.set(identifier, task);
+    this.receiveTaskMap.set(identifier, task);
     task.onfinish = (task, data) => {
-      this.stopTransmission(task.identifier);
-      EventSystem.trigger('UPDATE_FILE_RESOURE', { identifier: task.identifier, updateImages: data });
+      this.stopReceiveTask(task.identifier);
+      if (data) EventSystem.trigger('UPDATE_FILE_RESOURE', { identifier: task.identifier, updateImages: data });
       ImageStorage.instance.synchronize();
     }
-    task.ontimeout = (task) => {
-      this.stopTransmission(task.identifier);
-      ImageStorage.instance.synchronize();
-    }
-    console.log('startFileTransmission => ', this.taskMap.size);
+
+    task.start();
+    console.log('startReceiveTask => ', this.receiveTaskMap.size);
   }
 
-  private stopTransmission(identifier: string) {
-    let task = this.taskMap.get(identifier);
+  private stopSendTask(identifier: string) {
+    let task = this.sendTaskMap.get(identifier);
     if (task) { task.cancel(); }
-    this.taskMap.delete(identifier);
+    this.sendTaskMap.delete(identifier);
 
-    console.log('stopFileTransmission => ', this.taskMap.size);
+    console.log('stopSendTask => ', this.sendTaskMap.size);
+  }
+
+  private stopReceiveTask(identifier: string) {
+    let task = this.receiveTaskMap.get(identifier);
+    if (task) { task.cancel(); }
+    this.receiveTaskMap.delete(identifier);
+
+    console.log('stopReceiveTask => ', this.receiveTaskMap.size);
   }
 
   private request(request: CatalogItem[], peer: string) {
@@ -214,20 +222,30 @@ export class FileSharingSystem {
           ? context.thumbnail.blob.size
           : 100;
 
-      if (0 < byteSize && maxSize < byteSize + size) break;
-
       updateImages.push(context);
       byteSize += size;
+      if (maxSize < byteSize) break;
     }
     return updateImages;
   }
 
-  private isTransmission(): boolean {
-    if (this.maxTransmission <= this.taskMap.size) {
-      return true;
-    } else {
-      return false;
+  private hasActiveTask(): boolean {
+    return 0 < this.sendTaskMap.size || 0 < this.receiveTaskMap.size;
+  }
+
+  private isLimitSendTask(): boolean {
+    return this.maxSendTask <= this.sendTaskMap.size;
+  }
+
+  private isLimitReceiveTask(): boolean {
+    return this.maxReceiveTask <= this.receiveTaskMap.size;
+  }
+
+  private existsSendTask(peer: string): boolean {
+    for (let task of this.sendTaskMap.values()) {
+      if (task && task.sendTo === peer) return true;
     }
+    return false;
   }
 }
 

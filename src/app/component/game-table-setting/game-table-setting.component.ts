@@ -5,7 +5,7 @@ import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { EventSystem, Network } from '@udonarium/core/system';
-import { GameTable, GridType, FilterType } from '@udonarium/game-table';
+import { FilterType, GameTable, GridType } from '@udonarium/game-table';
 import { TableSelecter } from '@udonarium/table-selecter';
 
 import { FileSelecterComponent } from 'component/file-selecter/file-selecter.component';
@@ -73,8 +73,11 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
     return ObjectStore.instance.get<GameTable>(this.selectedTable.identifier) == null;
   }
   get isEditable(): boolean {
-    return !this.isEmpty && !this.isDeleted;
+    return !this.isEmpty && !this.isDeleted && !this.GuestMode();
   }
+
+  isSaveing: boolean = false;
+  progresPercent: number = 0;
 
   constructor(
     private modalService: ModalService,
@@ -83,6 +86,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   ) { }
 
   ngOnInit() {
+    if (this.GuestMode()) return;
     Promise.resolve().then(() => this.modalService.title = this.panelService.title = '桌面設定');
     this.selectedTable = this.tableSelecter.viewTable;
     EventSystem.register(this)
@@ -102,6 +106,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   selectGameTable(identifier: string) {
+    if (this.GuestMode()) return;
     EventSystem.call('SELECT_GAME_TABLE', { identifier: identifier }, Network.peerId);
     this.selectedTable = ObjectStore.instance.get<GameTable>(identifier);
     this.selectedTableXml = '';
@@ -110,8 +115,11 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   getGameTables(): GameTable[] {
     return ObjectStore.instance.getObjects(GameTable);
   }
-
+  GuestMode() {
+    return Network.GuestMode();
+  }
   createGameTable() {
+    if (this.GuestMode()) return;
     let gameTable = new GameTable();
     gameTable.name = '空白的桌面';
     gameTable.imageIdentifier = 'testTableBackgroundImage_image';
@@ -119,13 +127,25 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
     this.selectGameTable(gameTable.identifier);
   }
 
-  save() {
-    if (!this.selectedTable) return;
+  async save() {
+    if (this.GuestMode()) return;
+    if (!this.selectedTable || this.isSaveing) return;
+    this.isSaveing = true;
+    this.progresPercent = 0;
+
     this.selectedTable.selected = true;
-    this.saveDataService.saveGameObject(this.selectedTable, 'map_' + this.selectedTable.name);
+    await this.saveDataService.saveGameObjectAsync(this.selectedTable, 'map_' + this.selectedTable.name, percent => {
+      this.progresPercent = percent;
+    });
+
+    setTimeout(() => {
+      this.isSaveing = false;
+      this.progresPercent = 0;
+    }, 500);
   }
 
   delete() {
+    if (this.GuestMode()) return;
     if (!this.isEmpty && this.selectedTable) {
       this.selectedTableXml = this.selectedTable.toXml();
       this.selectedTable.destroy();
@@ -133,6 +153,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   restore() {
+    if (this.GuestMode()) return;
     if (this.selectedTable && this.selectedTableXml) {
       let restoreTable = ObjectSerializer.instance.parseXml(this.selectedTableXml);
       this.selectGameTable(restoreTable.identifier);
@@ -141,6 +162,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   openBgImageModal() {
+    if (this.GuestMode()) return;
     if (this.isDeleted) return;
     this.modalService.open<string>(FileSelecterComponent).then(value => {
       if (!this.selectedTable || !value) return;
@@ -149,6 +171,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   openDistanceViewImageModal() {
+    if (this.GuestMode()) return;
     if (this.isDeleted) return;
     this.modalService.open<string>(FileSelecterComponent, { isAllowedEmpty: true }).then(value => {
       if (!this.selectedTable || !value) return;

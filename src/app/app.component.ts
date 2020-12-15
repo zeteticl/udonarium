@@ -5,7 +5,7 @@ import { AudioSharingSystem } from '@udonarium/core/file-storage/audio-sharing-s
 import { AudioStorage } from '@udonarium/core/file-storage/audio-storage';
 import { FileArchiver } from '@udonarium/core/file-storage/file-archiver';
 import { ImageFile } from '@udonarium/core/file-storage/image-file';
-import { FileSharingSystem } from '@udonarium/core/file-storage/image-sharing-system';
+import { ImageSharingSystem } from '@udonarium/core/file-storage/image-sharing-system';
 import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { ObjectFactory } from '@udonarium/core/synchronize-object/object-factory';
 import { ObjectSerializer } from '@udonarium/core/synchronize-object/object-serializer';
@@ -54,6 +54,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private immediateUpdateTimer: NodeJS.Timer = null;
   private lazyUpdateTimer: NodeJS.Timer = null;
   private openPanelCount: number = 0;
+  isSaveing: boolean = false;
+  progresPercent: number = 0;
 
   constructor(
     private modalService: ModalService,
@@ -69,7 +71,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       EventSystem;
       Network;
       FileArchiver.instance.initialize();
-      FileSharingSystem.instance.initialize();
+      ImageSharingSystem.instance.initialize();
       ImageStorage.instance;
       AudioSharingSystem.instance.initialize();
       AudioStorage.instance;
@@ -193,7 +195,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     EventSystem.unregister(this);
   }
-
+  createGameCharacter() {
+    GameCharacter.create("遊戲角色", 1, 'null');
+  }
   open(componentName: string) {
     let component: { new(...args: any[]): any } = null;
     let option: PanelOption = { width: 450, height: 600, left: 100 }
@@ -237,19 +241,32 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.panelService.open(component, option);
     }
   }
-  createGameCharacter() {
-    GameCharacter.create("遊戲角色", 1, 'null');
-  }
-  save() {
+
+  async save() {
+    if (this.isSaveing) return;
+    this.isSaveing = true;
+    this.progresPercent = 0;
+
     let roomName = Network.peerContext && 0 < Network.peerContext.roomName.length
       ? Network.peerContext.roomName
       : 'UdoZ房間的數據';
-    this.saveDataService.saveRoom(roomName);
+    await this.saveDataService.saveRoomAsync(roomName, percent => {
+      this.progresPercent = percent;
+    });
+
+    setTimeout(() => {
+      this.isSaveing = false;
+      this.progresPercent = 0;
+    }, 500);
   }
 
   handleFileSelect(event: Event) {
     let files = (<HTMLInputElement>event.target).files;
     if (files.length) FileArchiver.instance.load(files);
+  }
+
+  GuestMode() {
+    return Network.GuestMode();
   }
 
   private lazyNgZoneUpdate(isImmediate: boolean) {

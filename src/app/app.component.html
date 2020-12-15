@@ -1,7 +1,7 @@
 <div id="app-table-layer" style="position: absolute; width: 100%; height: 100%; overflow: hidden;">
   <game-table></game-table>
 </div>
-<ui-panel [top]="0" [left]="0" [width]="100" [height]="530" [title]="'功能表'">
+<ui-panel [top]="0" [left]="0" [width]="100" [height]="570" [title]="'功能表'">
   <nav>
     <ul>
       <li (click)="open('PeerMenuComponent')">
@@ -16,25 +16,25 @@
           <div>聊天視窗</div>
         </a>
       </li>
-      <li (click)="open('GameTableSettingComponent')">
+      <li (click)="open('GameTableSettingComponent')" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">layers</i></div>
           <div>桌面地圖</div>
         </a>
       </li>
-      <li (click)="open('FileStorageComponent')">
+      <li (click)="open('FileStorageComponent')" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">photo_library</i></div>
           <div>上傳圖片</div>
         </a>
       </li>
-      <li (click)="open('JukeboxComponent')">
+      <li (click)="open('JukeboxComponent')" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">queue_music</i></div>
           <div>播放音樂</div>
         </a>
       </li>
-      <li (click)="open('GameObjectInventoryComponent')">
+      <li (click)="open('GameObjectInventoryComponent')" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">folder_shared</i></div>
           <div>角色倉庫</div>
@@ -46,14 +46,14 @@
           <div>筆記倉庫</div>
         </a>
       </li>
-      <li (click)="createGameCharacter()">
+      <li (click)="createGameCharacter()" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">accessibility</i></div>
           <div>角色生成</div>
         </a>
       </li>
       <li>
-        <a routerLink="/" routerLinkActive="active">
+        <a routerLink="/" routerLinkActive="active" *ngIf="!GuestMode()">
           <label>
             <div><i class="material-icons">open_in_browser</i></div>
             <div>讀取房間</div>
@@ -62,16 +62,20 @@
           </label>
         </a>
       </li>
-      <li (click)="save()">
+      <li (click)="save()" *ngIf="!GuestMode()&&!isSaveing">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">sd_storage</i></div>
           <div>保存房間</div>
         </a>
       </li>
-      
+      <li *ngIf="isSaveing" style="pointer-events: none;">
+        <a>
+          <div><i class="material-icons vibration-amine">sd_storage</i></div>
+          <div>{{progresPercent}}%</div>
+        </a>
+      </li>
     </ul>
   </nav>
 </ui-panel>
 <div #modalLayer></div>
 <network-indicator class="networkIndicator"></network-indicator>
-

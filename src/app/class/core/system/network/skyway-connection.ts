@@ -45,13 +45,13 @@ export class SkyWayConnection implements Connection {
   open(peerId: string)
   open(peerId: string, roomId: string, roomName: string, password: string)
   open(...args: any[]) {
-    console.log('open', args);
+    //  console.log('open', args);
     if (args.length === 0) {
       this.peerContext = PeerContext.create(PeerContext.generateId());
     } else if (args.length === 1) {
       this.peerContext = PeerContext.create(args[0]);
     } else {
-      this.peerContext = PeerContext.create(args[0], args[1], args[2], args[3]);
+      this.peerContext = PeerContext.create(args[0], args[1], args[2], args[3], args[4], args[5]);
     }
     this.openPeer();
   }
@@ -223,6 +223,7 @@ export class SkyWayConnection implements Connection {
     if (0 <= index) context = this.peerContexts[index];
 
     let timeout: NodeJS.Timer = setTimeout(() => {
+      timeout = null;
       this.closeDataConnection(conn);
       if (this.callback.onDisconnect) this.callback.onDisconnect(conn.remoteId);
     }, 15000);
@@ -231,21 +232,27 @@ export class SkyWayConnection implements Connection {
       this.onData(conn, data);
     });
     conn.on('open', () => {
-      if (timeout !== null) clearTimeout(timeout);
-      timeout = null;
+      if (timeout != null) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
       if (context) context.isOpen = true;
       this.updatePeerList();
       if (this.callback.onConnect) this.callback.onConnect(conn.remoteId);
     });
     conn.on('close', () => {
-      if (timeout !== null) clearTimeout(timeout);
-      timeout = null;
+      if (timeout != null) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
       this.closeDataConnection(conn);
       if (this.callback.onDisconnect) this.callback.onDisconnect(conn.remoteId);
     });
     conn.on('error', err => {
-      if (timeout !== null) clearTimeout(timeout);
-      timeout = null;
+      if (timeout != null) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
       this.closeDataConnection(conn);
       if (this.callback.onError) this.callback.onError(conn.remoteId, err);
     });

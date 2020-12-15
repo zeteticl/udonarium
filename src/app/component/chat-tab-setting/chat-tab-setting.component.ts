@@ -33,6 +33,8 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
   set receiveInfo(receiveInfo: boolean) {
     this.chatMessageService.setReceiveInfo(this.selectedTab, receiveInfo);
   }
+  isSaveing: boolean = false;
+  progresPercent: number = 0;
 
   constructor(
     private modalService: ModalService,
@@ -67,11 +69,21 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
     ChatTabList.instance.addChatTab('分頁');
   }
 
-  save() {
-    if (!this.selectedTab) return;
+  async save() {
+    if (!this.selectedTab || this.isSaveing) return;
+    this.isSaveing = true;
+    this.progresPercent = 0;
+
     let fileName: string = 'chat_' + this.selectedTab.name;
 
-    this.saveDataService.saveGameObject(this.selectedTab, fileName);
+    await this.saveDataService.saveGameObjectAsync(this.selectedTab, fileName, percent => {
+      this.progresPercent = percent;
+    });
+
+    setTimeout(() => {
+      this.isSaveing = false;
+      this.progresPercent = 0;
+    }, 500);
   }
 
   save_log() {

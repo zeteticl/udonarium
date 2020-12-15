@@ -67,6 +67,10 @@ export class FileStorageComponent implements OnInit, OnDestroy, AfterViewInit {
     let files = (<HTMLInputElement>event.target).files;
     if (files.length) FileArchiver.instance.load(files);
   }
+
+  GuestMode() {
+    return Network.GuestMode();
+  }
   uploadByUrl() {
     let file: ImageFile = null;
     let fileContext: ImageContext = null;
