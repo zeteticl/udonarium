@@ -16,7 +16,7 @@ import { PanelService } from 'service/panel.service';
   styleUrls: ['./lobby.component.css'],
 })
 export class LobbyComponent implements OnInit, OnDestroy {
-  rooms: { alias: string, roomName: string, peerContexts: PeerContext[] , isAllowGuest: boolean }[] = [];
+  rooms: { alias: string, roomName: string, peerContexts: PeerContext[], isAllowGuest: boolean }[] = [];
 
   isReloading: boolean = false;
 
@@ -95,7 +95,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     if (!context.verifyPassword(password)) return;
 
     let userId = Network.peerContext ? Network.peerContext.userId : PeerContext.generateId();
-    Network.open(userId, context.roomId, context.roomName, password context.isAllowGuest, isGuest);
+    Network.open(userId, context.roomId, context.roomName, password, context.isAllowGuest, isGuest);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     let triedPeer: string[] = [];
