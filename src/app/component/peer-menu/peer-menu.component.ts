@@ -18,7 +18,7 @@ import { PanelService } from 'service/panel.service';
 })
 export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  targetPeerId: string = '';
+  targetUserId: string = '';
   networkService = Network
   gameRoomService = ObjectStore.instance;
   help: string = '';
@@ -66,74 +66,46 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   connectPeer() {
     this.help = '';
-    let context = PeerContext.create(this.targetPeerId);
-    if (!context.isRoom) {
-      ObjectStore.instance.clearDeleteHistory();
-      Network.connect(this.targetPeerId);
-    } else {
-      if (Network.peerContexts.length) {
-        this.help = '輸入的ID類似於房間ID，但是房間ID和常規ID不能混合使用。請先切斷私人連線。 （*可以通過重新加載頁面來斷開連接）';
-        return;
-      }
-
-      Network.open(Network.peerContext.id, context.room, context.roomName, context.password);
-      PeerCursor.myCursor.peerId = Network.peerId;
-
-      let dummy = {};
-      EventSystem.register(dummy)
-        .on('OPEN_NETWORK', event => {
-          ObjectStore.instance.clearDeleteHistory();
-          Network.connect(this.targetPeerId);
-          EventSystem.unregister(dummy);
-          EventSystem.register(dummy)
-            .on('CONNECT_PEER', event => {
-              console.log('連線成功！', event.data.peer);
-              this.resetPeerIfNeeded();
-              EventSystem.unregister(dummy);
-            })
-            .on('DISCONNECT_PEER', event => {
-              console.warn('連線失敗', event.data.peer);
-              this.resetPeerIfNeeded();
-              EventSystem.unregister(dummy);
-            });
-        });
-    }
+    let context = PeerContext.create(this.targetUserId);
+    if (context.isRoom) return;
+    ObjectStore.instance.clearDeleteHistory();
+    Network.connect(context.peerId);
   }
 
   async connectPeerHistory() {
     this.help = '';
     let conectPeers: PeerContext[] = [];
-    let room: string = '';
+    let roomId: string = '';
 
-    for (let peer of this.appConfigService.peerHistory) {
-      let context = PeerContext.create(peer);
+    for (let peerId of this.appConfigService.peerHistory) {
+      let context = PeerContext.parse(peerId);
       if (context.isRoom) {
-        if (room !== context.room) conectPeers = [];
-        room = context.room;
+        if (roomId !== context.roomId) conectPeers = [];
+        roomId = context.roomId;
         conectPeers.push(context);
       } else {
-        if (room !== context.room) conectPeers = [];
+        if (roomId !== context.roomId) conectPeers = [];
         conectPeers.push(context);
       }
     }
 
-    if (room.length) {
-      console.warn('connectPeerRoom <' + room + '>');
-      let conectPeers = [];
+    if (roomId.length) {
+      console.warn('connectPeerRoom <' + roomId + '>');
+      let conectPeers: PeerContext[] = [];
       let peerIds = await Network.listAllPeers();
-      for (let id of peerIds) {
-        console.log(id);
-        let context = new PeerContext(id);
-        if (context.room === room) {
+      for (let peerId of peerIds) {
+        console.log(peerId);
+        let context = PeerContext.parse(peerId);
+        if (context.roomId === roomId) {
           conectPeers.push(context);
         }
       }
       if (conectPeers.length < 1) {
-        this.help = '找不到上次連線的房間。 它可能已經解散了。';
+        this.help = '前回接続していたルームが見つかりませんでした。既に解散しているかもしれません。';
         console.warn('Room is already closed...');
         return;
       }
-      Network.open(PeerContext.generateId(), conectPeers[0].room, conectPeers[0].roomName, conectPeers[0].password);
+      Network.open(PeerContext.generateId(), conectPeers[0].roomId, conectPeers[0].roomName, conectPeers[0].password);
     } else {
       console.warn('connectPeers ' + conectPeers.length);
       Network.open();
@@ -143,11 +115,11 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     let listener = EventSystem.register(this);
     listener.on('OPEN_NETWORK', event => {
-      console.log('OPEN_NETWORK', event.data.peer);
+      console.log('OPEN_NETWORK', event.data.peerId);
       EventSystem.unregisterListener(listener);
       ObjectStore.instance.clearDeleteHistory();
       for (let context of conectPeers) {
-        Network.connect(context.fullstring);
+        Network.connect(context.peerId);
       }
     });
   }
@@ -156,20 +128,13 @@ export class PeerMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open(LobbyComponent, { width: 700, height: 400, left: 0, top: 400 });
   }
 
+  findUserId(peerId: string) {
+    const peerCursor = PeerCursor.findByPeerId(peerId);
+    return peerCursor ? peerCursor.userId : '';
+  }
+
   findPeerName(peerId: string) {
-    const peerCursor = PeerCursor.find(peerId);
+    const peerCursor = PeerCursor.findByPeerId(peerId);
     return peerCursor ? peerCursor.name : '';
-  }
-
-  onChangeNickname(name: string) {
-    // this.isChangedNickname = true;
-    const value = name
-    localStorage.setItem('PeerName', value)
-  }
-
-  onBlurNickname(): void {
-    //if (this.isChangedNickname) {
-    //EventSystem.call('CHANGE_NICKNAME', this.myPeer.name, this.myPeer.peerId);
-    // }
   }
 }

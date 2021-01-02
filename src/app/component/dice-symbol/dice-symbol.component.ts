@@ -25,7 +25,6 @@ import { RotableOption } from 'directive/rotable.directive';
 import { ContextMenuAction, ContextMenuSeparator, ContextMenuService } from 'service/context-menu.service';
 import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
-import { ChatMessageService } from 'service/chat-message.service';
 
 @Component({
   selector: 'dice-symbol',
@@ -110,9 +109,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
     private contextMenuService: ContextMenuService,
     private elementRef: ElementRef<HTMLElement>,
     private changeDetector: ChangeDetectorRef,
-    private pointerDeviceService: PointerDeviceService,
-    private chatMessageService: ChatMessageService
-  ) { }
+    private pointerDeviceService: PointerDeviceService) { }
 
   ngOnInit() {
     EventSystem.register(this)
@@ -130,7 +127,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!this.diceSymbol || !object) return;
         if ((this.diceSymbol === object)
           || (object instanceof ObjectNode && this.diceSymbol.contains(object))
-          || (object instanceof PeerCursor && object.peerId === this.diceSymbol.owner)) {
+          || (object instanceof PeerCursor && object.userId === this.diceSymbol.owner)) {
           this.changeDetector.markForCheck();
         }
       })
@@ -141,7 +138,8 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
         this.changeDetector.markForCheck();
       })
       .on('DISCONNECT_PEER', event => {
-        if (this.diceSymbol.owner === event.data.peer) this.changeDetector.markForCheck();
+        let cursor = PeerCursor.findByPeerId(event.data.peerId);
+        if (!cursor || this.diceSymbol.owner === cursor.userId) this.changeDetector.markForCheck();
       });
     this.movableOption = {
       tabletopObject: this.diceSymbol,
@@ -223,26 +221,24 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.isVisible) {
       actions.push({
-        name: '擲骰', action: () => {
+        name: 'ダイスを振る', action: () => {
           this.diceRoll();
         }
       });
     }
-
     actions.push(ContextMenuSeparator);
     if (this.isMine || this.hasOwner) {
       actions.push({
-        name: '公開骰子', action: () => {
+        name: 'ダイスを公開', action: () => {
           this.owner = '';
           SoundEffect.play(PresetSound.unlock);
-          this.sendLogMessage(`骰子結果公開。達成值:${this.face}`);
         }
       });
     }
     if (!this.isMine) {
       actions.push({
-        name: '只供自己看見', action: () => {
-          this.owner = Network.peerId;
+        name: '自分だけ見る', action: () => {
+          this.owner = Network.peerContext.userId;
           SoundEffect.play(PresetSound.lock);
         }
       });
@@ -253,25 +249,19 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
       this.faces.forEach(face => {
         subActions.push({
           name: `${face}`, action: () => {
-            const prev = this.face;
             this.face = face;
             SoundEffect.play(PresetSound.dicePut);
-            let message = `已變更骰子結果。`;
-            if (!this.hasOwner) {
-              message += `達成值:${prev}→${face}`;
-            }
-            this.sendLogMessage(message);
           }
         });
       });
-      actions.push({ name: `設定骰子結果`, action: null, subActions: subActions });
+      actions.push({ name: `ダイス目を設定`, action: null, subActions: subActions });
     }
 
     actions.push(ContextMenuSeparator);
 
-    actions.push({ name: '顯示詳情', action: () => { this.showDetail(this.diceSymbol); } });
+    actions.push({ name: '詳細を表示', action: () => { this.showDetail(this.diceSymbol); } });
     actions.push({
-      name: '複製', action: () => {
+      name: 'コピーを作る', action: () => {
         let cloneObject = this.diceSymbol.clone();
         cloneObject.location.x += this.gridSize;
         cloneObject.location.y += this.gridSize;
@@ -280,7 +270,7 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     actions.push({
-      name: '刪除', action: () => {
+      name: '削除する', action: () => {
         this.diceSymbol.destroy();
         SoundEffect.play(PresetSound.sweep);
       }
@@ -299,21 +289,14 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
   diceRoll(): string {
     EventSystem.call('ROLL_DICE_SYNBOL', { identifier: this.diceSymbol.identifier });
     SoundEffect.play(PresetSound.diceRoll1);
-    const prev = this.face;
-    const result = this.diceSymbol.diceRoll();
-    let message = `擲骰`;
-    if (!this.hasOwner) {
-      message += `結果:${prev}→${result}`;
-    }
-    this.sendLogMessage(message);
-    return result;
+    return this.diceSymbol.diceRoll();
   }
 
   showDetail(gameObject: DiceSymbol) {
     if (this.GuestMode()) return;
     EventSystem.trigger('SELECT_TABLETOP_OBJECT', { identifier: gameObject.identifier, className: gameObject.aliasName });
     let coordinate = this.pointerDeviceService.pointers[0];
-    let title = '骰子內容設定';
+    let title = 'ダイスシンボル設定';
     if (gameObject.name.length) title += ' - ' + gameObject.name;
     let option: PanelOption = { title: title, left: coordinate.x - 300, top: coordinate.y - 300, width: 600, height: 600 };
     let component = this.panelService.open<GameCharacterSheetComponent>(GameCharacterSheetComponent, option);
@@ -331,10 +314,5 @@ export class DiceSymbolComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private adjustMinBounds(value: number, min: number = 0): number {
     return value < min ? min : value;
-  }
-
-  private sendLogMessage(text: string): void {
-    const name = `<${this.name}：${PeerCursor.myCursor.name}>`;
-    this.chatMessageService.sendSystemMessage(name, text, 'DiceSymbol');
   }
 }

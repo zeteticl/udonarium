@@ -121,7 +121,7 @@ export class GameTableSettingComponent implements OnInit, OnDestroy, AfterViewIn
   createGameTable() {
     if (this.GuestMode()) return;
     let gameTable = new GameTable();
-    gameTable.name = '空白的桌面';
+    gameTable.name = '白紙のテーブル';
     gameTable.imageIdentifier = 'testTableBackgroundImage_image';
     gameTable.initialize();
     this.selectGameTable(gameTable.identifier);

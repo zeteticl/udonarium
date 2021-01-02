@@ -209,7 +209,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         if (!message) return;
         if (!this.chatTab || !this.chatTab.contains(message)) return;
 
-        if (this.topTimestamp < message.timestamp) {
+        if (this.topTimestamp <= message.timestamp) {
           this.changeDetector.markForCheck();
           this.needUpdate = true;
           this.onMessageInit();
@@ -224,7 +224,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       .on('UPDATE_GAME_OBJECT', event => {
         let message = ObjectStore.instance.get(event.data.identifier);
         if (message && message instanceof ChatMessage
-          && this.topTimestamp <= message.timestamp && message.timestamp < this.botomTimestamp
+          && this.topTimestamp <= message.timestamp && message.timestamp <= this.botomTimestamp
           && this.chatTab.contains(message)) {
           this.changeDetector.markForCheck();
         }
@@ -268,7 +268,7 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       this.addMessageEventTimer = setTimeout(() => {
         this.addMessageEventTimer = null;
         this.ngZone.run(() => this.onAddMessage.emit());
-      }, 66);
+      }, 0);
     });
   }
 
@@ -349,8 +349,8 @@ export class ChatTabComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       prevBox = this.topElmBox;
     }
     currentBox = elm.getBoundingClientRect();
-    diff = Math.floor(prevBox.top - currentBox.top - this.scrollSpeed);
-    if ((!hasTopBlank || !hasBotomBlank) && 3 ** 2 < diff ** 2) {
+    diff = prevBox.top - currentBox.top - this.scrollSpeed;
+    if ((!hasTopBlank || !hasBotomBlank) && 0.5 ** 2 < diff ** 2) {
       this.panelService.scrollablePanel.scrollTop -= diff;
     }
 

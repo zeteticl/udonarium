@@ -3,7 +3,7 @@
   appMovable [movable.option]="movableOption" (movable.ondragstart)="onMove()" (movable.ondragend)="onMoved()">
   <div class="component-content is-pointer-events-auto is-grab"
     appRotable [rotable.option]="rotableOption" (rotable.ondragstart)="onMove()" (rotable.ondragend)="onMoved()">
-    <div *ngIf="imageFile" (@shuffle.start)="animationShuffleStarted($event)" (@shuffle.done)="animationShuffleDone($event)"
+    <div *ngIf="topCard && imageFile" (@shuffle.start)="animationShuffleStarted($event)" (@shuffle.done)="animationShuffleDone($event)"
       [@shuffle]="animeState">
       <img class="card-image" [ngStyle]="{'transform': 'rotateZ(' + topCard.rotate +'deg)'}" [src]="imageFile.url | safe: 'resourceUrl'">
     </div>
@@ -22,10 +22,10 @@
       </div>
     </ng-container>
     <div *ngIf="isShowTotal" class="name-tag is-nowrap is-black-background" [ngStyle]="{'transform': 'translateY(-50%) translateX(-50%) translateX(' + size * gridSize / 2 +'px)'}">
-      <span>{{cards.length}}張</span>
+      <span>{{cards.length}}枚</span>
     </div>
     <div *ngIf="hasOwner" class="name-tag has-length-limit is-nowrap is-black-background" [ngStyle]="{'transform': 'translateY(50%) translateX(-50%) translateX(' + size * gridSize / 2 +'px)'}">
-      <span>{{ownerName}} 確認中</span>
+      <span>{{ownerName}} が確認中</span>
     </div>
   </div>
 </div>

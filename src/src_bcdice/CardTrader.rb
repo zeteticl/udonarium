@@ -33,10 +33,10 @@ class CardTrader
     ]; # 64種類の記号
   end
 
-  # 卡牌をデフォルトに戻す
+  # カードをデフォルトに戻す
   def initValues
     @cardTitles = {}
-    @cardRegExp = '[DHSCJdhscj][\d]+'; # 卡牌指定文字列の正規表現
+    @cardRegExp = '[DHSCJdhscj][\d]+'; # カード指定文字列の正規表現
     @deal_cards = {'card_played' => []}
 
     set1Deck1Joker
@@ -116,7 +116,7 @@ class CardTrader
 
   def readCardSet()
     readExtraCard(@tnick)
-    sendMessageToOnlySender("卡牌セットの読み込み成功しました")
+    sendMessageToOnlySender("カードセットの読み込み成功しました")
   rescue StandardError => e
     sendMessageToOnlySender(e.to_s)
   end
@@ -137,7 +137,7 @@ class CardTrader
   # **                        ゲーム設定関連
   ###########################################################################
 
-  # 専用卡牌セットのロード
+  # 専用カードセットのロード
   def readExtraCard(cardFileName)
     return if cardFileName.nil?
     return if cardFileName.empty?
@@ -158,7 +158,7 @@ class CardTrader
         @cardTitles[cardNumber] = cardTitle
       end
 
-      @cardRegExp = '[\d]+'; # 卡牌指定文字列の正規表現
+      @cardRegExp = '[\d]+'; # カード指定文字列の正規表現
       @cardRest = @card_val.clone
       @deal_cards = {'card_played' => []}
 
@@ -302,7 +302,7 @@ class CardTrader
       sendMessageToOnlySender(getCardsTextFromCards(cards))
       sendMessage(@channel, "#{@nick_e}: #{cards.length}枚引きました")
     else
-      sendMessage(@channel, "卡牌が残っていません")
+      sendMessage(@channel, "カードが残っていません")
     end
 
     @card_channels[@nick_e] ||= @channel
@@ -317,7 +317,7 @@ class CardTrader
     if !cards.empty?
       sendMessage(@channel, "#{@nick_e}: " + getCardsTextFromCards(cards) + 'を引きました')
     else
-      sendMessage(@channel, "卡牌が残っていません")
+      sendMessage(@channel, "カードが残っていません")
     end
 
     @card_channels[@nick_e] ||= @channel
@@ -383,7 +383,7 @@ class CardTrader
 
     ngCardText = ngCardList.join(",")
 
-    return okCount, ngCardText; # 抜き出せた枚数とデッキに無かった卡牌を返す
+    return okCount, ngCardText; # 抜き出せた枚数とデッキに無かったカードを返す
   end
 
   def pickupCardByCardName(cardName)
@@ -419,7 +419,7 @@ class CardTrader
       return '山札'
     end
 
-    targetCard = card.upcase; # デッキから抜き出す卡牌の指定
+    targetCard = card.upcase; # デッキから抜き出すカードの指定
     destination = @nick_e.upcase
 
     isDelete = @cardRest.delete_if { |c| c == targetCard }
@@ -429,7 +429,7 @@ class CardTrader
       @deal_cards[destination] << targetCard
       return OK_RESULT
     else
-      return targetCard; # 無かった卡牌を返す
+      return targetCard; # 無かったカードを返す
     end
   end
 
@@ -478,7 +478,7 @@ class CardTrader
       end
     end
 
-    return okCount, ngCards; # 戻せた枚数とNGだった卡牌を返す
+    return okCount, ngCards; # 戻せた枚数とNGだったカードを返す
   end
 
   def backOneCard(targetCard, destination, place)
@@ -502,7 +502,7 @@ class CardTrader
       return OK_RESULT
     end
 
-    return "${targetCard}"; # 戻せる卡牌が無かったらNGの卡牌を返す
+    return "${targetCard}"; # 戻せるカードが無かったらNGのカードを返す
   end
 
   def dealCard(count, targetNick, isLook = false)
@@ -512,7 +512,7 @@ class CardTrader
     if !cards.empty?
       sendDealResult(targetNick, count, getCardsTextFromCards(cards), isLook)
     else
-      sendMessage(@channel, "卡牌が残っていません")
+      sendMessage(@channel, "カードが残っていません")
     end
 
     @card_channels[targetNick] ||= @channel
@@ -590,7 +590,7 @@ class CardTrader
       ngCardText = ngCardList.join(',')
     end
 
-    # 出せた枚数、NGだった卡牌、出せた卡牌
+    # 出せた枚数、NGだったカード、出せたカード
     return okCardCount, ngCardText, okCardText
   end
 
@@ -742,7 +742,7 @@ class CardTrader
 
       return OK_RESULT
     else
-      return card; # 指定の卡牌が無いので、無い卡牌を返す
+      return card; # 指定のカードが無いので、無いカードを返す
     end
   end
 
@@ -810,7 +810,7 @@ class CardTrader
     end
 
     ngCardText = ngCardList.join(",")
-    return okCount, ngCardText; # 渡せた枚数とNGな卡牌を返す
+    return okCount, ngCardText; # 渡せた枚数とNGなカードを返す
   end
 
   def transferCardsByCommand(commandset, place, destination)
@@ -878,12 +878,12 @@ class CardTrader
     debug("from, cards, @deal_cards", from, cards, @deal_cards)
 
     if targetCard == ''
-      debug("卡牌指定がないのでランダムで一枚渡す")
+      debug("カード指定がないのでランダムで一枚渡す")
       thisCard = ejectOneCardRandomFromCards(cards)
       isTargetCardInHand = true
       restCards = @deal_cards[from]
     else
-      debug("卡牌指定あり targetCard", targetCard)
+      debug("カード指定あり targetCard", targetCard)
       thisCard, restCards, isTargetCardInHand =
         transferTargetCard(targetCard, cards, toSend, from)
     end
@@ -999,7 +999,7 @@ class CardTrader
     sendMessageToOnlySender(getHandAndPlaceCardInfoText("Auto"))
   end
 
-  # 相手の場に卡牌を置く
+  # 相手の場にカードを置く
   def getSendCardToTargetNickPlace(commandText, _nick_e)
     ngCardList = []
     okCardList = []
@@ -1130,7 +1130,7 @@ class CardTrader
     result = ""
 
     # return result unless(@canTapCard > 0)
-    # タップ処理を卡牌の場の移動で扱う(90度タップ、180度タップが将来必要になるかも)
+    # タップ処理をカードの場の移動で扱う(90度タップ、180度タップが将来必要になるかも)
 
     nick_e_original = @nick_e
     @nick_e = @nick_e.upcase
@@ -1162,11 +1162,11 @@ class CardTrader
     if count > 0
       sendMessage(@channel, "#{@nick_e}: #{getCardsText(output_msg)}が出ました")
     else
-      sendMessage(@channel, "卡牌が残っていません")
+      sendMessage(@channel, "カードが残っていません")
     end
   end
 
-  # 山から卡牌をめくって即座に捨てる
+  # 山からカードをめくって即座に捨てる
   def getCardMilstone(commandText)
     command = "c-draw"
     count = 0
@@ -1192,20 +1192,20 @@ class CardTrader
     debug("count", count)
     debug("cardInfo", cardInfo)
 
-    return count, cardInfo; # めくれた枚数と出た卡牌を返す
+    return count, cardInfo; # めくれた枚数と出たカードを返す
   end
 
-  # 全員の場に出た卡牌を捨てる（手札はそのまま）
+  # 全員の場に出たカードを捨てる（手札はそのまま）
   def clearAllPlaceAllPlayerCards
     @deal_cards.each do |place, cards|
       clearAllPlayerCardsWhenPlayedPlace(place, cards)
     end
 
-    return '場の卡牌を捨てました'
+    return '場のカードを捨てました'
   end
 
   def clearAllPlayerCardsWhenPlayedPlace(place, cards)
-    if place =~ /^\d+/ # 最初が数値=場に出ている卡牌なので、卡牌を全部捨てて場も削除
+    if place =~ /^\d+/ # 最初が数値=場に出ているカードなので、カードを全部捨てて場も削除
       clearAllPlayerCards(place, cards)
     end
   end
@@ -1242,7 +1242,7 @@ class CardTrader
     @cardRest.join(',')
   end
 
-  def getAllCardLocation # 今の卡牌配置を見る
+  def getAllCardLocation # 今のカード配置を見る
     allText = "山札:#{@cardRest.length}枚 捨札:#{getBurriedCard}枚"
     allPlaceText = ""
 
@@ -1303,7 +1303,7 @@ class CardTrader
     out_msg = getDealCardsText(destination)
 
     if out_msg.empty?
-      out_msg = "卡牌を持っていません"
+      out_msg = "カードを持っていません"
     end
 
     return out_msg
@@ -1380,7 +1380,7 @@ class CardTrader
     return out_msg
   end
 
-  def getCardsText(cardsText) # 汎用卡牌セット用卡牌タイトルの表示
+  def getCardsText(cardsText) # 汎用カードセット用カードタイトルの表示
     cards = cardsText.split(/,/)
     return getCardsTextFromCards(cards)
   end
@@ -1418,7 +1418,7 @@ class CardTrader
   def printCardRestorationSpellResult(spellText)
     output_msg = throwCardRestorationSpell(spellText)
     if output_msg == "readSpell"
-      sendMessage(@channel, "#{@nick_e}: 卡牌配置を復活しました")
+      sendMessage(@channel, "#{@nick_e}: カード配置を復活しました")
     else
       sendMessage(@channel, output_msg)
     end

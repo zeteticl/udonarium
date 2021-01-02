@@ -7,13 +7,13 @@
       <li (click)="open('PeerMenuComponent')">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">people</i></div>
-          <div>連線</div>
+          <div>接続</div>
         </a>
       </li>
       <li (click)="open('ChatWindowComponent')">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">speaker_notes</i></div>
-          <div>聊天視窗</div>
+          <div>チャット画面</div>
         </a>
       </li>
       <li (click)="open('GameTableSettingComponent')" *ngIf="!GuestMode()">
@@ -25,7 +25,7 @@
       <li (click)="open('FileStorageComponent')" *ngIf="!GuestMode()">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons icon-size">photo_library</i></div>
-          <div>上傳圖片</div>
+          <div>画像</div>
         </a>
       </li>
       <li (click)="open('JukeboxComponent')" *ngIf="!GuestMode()">
@@ -56,7 +56,7 @@
         <a routerLink="/" routerLinkActive="active" *ngIf="!GuestMode()">
           <label>
             <div><i class="material-icons">open_in_browser</i></div>
-            <div>讀取房間</div>
+            <div>ZIP読込</div>
             <input type="file" style="display: none;" (change)="handleFileSelect($event)" multiple
               accept="application/xml,text/xml,application/zip" />
           </label>
@@ -65,7 +65,7 @@
       <li (click)="save()" *ngIf="!GuestMode()&&!isSaveing">
         <a routerLink="/" routerLinkActive="active">
           <div><i class="material-icons">sd_storage</i></div>
-          <div>保存房間</div>
+          <div>保存</div>
         </a>
       </li>
       <li *ngIf="isSaveing" style="pointer-events: none;">

@@ -43,18 +43,18 @@
   </div>
 </div>
 <div>
-  <ng-container *ngIf="networkService.peerId.length <= 18">
-    <input [(ngModel)]="targetPeerId" placeholder="連線對像的ID" name="targetPeerId" />
-    <button (click)="connectPeer()" [disabled]="!networkService.isOpen">私人連線</button><br>
+  <ng-container *ngIf="!networkService.peerContext.isRoom">
+    <input [(ngModel)]="targetUserId" placeholder="接続したい相手のID" name="targetUserId" />
+    <button (click)="connectPeer()" [disabled]="!networkService.isOpen">プライベート接続</button><br>
   </ng-container>
   <button *ngIf="networkService.peerIds.length <= 1" (click)="showLobby()"
     [disabled]="!networkService.isOpen">顯示大廳（房間列表）</button>
 </div>
 <div><span style="font-size: 12px;">{{help}}</span></div>
-<ng-container *ngIf="networkService.peerId.length <= 18">
-  <div style="font-size: 12px;" *ngIf="networkService.peerContexts.length < 1">※若要使用私人連線，請與對方分享彼此的ID。</div>
-  <div style="font-size: 12px;" *ngIf="networkService.peerContexts.length < 1">※可以自己打開兩頁這個網站，進行測試。</div>
+<ng-container *ngIf="!networkService.peerContext.isRoom">
+  <div style="font-size: 12px;" *ngIf="networkService.peerContexts.length < 1">※プライベート接続を使用する場合は、お互いのIDをユドナリウム外で共有してください。</div>
+  <div style="font-size: 12px;" *ngIf="networkService.peerContexts.length < 1">※一人で動作確認を行いたい場合はブラウザを2つ開くと良いと思います。</div>
 </ng-container>
-<ng-container *ngIf="18 < networkService.peerId.length">
-  <div style="font-size: 12px;">※使用大廳功能時，不能使用私人連線。</div>
+<ng-container *ngIf="networkService.peerContext.isRoom">
+  <div style="font-size: 12px;">※ルーム機能を利用している時はプライベート接続を利用できません。</div>
 </ng-container>

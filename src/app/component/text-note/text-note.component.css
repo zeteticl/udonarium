@@ -1,16 +1,3 @@
-.is-Yellow-border {
-  border: solid 6px #FFCC80;
-}
-
-.is-opacity {
-  opacity: 0.6;
-}
-
-.is-disabled {
-  display: none;
-}
-
-
 .is-grab {
   cursor: -moz-grab;
   cursor: -webkit-grab;
@@ -86,7 +73,9 @@
   box-sizing: border-box;
   font-size: 15px;
   padding: 3px 9px;
+  overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
   backface-visibility: hidden;
 }
 

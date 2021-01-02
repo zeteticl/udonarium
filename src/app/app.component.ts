@@ -24,7 +24,6 @@ import { FileStorageComponent } from 'component/file-storage/file-storage.compon
 import { GameCharacterGeneratorComponent } from 'component/game-character-generator/game-character-generator.component';
 import { GameCharacterSheetComponent } from 'component/game-character-sheet/game-character-sheet.component';
 import { GameObjectInventoryComponent } from 'component/game-object-inventory/game-object-inventory.component';
-import { NoteInventoryComponent } from 'component/note-inventory/note-inventory.component';
 import { GameTableSettingComponent } from 'component/game-table-setting/game-table-setting.component';
 import { JukeboxComponent } from 'component/jukebox/jukebox.component';
 import { ModalComponent } from 'component/modal/modal.component';
@@ -47,8 +46,6 @@ import { GameCharacter } from '@udonarium/game-character';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
-
-
 
   @ViewChild('modalLayer', { read: ViewContainerRef, static: true }) modalLayerViewContainerRef: ViewContainerRef;
   private immediateUpdateTimer: NodeJS.Timer = null;
@@ -101,7 +98,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     let fileContext = ImageFile.createEmpty('none_icon').toContext();
     fileContext.url = './assets/images/ic_account_circle_black_24dp_2x.png';
     let noneIconImage = ImageStorage.instance.add(fileContext);
-    ImageTag.create(noneIconImage.identifier).tag = 'default';
 
     AudioPlayer.resumeAudioContext();
     PresetSound.dicePick = AudioStorage.instance.add('./assets/sounds/soundeffect-lab/shoulder-touch1.mp3').identifier;
@@ -137,14 +133,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     AudioStorage.instance.get(PresetSound.sweep).isHidden = true;
 
     PeerCursor.createMyCursor();
-
-    if (window.localStorage.getItem('PeerName')) {
-      PeerCursor.myCursor.name = window.localStorage.getItem('PeerName')
-    }
-    else {
-      PeerCursor.myCursor.name = '玩家' + ('000' + (Math.floor(Math.random() * 1000))).slice(-3);
-    }
-
+    PeerCursor.myCursor.name = 'プレイヤー';
     PeerCursor.myCursor.imageIdentifier = noneIconImage.identifier;
 
     EventSystem.register(this)
@@ -161,16 +150,17 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         this.lazyNgZoneUpdate(false);
       })
       .on('OPEN_NETWORK', event => {
-        console.log('OPEN_NETWORK', event.data.peer);
-        PeerCursor.myCursor.peerId = event.data.peer;
+        console.log('OPEN_NETWORK', event.data.peerId);
+        PeerCursor.myCursor.peerId = Network.peerContext.peerId;
+        PeerCursor.myCursor.userId = Network.peerContext.userId;
       })
       .on('CLOSE_NETWORK', event => {
-        console.log('CLOSE_NETWORK', event.data.peer);
+        console.log('CLOSE_NETWORK', event.data.peerId);
         this.ngZone.run(async () => {
           if (1 < Network.peerIds.length) {
-            await this.modalService.open(TextViewComponent, { title: '網絡錯誤', text: '網絡連線發生錯誤。 \n如果顯示後連接繼續不穩定，請嘗試重新加載頁面並重新連接。' });
+            await this.modalService.open(TextViewComponent, { title: 'ネットワークエラー', text: 'ネットワーク接続に何らかの異常が発生しました。\nこの表示以後、接続が不安定であれば、ページリロードと再接続を試みてください。' });
           } else {
-            await this.modalService.open(TextViewComponent, { title: '網絡錯誤', text: '連線情報已損壞。 \n關閉此頁面，然後嘗試重新連接。' });
+            await this.modalService.open(TextViewComponent, { title: 'ネットワークエラー', text: '接続情報が破棄されました。\nこのウィンドウを閉じると再接続を試みます。' });
             Network.open();
           }
         });
@@ -187,8 +177,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     PanelService.defaultParentViewContainerRef = ModalService.defaultParentViewContainerRef = ContextMenuService.defaultParentViewContainerRef = this.modalLayerViewContainerRef;
     setTimeout(() => {
-      this.panelService.open(PeerMenuComponent, { width: 300, height: 300, left: 100 });
-      this.panelService.open(ChatWindowComponent, { width: 700, height: 300, left: 100, top: 450 });
+      this.panelService.open(PeerMenuComponent, { width: 500, height: 450, left: 100 });
+      this.panelService.open(ChatWindowComponent, { width: 700, height: 400, left: 100, top: 450 });
     }, 0);
   }
 
@@ -204,11 +194,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     switch (componentName) {
       case 'PeerMenuComponent':
         component = PeerMenuComponent;
-        option = { width: 300, height: 300, left: 100, top: 100 };
         break;
       case 'ChatWindowComponent':
         component = ChatWindowComponent;
-        option = { width: 700, height: 300, left: 100 }
+        option.width = 700;
         break;
       case 'GameTableSettingComponent':
         component = GameTableSettingComponent;
@@ -229,9 +218,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         break;
       case 'GameObjectInventoryComponent':
         component = GameObjectInventoryComponent;
-        break;
-      case 'NoteInventoryComponent':
-        component = NoteInventoryComponent;
         break;
     }
     if (component) {

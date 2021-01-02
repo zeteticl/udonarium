@@ -16,7 +16,7 @@ export class RoomSettingComponent implements OnInit, OnDestroy {
   peers: PeerContext[] = [];
   isReloading: boolean = false;
 
-  roomName: string = '我的房間';
+  roomName: string = 'ふつうの部屋';
   password: string = '';
   isPrivate: boolean = false;
   allowGuest: boolean = true;
@@ -40,14 +40,14 @@ export class RoomSettingComponent implements OnInit, OnDestroy {
   }
 
   calcPeerId(roomName: string, password: string) {
-    let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    let context = PeerContext.create(peerId, PeerContext.generateId('***'), roomName, password);
-    this.validateLength = context.fullstring.length < 64 ? true : false;
+    let userId = Network.peerContext ? Network.peerContext.userId : PeerContext.generateId();
+    let context = PeerContext.create(userId, PeerContext.generateId('***'), roomName, password);
+    this.validateLength = context.peerId.length < 64 ? true : false;
   }
 
   createRoom() {
-    let peerId = Network.peerContext ? Network.peerContext.id : PeerContext.generateId();
-    Network.open(peerId, PeerContext.generateId('***'), this.roomName, this.password, this.allowGuest);
+    let userId = Network.peerContext ? Network.peerContext.userId : PeerContext.generateId();
+    Network.open(userId, PeerContext.generateId('***'), this.roomName, this.password, this.allowGuest);
     PeerCursor.myCursor.peerId = Network.peerId;
 
     this.modalService.resolve();

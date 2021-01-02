@@ -68,8 +68,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public chatMessageService: ChatMessageService,
     private panelService: PanelService,
-    private pointerDeviceService: PointerDeviceService,
-    private inventoryService: GameObjectInventoryService
+    private pointerDeviceService: PointerDeviceService
   ) { }
 
   ngOnInit() {
@@ -128,9 +127,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updatePanelTitle() {
     if (this.chatTab) {
-      this.panelService.title = '聊天視窗 - ' + this.chatTab.name;
+      this.panelService.title = 'チャットウィンドウ - ' + this.chatTab.name;
     } else {
-      this.panelService.title = '聊天視窗';
+      this.panelService.title = 'チャットウィンドウ';
     }
   }
 

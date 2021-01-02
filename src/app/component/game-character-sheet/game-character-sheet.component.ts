@@ -53,8 +53,8 @@ export class GameCharacterSheetComponent implements OnInit, OnDestroy, AfterView
 
   addDataElement() {
     if (this.tabletopObject.detailDataElement) {
-      let title = DataElement.create('標題', '', {});
-      let tag = DataElement.create('Tag', '', {});
+      let title = DataElement.create('見出し', '', {});
+      let tag = DataElement.create('タグ', '', {});
       title.appendChild(tag);
       this.tabletopObject.detailDataElement.appendChild(title);
     }
@@ -96,7 +96,7 @@ export class GameCharacterSheetComponent implements OnInit, OnDestroy, AfterView
     this.isSaveing = true;
     this.progresPercent = 0;
 
-    let element = this.tabletopObject.getElement('name', this.tabletopObject.commonDataElement);
+    let element = this.tabletopObject.commonDataElement.getFirstElementByName('name');
     let objectName: string = element ? <string>element.value : '';
 
     await this.saveDataService.saveGameObjectAsync(this.tabletopObject, 'xml_' + objectName, percent => {

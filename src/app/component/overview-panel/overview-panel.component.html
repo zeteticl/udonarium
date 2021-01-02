@@ -35,7 +35,7 @@
       <button class="zoom-button" (click)="chanageImageView(true)">
         <i class="material-icons">zoom_in</i>
       </button>
-      <div *ngIf="card.hasOwner" class="component-owner position-right-bottom"
+      <div *ngIf="card.hasOwner && 0 < card.ownerName.length" class="component-owner position-right-bottom"
         [ngClass]="{'with-button-marign': hasImage}">
         <div class="owner-tag">{{card.ownerName}}</div>
       </div>
@@ -43,7 +43,7 @@
     <div *ngIf="0 < card?.name?.length" class="component-title title-background"
       [ngClass]="{'with-button-marign': hasImage}">
       <ng-container *ngIf="card.isVisible == null || card.isVisible">{{card.name}}</ng-container>
-      <ng-container *ngIf="card.isVisible != null && !card.isVisible">卡牌</ng-container>
+      <ng-container *ngIf="card.isVisible != null && !card.isVisible">カード</ng-container>
     </div>
     <div class="component-background">
       <div class="grid-container-root" *ngIf="hasDataElms && card.isVisible">
@@ -122,7 +122,7 @@
       <ng-container *ngIf="dice.isVisible">{{dice.face}}</ng-container>
       <ng-container *ngIf="!dice.isVisible">???</ng-container>
     </div>
-    <div *ngIf="dice.hasOwner" class="owner-name-area component-owner"
+    <div *ngIf="dice.hasOwner && 0 < dice.ownerName.length" class="owner-name-area component-owner"
       [ngClass]="{ 'is-pointer-events-auto': !this.isPointerDragging, 'pointer-events-none': this.isPointerDragging }">
       <div class="owner-tag">{{dice.ownerName}}
       </div>

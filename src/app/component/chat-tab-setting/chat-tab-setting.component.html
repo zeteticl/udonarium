@@ -1,7 +1,7 @@
-<div class="flex-container" style="width: 500px;">
+<div class="flex-container">
   <div class="flex-item no-grow">
     <div>
-      <button (click)="create()">新增聊天分頁</button>
+      <button (click)="create()">チャットタブを作る</button>
     </div>
     <select style="width: 10em;" size="10" (change)="onChangeSelectTab($event.target.value)"
       [ngModel]="selectedTab?.identifier">
@@ -10,7 +10,7 @@
   </div>
   <div class="flex-item">
     <ng-container *ngIf="!isEmpty && selectedTab">
-      <div>分頁名 :
+      <div>タブ名 :
         <input [(ngModel)]="tabName" placeholder="Name" [attr.disabled]="!isEditable ? '' : null" />
       </div>
       <hr />
@@ -36,7 +36,7 @@
           <button class="danger" (click)="delete2()" [attr.disabled]="chatTabs.length <= 1 ? '' : null">清除聊天紀錄</button>
         </ng-container>
         <ng-container *ngIf="isDeleted">
-          <button (click)="restore()">撒回</button>
+          <button (click)="restore()">元に戻す</button>
         </ng-container>
       </div>
     </ng-container>

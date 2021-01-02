@@ -40,7 +40,7 @@ class KanColle < DiceBot
 　・艦載機関開発表　WPFA　(燃料3/弾薬6/鋼材3/ボーキ6)
 　・砲類開発表　WPCN　(燃料3/弾薬6/鋼材6/ボーキ3)
 　・敵深海棲艦の装備決定 BT2～BT12
-・D66骰子(D66S相当=低い方が10の桁になる)
+・D66ダイス(D66S相当=低い方が10の桁になる)
 INFO_MESSAGE_TEXT
 
   def initialize

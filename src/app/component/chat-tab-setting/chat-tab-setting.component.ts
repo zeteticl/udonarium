@@ -11,7 +11,6 @@ import { ModalService } from 'service/modal.service';
 import { PanelService } from 'service/panel.service';
 import { SaveDataService } from 'service/save-data.service';
 
-
 @Component({
   selector: 'app-chat-tab-setting',
   templateUrl: './chat-tab-setting.component.html',
@@ -20,7 +19,7 @@ import { SaveDataService } from 'service/save-data.service';
 export class ChatTabSettingComponent implements OnInit, OnDestroy {
   selectedTab: ChatTab = null;
   selectedTabXml: string = '';
-  enableEdit: boolean = false;
+
   get tabName(): string { return this.selectedTab.name; }
   set tabName(tabName: string) { if (this.isEditable) this.selectedTab.name = tabName; }
 
@@ -140,20 +139,6 @@ export class ChatTabSettingComponent implements OnInit, OnDestroy {
       this.selectedTabXml = this.selectedTab.toXml();
       this.selectedTab.destroyChat();
     }
-  }
-
-  allMessageClear() {
-    this.chatTabs.map(function (nowTab) {
-      let chatTab = new ChatTab();
-      chatTab.name = nowTab.name;
-
-      nowTab.destroy();
-      chatTab.initialize();
-    });
-
-    let chatTab: ChatTab = new ChatTab('MainTab');
-    chatTab.name = '主要分頁';
-    chatTab.initialize();
   }
 
   restore() {

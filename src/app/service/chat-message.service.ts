@@ -5,7 +5,6 @@ import { ChatTab } from '@udonarium/chat-tab';
 import { ChatTabList } from '@udonarium/chat-tab-list';
 import { ObjectStore } from '@udonarium/core/synchronize-object/object-store';
 import { Network } from '@udonarium/core/system';
-import { PeerContext } from '@udonarium/core/system/network/peer-context';
 import { GameCharacter } from '@udonarium/game-character';
 import { PeerCursor } from '@udonarium/peer-cursor';
 
@@ -30,16 +29,6 @@ export class ChatMessageService {
 
   get chatTabs(): ChatTab[] {
     return ChatTabList.instance.chatTabs;
-  }
-
-  get infoTab(): ChatTab {
-    return this.chatTabs.find(chatTab => chatTab.receiveInfo);
-  }
-  setReceiveInfo(chatTab: ChatTab, receiveInfo: boolean): void {
-    this.chatTabs
-      .filter(tab => tab.receiveInfo)
-      .forEach(tab => (tab.receiveInfo = false));
-    chatTab.receiveInfo = receiveInfo;
   }
 
   calibrateTimeOffset() {
@@ -91,14 +80,13 @@ export class ChatMessageService {
     if (color == null) color = "#000000";
 
     let chatMessage: ChatMessageContext = {
-      from: Network.peerContext.id,
+      from: Network.peerContext.userId,
       to: this.findId(sendTo),
       name: this.makeMessageName(sendFrom, sendTo),
       imageIdentifier: this.findImageIdentifier(sendFrom),
       timestamp: this.calcTimeStamp(chatTab),
       tag: gameType,
       text: text,
-      color: color,
     };
     if (this.GuestMode()) {
       chatMessage.name += '(訪客)'
@@ -106,30 +94,12 @@ export class ChatMessageService {
     return chatTab.addMessage(chatMessage);
   }
 
-  sendSystemMessage(name: string, text: string, type?: string): void {
-    if (!this.infoTab) {
-      return;
-    }
-    const systemMessage: ChatMessageContext = {
-      identifier: '',
-      tabIdentifier: this.infoTab.identifier,
-      originFrom: Network.peerContext.id,
-      from: type ? `System-${type}` : 'System',
-      timestamp: this.calcTimeStamp(this.infoTab),
-      imageIdentifier: '',
-      tag: 'system',
-      name,
-      text
-    };
-    this.infoTab.addMessage(systemMessage);
-  }
-
   private findId(identifier: string): string {
     let object = ObjectStore.instance.get(identifier);
     if (object instanceof GameCharacter) {
       return object.identifier;
     } else if (object instanceof PeerCursor) {
-      return PeerContext.create(object.peerId).id;
+      return object.userId;
     }
     return null;
   }

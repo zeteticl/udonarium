@@ -1,7 +1,7 @@
 <div class="flex-container" *ngIf="!GuestMode()">
   <div class="flex-item no-grow">
     <div>
-      <button (click)="createGameTable()">新增桌面</button>
+      <button (click)="createGameTable()">新しいテーブルを作る</button>
     </div>
     <select style="width: 10em;" size="10" (change)="selectGameTable($event.target.value)"
       [ngModel]="selectedTable?.identifier">
@@ -12,7 +12,7 @@
     <ng-container *ngIf="!isEmpty || selectedTable">
       <div class="images-select">
         <div>
-          地圖
+          画像
           <div (click)="openBgImageModal()">
             <img height="120" [src]="tableBackgroundImage.url | safe: 'resourceUrl'">
           </div>
@@ -20,7 +20,7 @@
         <div>
           背景
           <div *ngIf="!tableDistanceviewImage.url">
-            <button (click)="openDistanceViewImageModal()" style="height: 120px;">追加背景圖像</button>
+            <button (click)="openDistanceViewImageModal()" style="height: 120px;">背景画像を追加</button>
           </div>
           <div *ngIf="tableDistanceviewImage.url" (click)="openDistanceViewImageModal()">
             <img height="120" [src]="tableDistanceviewImage.url | safe: 'resourceUrl'">
@@ -43,7 +43,7 @@
           [attr.disabled]="!isEditable ? '' : null">
       </div>
       <div>
-        格線方式:
+        グリッド:
         <select [(ngModel)]="tableGridType" name="tableGridType" [attr.disabled]="!isEditable ? '' : null">
           <option value="-1">無</option>
           <option value="0">方格</option>
@@ -51,7 +51,7 @@
           <option value="2">六角格（横向對齊）</option>
           <option value="3">六邊型</option>
         </select>
-        顏色:
+        色:
         <select [(ngModel)]="tableGridColor" name="tableGridColor" [attr.disabled]="!isEditable ? '' : null">
           <option value="#000000e6">黒</option>
           <option value="#dddddde6">白</option>
@@ -68,10 +68,10 @@
       </div>
       <hr />
       <div>
-        <label>始終顯示網格:
+        <label>グリッドを常に表示:
           <input type="checkbox" [(ngModel)]="tableGridShow" name="tableGridShow" />
         </label>
-        <label> 對齊格線:
+        <label>スナップ:
           <input type="checkbox" [(ngModel)]="tableGridSnap" name="tableGridSnap" />
         </label>
         <ng-container *ngIf="!isDeleted">
@@ -81,16 +81,15 @@
               <div *ngIf="isSaveing" class="progress">{{progresPercent}}%</div>
             </div>
           </button>
-          <button class="danger" (click)="delete()"
-            [attr.disabled]="getGameTables().length <= 1 ? '' : null">刪除</button>
+          <button class="danger" (click)="delete()" [attr.disabled]="getGameTables().length <= 1 ? '' : null">刪除</button>
         </ng-container>
         <ng-container *ngIf="isDeleted">
-          <button (click)="restore()">撒回</button>
+          <button (click)="restore()">元に戻す</button>
         </ng-container>
       </div>
     </ng-container>
   </div>
 </div>
 <ng-container *ngIf="isEmpty">
-  <div style="font-size: 12px;">※桌面が１つも作成されていません。「新しい桌面を作る」から新しい桌面新增することができます。</div>
+  <div style="font-size: 12px;">※テーブルが１つも作成されていません。「新しいテーブルを作る」から新しいテーブルを作成することができます。</div>
 </ng-container>

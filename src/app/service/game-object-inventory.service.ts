@@ -24,8 +24,6 @@ export class GameObjectInventoryService {
   get dataTag(): string { return this.summarySetting.dataTag; }
   set dataTag(dataTag: string) { this.summarySetting.dataTag = dataTag; }
   get dataTags(): string[] { return this.summarySetting.dataTags; }
-  get gameType(): string { return this.summarySetting.gameType; }
-  set gameType(gameType: string) {this.summarySetting.gameType = gameType; }
 
   tableInventory: ObjectInventory = new ObjectInventory(object => { return object.location.name === 'table'; });
   commonInventory: ObjectInventory = new ObjectInventory(object => { return !this.isAnyLocation(object.location.name); });
@@ -134,7 +132,7 @@ export class GameObjectInventoryService {
   private isAnyLocation(location: string): boolean {
     if (location === 'table' || location === Network.peerId || location === 'graveyard') return true;
     for (let conn of Network.peerContexts) {
-      if (conn.isOpen && location === conn.fullstring) {
+      if (conn.isOpen && location === conn.peerId) {
         return true;
       }
     }

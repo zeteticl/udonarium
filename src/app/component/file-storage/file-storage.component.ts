@@ -6,7 +6,6 @@ import { ImageStorage } from '@udonarium/core/file-storage/image-storage';
 import { EventSystem, Network } from '@udonarium/core/system';
 
 import { PanelService } from 'service/panel.service';
-import { ImageTag } from '@udonarium/image-tag';
 
 @Component({
   selector: 'file-storage',
@@ -42,6 +41,7 @@ export class FileStorageComponent implements OnInit, OnDestroy, AfterViewInit {
   get selectedTag(): string { return this.isSelected ? this.selectedImageTag.tag : ''; }
   set selectedTag(selectedTag: string) { if (this.isSelected) this.selectedImageTag.tag = selectedTag; }
 
+  fileStorageService = ImageStorage.instance;
   constructor(
     private changeDetector: ChangeDetectorRef,
     private panelService: PanelService
@@ -90,7 +90,5 @@ export class FileStorageComponent implements OnInit, OnDestroy, AfterViewInit {
   onSelectedFile(file: ImageFile) {
     console.log('onSelectedFile', file);
     EventSystem.call('SELECT_FILE', { fileIdentifier: file.identifier }, Network.peerId);
-
-    this.selectedFile = file;
   }
 }

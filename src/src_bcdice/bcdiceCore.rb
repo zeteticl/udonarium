@@ -277,7 +277,7 @@ class BCDice
     # ポイントカウンター関係
     executePointCounterPublic
 
-    # 骰子ロールの処理
+    # ダイスロールの処理
     executeDiceRoll
 
     # 四則計算代行
@@ -291,7 +291,7 @@ class BCDice
     # ここから大文字・小文字を考慮するようにメッセージを変更
     changeMessageOriginal
 
-    # 卡牌処理
+    # カード処理
     executeCard
 
     debug("\non_public end")
@@ -411,7 +411,7 @@ class BCDice
   #=========================================================================
   # **                           コマンド分岐
   #=========================================================================
-  def dice_command # 骰子コマンドの分岐処理
+  def dice_command # ダイスコマンドの分岐処理
     arg = @message.upcase
 
     debug('dice_command arg', arg)
@@ -576,7 +576,7 @@ class BCDice
   #=========================================================================
   # **                           ランダマイザ
   #=========================================================================
-  # 骰子ロール
+  # ダイスロール
   def roll(dice_cnt, dice_max, dice_sort = 0, dice_add = 0, dice_ul = '', dice_diff = 0, dice_re = nil)
     dice_cnt = dice_cnt.to_i
     dice_max = dice_max.to_i
@@ -771,7 +771,7 @@ class BCDice
   end
 
   #==========================================================================
-  # **                            骰子コマンド処理
+  # **                            ダイスコマンド処理
   #==========================================================================
 
   ####################         バラバラダイス       ########################
@@ -781,7 +781,7 @@ class BCDice
     diff = 0
     output = ""
 
-    string = string.gsub(/-[\d]+B[\d]+/, '') # バラバラ骰子を引き算しようとしているのを除去
+    string = string.gsub(/-[\d]+B[\d]+/, '') # バラバラダイスを引き算しようとしているのを除去
 
     unless /(^|\s)S?(([\d]+B[\d]+(\+[\d]+B[\d]+)*)(([<>=]+)([\d]+))?)($|\s)/ =~ string
       output = '1'
@@ -912,7 +912,7 @@ class BCDice
     return output
   end
 
-  ####################        その他骰子関係      ########################
+  ####################        その他ダイス関係      ########################
   def openSecretRoll(channel, mode)
     debug("openSecretRoll begin")
     channel = channel.upcase
@@ -967,7 +967,7 @@ class BCDice
     # まずはチャンネルごとの管理リストに追加
     addToSecretRollMembersHolder(channel, mode)
 
-    # 次に骰子の出力結果を保存
+    # 次にダイスの出力結果を保存
     saveSecretDiceResult(diceResult, channel, mode)
   end
 

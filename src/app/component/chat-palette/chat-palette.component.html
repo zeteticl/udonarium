@@ -4,7 +4,7 @@
       <div class="chat-tab">
         <label *ngFor="let chatTab of chatMessageService.chatTabs">
           <input name="chat-tab" type="radio" value="{{chatTab.identifier}}" ng-control="options" [(ngModel)]="chatTabidentifier">
-          <div>{{chatTab.name}}<i *ngIf="chatTab.receiveInfo" class="material-icons">info</i><badge *ngIf="chatTab.hasUnread" class="badge" [count]="chatTab.unreadLength"></badge></div>
+          <div>{{chatTab.name}}<badge *ngIf="chatTab.hasUnread" class="badge" [count]="chatTab.unreadLength"></badge></div>
         </label>
       </div>
     </form>
@@ -20,7 +20,7 @@
     </select>
   </div>
   <div *ngIf="isEdit" style="flex-grow: 1; height: 0; min-height: 100px;">
-    <textarea class="palette" style="resize: none;" [(ngModel)]="editPalette" placeholder="聊天視窗"></textarea>
+    <textarea class="palette" style="resize: none;" [(ngModel)]="editPalette" placeholder="チャットパレット"></textarea>
   </div>
   <div style="flex-grow: 0;">
     <button type="submit" (click)="toggleEditMode()">

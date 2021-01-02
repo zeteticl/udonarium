@@ -36,7 +36,7 @@ class TwilightGunsmoke < DiceBot
 　　ロボ　DRB｜武装車輛　DBS｜ターレット　DTR｜メルカバ　DMK
 　　ヘリ　DHL｜マシンライフ　DML｜ゾンビ　DZB｜ミュータント　DMT
 　　BM／飛竜科　DHR｜BM／巨爪科　DKS｜フィーンド　DFD
-・D66骰子あり
+・D66ダイスあり
 INFO_MESSAGE_TEXT
 
   def initialize

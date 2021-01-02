@@ -12,6 +12,7 @@ import { PanelOption, PanelService } from 'service/panel.service';
 import { PointerDeviceService } from 'service/pointer-device.service';
 import { GameObjectInventoryService} from 'service/game-object-inventory.service';
 
+
 @Component({
   selector: 'chat-palette',
   templateUrl: './chat-palette.component.html',
@@ -53,18 +54,13 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
 
   constructor(
     public chatMessageService: ChatMessageService,
-    private panelService: PanelService,
-    private pointerDeviceService: PointerDeviceService,
-    private inventoryService: GameObjectInventoryService
+    private panelService: PanelService
   ) { }
 
   ngOnInit() {
     Promise.resolve().then(() => this.updatePanelTitle());
     this.chatTabidentifier = this.chatMessageService.chatTabs ? this.chatMessageService.chatTabs[0].identifier : '';
-
     this.gameType = this.character.chatPalette ? this.character.chatPalette.dicebot : '';
-    //this.color = this.character.chatPalette ? this.character.chatPalette.color : '#000000';
-
     EventSystem.register(this)
       .on('DELETE_GAME_OBJECT', -1000, event => {
         if (this.character && this.character.identifier === event.data.identifier) {
@@ -82,7 +78,7 @@ export class ChatPaletteComponent implements OnInit, OnDestroy {
   }
 
   updatePanelTitle() {
-    this.panelService.title = this.character.name + ' 的對話組合版';
+    this.panelService.title = this.character.name + ' のチャットパレット';
   }
 
   onSelectedCharacter(identifier: string) {
