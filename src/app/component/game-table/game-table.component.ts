@@ -29,9 +29,6 @@ import { TableTouchGesture, TableTouchGestureEvent } from './table-touch-gesture
   selector: 'game-table',
   templateUrl: './game-table.component.html',
   styleUrls: ['./game-table.component.css'],
-  providers: [
-    TabletopService,
-  ],
 })
 export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('root', { static: true }) rootElementRef: ElementRef<HTMLElement>;
@@ -44,7 +41,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   get tableImage(): ImageFile {
     let file: ImageFile = ImageStorage.instance.get(this.currentTable.imageIdentifier);
-    return file ? file : ImageFile.Empty;
+    return this.tabletopService.getSkeletonImageOr(file);
   }
 
   get backgroundImage(): ImageFile {
@@ -119,6 +116,7 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.input.onStart = this.onInputStart.bind(this);
     this.input.onMove = this.onInputMove.bind(this);
     this.input.onEnd = this.onInputEnd.bind(this);
+    this.cancelInput();
 
     this.setGameTableGrid(this.currentTable.width, this.currentTable.height, this.currentTable.gridSize, this.currentTable.gridType, this.currentTable.gridColor);
     this.setTransform(0, 0, 0, 0, 0, 0);
@@ -141,12 +139,14 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cancelInput();
   }
 
-  onTableTouchTransform(transformX: number, transformY: number, transformZ: number, rotateX: number, rotateY: number, rotateZ: number, event: string) {
+  onTableTouchTransform(transformX: number, transformY: number, transformZ: number, rotateX: number, rotateY: number, rotateZ: number, event: string, srcEvent: TouchEvent | MouseEvent | PointerEvent) {
     if (event === TableTouchGestureEvent.PAN && (!this.isTransformMode || this.input.isGrabbing)) return;
 
     if (!this.pointerDeviceService.isAllowedToOpenContextMenu && this.contextMenuService.isShow) {
       this.ngZone.run(() => this.contextMenuService.close());
     }
+
+    if (srcEvent.cancelable) srcEvent.preventDefault();
 
     //
     let scale = (1000 + Math.abs(this.viewPotisonZ)) / 1000;
@@ -215,11 +215,13 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentPositionX = x;
     this.currentPositionY = y;
 
+    if (e.cancelable) e.preventDefault();
     this.setTransform(transformX, transformY, transformZ, rotateX, rotateY, rotateZ);
   }
 
   cancelInput() {
     this.input.cancel();
+    this.isTransformMode = true;
     this.pointerDeviceService.isDragging = false;
     let opacity: number = this.tableSelecter.gridShow ? 1.0 : 0.0;
     this.gridCanvas.nativeElement.style.opacity = opacity + '';
@@ -227,6 +229,21 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('wheel', ['$event'])
   onWheel(e: WheelEvent) {
+    if (!this.isTransformMode) return;
+
+    let pixelDeltaY = 0;
+    switch (e.deltaMode) {
+      case WheelEvent.DOM_DELTA_LINE:
+        pixelDeltaY = e.deltaY * 16;
+        break;
+      case WheelEvent.DOM_DELTA_PAGE:
+        pixelDeltaY = e.deltaY * window.innerHeight;
+        break;
+      default:
+        pixelDeltaY = e.deltaY;
+        break;
+    }
+
     let transformX = 0;
     let transformY = 0;
     let transformZ = 0;
@@ -235,18 +252,15 @@ export class GameTableComponent implements OnInit, OnDestroy, AfterViewInit {
     let rotateY = 0;
     let rotateZ = 0;
 
-    if (e.deltaY < 0) {
-      transformZ = 150;
-    } else if (0 < e.deltaY) {
-      transformZ = -150;
-    }
+    transformZ = pixelDeltaY * -1.5;
+    if (300 ** 2 < transformZ ** 2) transformZ = Math.min(Math.max(transformZ, -300), 300);
 
     this.setTransform(transformX, transformY, transformZ, rotateX, rotateY, rotateZ);
   }
 
   @HostListener('document:keydown', ['$event'])
   onKeydown(e: KeyboardEvent) {
-    if (document.body !== document.activeElement) return;
+    if (!this.isTransformMode || document.body !== document.activeElement) return;
     let transformX = 0;
     let transformY = 0;
     let transformZ = 0;

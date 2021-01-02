@@ -1,7 +1,8 @@
 import { EventSystem } from '../system';
+import { ResettableTimeout } from '../system/util/resettable-timeout';
 import { AudioFile, AudioFileContext, AudioState } from './audio-file';
 
-export type CatalogItem = { identifier: string, state: number };
+export type CatalogItem = { readonly identifier: string, readonly state: number };
 
 export class AudioStorage {
   private static _instance: AudioStorage
@@ -10,7 +11,7 @@ export class AudioStorage {
     return AudioStorage._instance;
   }
 
-  private lazyTimer: NodeJS.Timer;
+  private lazyTimer: ResettableTimeout;
   private hash: { [identifier: string]: AudioFile } = {};
 
   get audios(): AudioFile[] {
@@ -43,7 +44,7 @@ export class AudioStorage {
   add(audio: AudioFile): AudioFile
   add(context: AudioFileContext): AudioFile
   add(arg: any): AudioFile {
-    let audio: AudioFile
+    let audio: AudioFile;
     if (typeof arg === 'string') {
       audio = AudioFile.create(arg);
     } else if (arg instanceof AudioFile) {
@@ -97,16 +98,13 @@ export class AudioStorage {
   }
 
   synchronize(peer?: string) {
-    clearTimeout(this.lazyTimer);
-    this.lazyTimer = null;
+    if (this.lazyTimer) this.lazyTimer.stop();
     EventSystem.call('SYNCHRONIZE_AUDIO_LIST', this.getCatalog(), peer);
   }
 
   lazySynchronize(ms: number, peer?: string) {
-    clearTimeout(this.lazyTimer);
-    this.lazyTimer = setTimeout(() => {
-      this.synchronize(peer);
-    }, ms);
+    if (this.lazyTimer == null) this.lazyTimer = new ResettableTimeout(() => this.synchronize(peer), ms);
+    this.lazyTimer.reset(ms);
   }
 
   getCatalog(): CatalogItem[] {

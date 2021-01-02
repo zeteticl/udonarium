@@ -1,7 +1,8 @@
 import { EventSystem } from '../system';
+import { ResettableTimeout } from '../system/util/resettable-timeout';
 import { ImageContext, ImageFile, ImageState } from './image-file';
 
-export type CatalogItem = { identifier: string, state: number };
+export type CatalogItem = { readonly identifier: string, readonly state: number };
 
 export class ImageStorage {
   private static _instance: ImageStorage
@@ -20,7 +21,7 @@ export class ImageStorage {
     return images;
   }
 
-  private lazyTimer: NodeJS.Timer;
+  private lazyTimer: ResettableTimeout;
 
   private constructor() {
     console.log('ImageStorage ready...');
@@ -44,7 +45,7 @@ export class ImageStorage {
   add(image: ImageFile): ImageFile
   add(context: ImageContext): ImageFile
   add(arg: any): ImageFile {
-    let image: ImageFile
+    let image: ImageFile;
     if (typeof arg === 'string') {
       image = ImageFile.create(arg);
     } else if (arg instanceof ImageFile) {
@@ -98,16 +99,13 @@ export class ImageStorage {
   }
 
   synchronize(peer?: string) {
-    clearTimeout(this.lazyTimer);
-    this.lazyTimer = null;
+    if (this.lazyTimer) this.lazyTimer.stop();
     EventSystem.call('SYNCHRONIZE_FILE_LIST', this.getCatalog(), peer);
   }
 
   lazySynchronize(ms: number, peer?: string) {
-    clearTimeout(this.lazyTimer);
-    this.lazyTimer = setTimeout(() => {
-      this.synchronize(peer);
-    }, ms);
+    if (this.lazyTimer == null) this.lazyTimer = new ResettableTimeout(() => this.synchronize(peer), ms);
+    this.lazyTimer.reset(ms);
   }
 
   getCatalog(): CatalogItem[] {
