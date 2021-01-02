@@ -33,8 +33,6 @@ export class PeerContext implements IPeerContext {
   isOpen: boolean = false;
   isAllowGuest: boolean = true;
   isGuest: boolean = false;
-  get isRoom(): boolean { return 0 < this.room.length ? true : false; }
-
   get isRoom(): boolean { return 0 < this.roomId.length; }
   get hasPassword(): boolean { return 0 < this.password.length + this.digestPassword.length; }
 
